@@ -1,0 +1,13 @@
+use_frameworks!
+
+platform :ios, '8.0'
+
+target 'DRScrollableViews_Example' do
+  pod 'DRScrollableViews', :path => '../'
+
+  target 'DRScrollableViews_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
