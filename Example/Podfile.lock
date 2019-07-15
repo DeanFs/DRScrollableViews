@@ -1,0 +1,16 @@
+PODS:
+  - DRScrollableViews (0.1.0)
+
+DEPENDENCIES:
+  - DRScrollableViews (from `../`)
+
+EXTERNAL SOURCES:
+  DRScrollableViews:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  DRScrollableViews: 02f2ff4ad12392a2d7dc5cc6840c8e0436268c05
+
+PODFILE CHECKSUM: 861ff56d5d9b85b5332b0d57e8adadfd14bd8020
+
+COCOAPODS: 1.6.1
