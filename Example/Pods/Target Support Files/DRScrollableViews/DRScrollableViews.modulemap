@@ -1,0 +1,6 @@
+framework module DRScrollableViews {
+  umbrella header "DRScrollableViews-umbrella.h"
+
+  export *
+  module * { export * }
+}
