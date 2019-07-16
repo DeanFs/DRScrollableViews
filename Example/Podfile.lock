@@ -57,11 +57,11 @@ SPEC CHECKSUMS:
   DRInputLimitManager: eb8195c0494e964ff5c18b78bf4af2ed6488be0c
   DRMacroDefines: 58aa271bc1c4170fa09f4f33dcad18fc4f21a57e
   DRSandboxManager: 2a48ca41b22edfc39dd2f66abd5a99e777410c61
-  DRScrollableViews: d43f11ed5a922ac68812eb9fedc579501ffa379c
+  DRScrollableViews: 75b4faa8a08c7acb8311843a23ea918913e31850
   HexColors: 5f95843ef89aff6a72e1fd3a8ebabf205cc43379
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   pop: d582054913807fd11fd50bfe6a539d91c7e1a55a
 
 PODFILE CHECKSUM: 861ff56d5d9b85b5332b0d57e8adadfd14bd8020
 
-COCOAPODS: 1.7.0.rc.1
+COCOAPODS: 1.6.1

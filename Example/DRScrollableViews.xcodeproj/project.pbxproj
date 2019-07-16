@@ -209,6 +209,7 @@
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
 				7887B17AA6620AD64AF3A3B7 /* [CP] Embed Pods Frameworks */,
+				6236A9D3F5A004BB0E2A708B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -295,6 +296,30 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		6236A9D3F5A004BB0E2A708B /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DRScrollableViews_Example/Pods-DRScrollableViews_Example-resources.sh",
+				"${PODS_ROOT}/../../DRScrollableViews/Assets/sector_delete@2x.png",
+				"${PODS_ROOT}/../../DRScrollableViews/Assets/sector_delete@3x.png",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/sector_delete@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/sector_delete@3x.png",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DRScrollableViews_Example/Pods-DRScrollableViews_Example-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		6AD8A311DDC90A26DFED5E80 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

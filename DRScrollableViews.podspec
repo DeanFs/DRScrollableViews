@@ -30,7 +30,7 @@ TODO: Add long description of the pod here.
 
   s.ios.deployment_target = '9.0'
 
-  s.resource = 'DRDragSortTableView/Assets/*'
+  s.resource = 'DRScrollableViews/Assets/*'
 
   s.subspec 'DRDragSortTableView' do |ss|
     ss.source_files = 'DRScrollableViews/Classes/DRDragSortTableView/*.{h,m}'
