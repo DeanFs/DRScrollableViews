@@ -1,17 +1,14 @@
-#ifdef __OBJC__
-#import <UIKit/UIKit.h>
-#else
-#ifndef FOUNDATION_EXPORT
-#if defined(__cplusplus)
-#define FOUNDATION_EXPORT extern "C"
-#else
-#define FOUNDATION_EXPORT extern
-#endif
-#endif
-#endif
+//
+//  DRCategories.h
+//  Pods
+//
+//  Created by 冯生伟 on 2019/7/16.
+//
 
-#import "DRCategories.h"
-#import "DRFoundationCategories.h"
+#ifndef DRCategories_h
+#define DRCategories_h
+
+// Foundation
 #import "NSArray+DRExtension.h"
 #import "NSAttributedString+DRExtension.h"
 #import "NSDate+DRExtension.h"
@@ -21,9 +18,9 @@
 #import "NSObject+DRExtension.h"
 #import "NSString+DRExtension.h"
 #import "NSUserDefaults+DRExtension.h"
+// UIKit
 #import "CAAnimation+DRExtension.h"
 #import "CALayer+DRExtension.h"
-#import "DRUIKitCategories.h"
 #import "UIBarButtonItem+DRExtension.h"
 #import "UICollectionView+DRExtension.h"
 #import "UIFont+DRExtentsion.h"
@@ -35,6 +32,5 @@
 #import "UITextField+DRExtension.h"
 #import "UIView+DRExtension.h"
 
-FOUNDATION_EXPORT double DRCategoriesVersionNumber;
-FOUNDATION_EXPORT const unsigned char DRCategoriesVersionString[];
 
+#endif /* DRCategories_h */

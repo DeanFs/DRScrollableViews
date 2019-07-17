@@ -25,6 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.view.backgroundColor = [UIColor grayColor];
     self.reuseIdentifier = NSStringFromClass([DRTimeFlowCell class]);
     self.collectionView.backgroundColor = [UIColor grayColor];
     self.collectionView.showsHorizontalScrollIndicator = NO;
@@ -38,7 +39,7 @@
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
     
-    self.itemCount = arc4random() % 100 + 10;
+    self.itemCount = arc4random() % 10 + 5;
     
     if (@available(iOS 11.0, *)) {
         self.collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;

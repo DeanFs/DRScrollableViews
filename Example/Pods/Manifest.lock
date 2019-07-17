@@ -37,6 +37,7 @@ PODS:
   - pop (1.0.12)
 
 DEPENDENCIES:
+  - DRCategories
   - DRScrollableViews (from `../`)
   - HexColors (~> 4.0.0)
 
@@ -62,6 +63,6 @@ SPEC CHECKSUMS:
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   pop: d582054913807fd11fd50bfe6a539d91c7e1a55a
 
-PODFILE CHECKSUM: f317024cdf8408644d3904613bb03e25b2889463
+PODFILE CHECKSUM: 38c7264e4a51bad494f796d60b7cedc72822b683
 
 COCOAPODS: 1.7.0.rc.1
