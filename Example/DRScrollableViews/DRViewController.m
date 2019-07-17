@@ -7,6 +7,8 @@
 //
 
 #import "DRViewController.h"
+#import <DRMacroDefines/DRMacroDefines.h>
+#import "DRTimeFlowViewController.h"
 
 @interface DRViewController ()
 
@@ -24,6 +26,14 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == 1) {
+        DRTimeFlowViewController *timeFlowVc = [[DRTimeFlowViewController alloc] init];
+        timeFlowVc.title = @"Time Flow";
+        [self.navigationController pushViewController:timeFlowVc animated:YES];
+    }
 }
 
 @end

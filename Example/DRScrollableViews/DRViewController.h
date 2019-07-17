@@ -8,6 +8,6 @@
 
 @import UIKit;
 
-@interface DRViewController : UIViewController
+@interface DRViewController : UITableViewController
 
 @end

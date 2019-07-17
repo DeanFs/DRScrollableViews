@@ -34,6 +34,9 @@ NS_ASSUME_NONNULL_BEGIN
 // 获取字符串中的字符数量，字母，汉字，表情都算一个字符
 - (NSInteger)charCount;
 
+// 手机号码加空格的格式化
+- (NSString *)phoneFormat;
+
 @end
 
 @interface NSString (DRIDFA)

@@ -10,6 +10,8 @@
 #endif
 #endif
 
+#import "DRCategories.h"
+#import "DRFoundationCategories.h"
 #import "NSArray+DRExtension.h"
 #import "NSAttributedString+DRExtension.h"
 #import "NSDate+DRExtension.h"
@@ -21,6 +23,7 @@
 #import "NSUserDefaults+DRExtension.h"
 #import "CAAnimation+DRExtension.h"
 #import "CALayer+DRExtension.h"
+#import "DRUIKitCategories.h"
 #import "UIBarButtonItem+DRExtension.h"
 #import "UICollectionView+DRExtension.h"
 #import "UIFont+DRExtentsion.h"
@@ -30,7 +33,6 @@
 #import "UITabBar+DRExtension.h"
 #import "UITableView+DRExtension.h"
 #import "UITextField+DRExtension.h"
-#import "UITextView+DRExtension.h"
 #import "UIView+DRExtension.h"
 
 FOUNDATION_EXPORT double DRCategoriesVersionNumber;

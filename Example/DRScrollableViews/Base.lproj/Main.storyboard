@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Root View Controller-->
+        <!--ScrollableViews-->
         <scene sceneID="pc2-7H-SBQ">
             <objects>
-                <tableViewController id="WJr-zY-4tf" sceneMemberID="viewController">
+                <tableViewController id="WJr-zY-4tf" customClass="DRViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="dFk-Yc-Wn0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -71,7 +71,7 @@
                             <outlet property="delegate" destination="WJr-zY-4tf" id="G8C-ex-v2X"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="O9U-RK-NeC"/>
+                    <navigationItem key="navigationItem" title="ScrollableViews" id="O9U-RK-NeC"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nQ1-pV-7os" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -7,7 +7,6 @@
 //
 
 #import "UITextField+DRExtension.h"
-#import "DRInputLimitManager.h"
 
 @implementation UITextField (DRExtension)
 
@@ -23,23 +22,9 @@
     self.attributedPlaceholder = attStr;
 }
 
-// 正在输入拼音
-- (BOOL)isInputingPinyin {
-    UITextRange *selectedRange = [self markedTextRange];
-    UITextPosition *position = [self positionFromPosition:selectedRange.start offset:0];
-    if (position) {
-        return YES;
-    }
-    return NO;
-}
-
-// 设置字数限制，字母，汉字，表情符号均算一个字
-- (void)setTextLengthLimit:(NSInteger)limit {
-    [DRInputLimitManager addTextLimitForbidStartWithSpaceCharForInputView:self
-                                                      textDidChangeNotice:UITextFieldTextDidChangeNotification
-                                                                    limit:limit
-                                                         beyondLimitBlock:nil
-                                                           checkDoneBlock:nil];
+// 去除空格的字符串
+- (NSString *)validText {
+    return [self.text stringByReplacingOccurrencesOfString:@" " withString:@""];
 }
 
 @end

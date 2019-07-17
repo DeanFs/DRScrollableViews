@@ -94,6 +94,20 @@
     return count;
 }
 
+// 手机号码加空格的格式化
+- (NSString *)phoneFormat {
+    NSString *originString = [self stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if (originString.length > 11) {
+        originString = [originString substringToIndex:11];
+    }
+    if (originString.length > 3 && originString.length < 8) {
+        return [NSString stringWithFormat:@"%@ %@", [originString substringToIndex:3], [originString substringFromIndex:3]];
+    } else if (originString.length > 7) {
+        return [NSString stringWithFormat:@"%@ %@ %@", [originString substringToIndex:3], [originString substringWithRange:NSMakeRange(3, 4)], [originString substringFromIndex:7]];
+    }
+    return originString;
+}
+
 @end
 
 

@@ -17,12 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
                  color:(UIColor *)color
                   font:(UIFont *)font;
 
-// 正在输入拼音
-- (BOOL)isInputingPinyin;
-
-// 设置字数限制，字母，汉字，表情符号均算一个字
-// 禁止在开始位置输入空格
-- (void)setTextLengthLimit:(NSInteger)limit;
+// 去除空格的字符串
+- (NSString *)validText;
 
 @end
 

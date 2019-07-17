@@ -1,35 +1,33 @@
 PODS:
-  - BlocksKit (2.2.5):
-    - BlocksKit/All (= 2.2.5)
-  - BlocksKit/All (2.2.5):
-    - BlocksKit/Core
-    - BlocksKit/DynamicDelegate
-    - BlocksKit/MessageUI
-    - BlocksKit/UIKit
-  - BlocksKit/Core (2.2.5)
-  - BlocksKit/DynamicDelegate (2.2.5)
-  - BlocksKit/MessageUI (2.2.5):
-    - BlocksKit/Core
-    - BlocksKit/DynamicDelegate
-  - BlocksKit/UIKit (2.2.5):
-    - BlocksKit/Core
-    - BlocksKit/DynamicDelegate
-  - DRCategories (0.1.0):
-    - DRInputLimitManager
+  - DRCategories (0.1.3):
+    - DRCategories/Foundation (= 0.1.3)
+    - DRCategories/UIKit (= 0.1.3)
+    - DRMacroDefines
     - DRSandboxManager
     - pop
-  - DRInputLimitManager (0.1.0):
-    - BlocksKit
+  - DRCategories/Foundation (0.1.3):
     - DRMacroDefines
+    - DRSandboxManager
+    - pop
+  - DRCategories/UIKit (0.1.3):
+    - DRMacroDefines
+    - DRSandboxManager
+    - pop
   - DRMacroDefines (0.1.2)
   - DRSandboxManager (0.1.0)
-  - DRScrollableViews (0.1.1):
+  - DRScrollableViews (0.1.2):
     - DRCategories
     - DRMacroDefines
-    - DRScrollableViews/DRDragSortTableView (= 0.1.1)
+    - DRScrollableViews/DRCollectionLayout (= 0.1.2)
+    - DRScrollableViews/DRDragSortTableView (= 0.1.2)
     - HexColors (= 4.0.0)
     - Masonry
-  - DRScrollableViews/DRDragSortTableView (0.1.1):
+  - DRScrollableViews/DRCollectionLayout (0.1.2):
+    - DRCategories
+    - DRMacroDefines
+    - HexColors (= 4.0.0)
+    - Masonry
+  - DRScrollableViews/DRDragSortTableView (0.1.2):
     - DRCategories
     - DRMacroDefines
     - HexColors (= 4.0.0)
@@ -44,9 +42,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - BlocksKit
     - DRCategories
-    - DRInputLimitManager
     - DRMacroDefines
     - DRSandboxManager
     - HexColors
@@ -58,12 +54,10 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
-  DRCategories: 32040a6700fb426fda23fe381f8dae80fad78b10
-  DRInputLimitManager: eb8195c0494e964ff5c18b78bf4af2ed6488be0c
+  DRCategories: be99ac83f5e3cb162140f324539447dd251d73bd
   DRMacroDefines: 58aa271bc1c4170fa09f4f33dcad18fc4f21a57e
   DRSandboxManager: 2a48ca41b22edfc39dd2f66abd5a99e777410c61
-  DRScrollableViews: 4d5831f77a647424d7e3e418e411a57ebd121ef6
+  DRScrollableViews: 346b63e7b633e10a66b4c2f7b192d9a78f5e61b9
   HexColors: 5f95843ef89aff6a72e1fd3a8ebabf205cc43379
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   pop: d582054913807fd11fd50bfe6a539d91c7e1a55a
