@@ -10,8 +10,13 @@
 
 @interface DRTimeFlowLayout ()
 
-@property (nonatomic, assign) CGFloat collectionHeight;
-@property (nonatomic, assign) NSInteger visibleCount;
+@property (nonatomic, assign) CGFloat height;               // collectionView Height
+@property (nonatomic, assign) NSInteger visibleCount;       // 当前屏幕大小可显示的cell总数
+@property (nonatomic, assign) CGFloat maxDistance;          // 最大滚动距离，在此距离内随滚动缩放
+@property (nonatomic, assign) CGFloat minCellHeight;        // 可见cell中高度最小的高度
+@property (nonatomic, assign) CGFloat minCellVisibleHeight; // 最小可见cell留在屏幕中的高度
+@property (nonatomic, assign) NSInteger cellCount;          // 当前cell总数
+@property (nonatomic, assign) BOOL firstLoad;               // 标记是否第一次加载，第一次时，最底部显示第一条数据
 
 @end
 
@@ -20,28 +25,40 @@
 - (void)prepareLayout {
     [super prepareLayout];
 
-    // TODO: 设置顶部偏移 contentInset
-    self.collectionHeight = CGRectGetHeight(self.collectionView.frame);
-    self.visibleCount = [self countVisibleCount];
+    [self setupCount];
 }
 
 - (CGSize)collectionViewContentSize {
-    NSInteger cellCount = [self.collectionView numberOfItemsInSection:0];
-    return CGSizeMake(CGRectGetWidth(self.collectionView.frame), cellCount * self.maxItemSize.height);
+    self.cellCount = [self.collectionView numberOfItemsInSection:0];
+    
+    if (self.cellCount < self.visibleCount) {
+        CGFloat contentHeight = self.maxItemSize.height;
+        for (NSInteger i=1; i<self.cellCount; i++) {
+            contentHeight += ((self.maxItemSize.height-self.coverOffset) - i * self.decreasingStep);
+        }
+        self.collectionView.contentInset = UIEdgeInsetsMake(self.height-contentHeight, 0, 0, 0);
+        self.collectionView.contentOffset = CGPointZero;
+        return self.collectionView.frame.size;
+    } else {
+        if (self.firstLoad) {
+            CGFloat offset = self.maxItemSize.height * (self.cellCount - self.visibleCount);
+            if (self.minCellHeight > self.minCellVisibleHeight) {
+                offset += (self.maxItemSize.height - self.minCellVisibleHeight);
+            }
+            self.collectionView.contentOffset = CGPointMake(0, offset);
+            self.firstLoad = NO;
+        }
+        self.collectionView.contentInset = UIEdgeInsetsZero;
+        CGFloat height = (self.cellCount - self.visibleCount) * self.maxItemSize.height + (self.maxItemSize.height + self.maxDistance);
+        return CGSizeMake(CGRectGetWidth(self.collectionView.frame), height);
+    }
 }
 
 - (NSArray<__kindof UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect {
-    NSInteger cellCount = [self.collectionView numberOfItemsInSection:0];
-    CGFloat contentOffset = self.collectionView.contentOffset.y;
-    NSInteger firstIndex = 0;
-    NSInteger lastIndex = 0;
-    if (contentOffset > 0) {
-        firstIndex = self.collectionView.contentOffset.y / self.maxItemSize.height;
-    }
-    if (self.visibleCount > cellCount) { // 不能铺满屏幕
-        lastIndex = cellCount - 1;
-    } else {
-        lastIndex = firstIndex + self.visibleCount - 1;
+    NSInteger firstIndex = self.collectionView.contentOffset.y / self.maxItemSize.height;;
+    NSInteger lastIndex = firstIndex + self.visibleCount - 1;
+    if (self.visibleCount > self.cellCount) { // 不能铺满屏幕
+        lastIndex = self.cellCount - 1;
     }
     NSMutableArray *array = [NSMutableArray array];
     for (NSInteger i = firstIndex; i <= lastIndex; i++) {
@@ -116,21 +133,8 @@
     return attributes;
 }
 
+// 保持顶部最小cell，保持minVisibleHeight
 - (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity {
-    NSArray<NSIndexPath *> *visiblePaths = [self.collectionView indexPathsForVisibleItems];
-    visiblePaths = [visiblePaths sortedArrayUsingComparator:^NSComparisonResult(NSIndexPath *  _Nonnull obj1, NSIndexPath *  _Nonnull obj2) {
-        return obj1.row > obj2.row;
-    }];
-    UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:visiblePaths.lastObject];
-    CGFloat contentOffset = proposedContentOffset.y;
-    CGFloat cellCenter = cell.y + cell.height / 2;
-    CGFloat cellBottom = cell.y + cell.height;
-    CGFloat contentBottom = contentOffset + self.collectionHeight;
-    if (cellCenter < contentBottom) {
-        return CGPointMake(0, contentOffset + cellBottom - contentBottom);
-    } else if (cellCenter > contentBottom)  {
-        return CGPointMake(0, contentOffset - (contentBottom - cell.y));
-    }
     return proposedContentOffset;
 }
 
@@ -139,19 +143,28 @@
 }
 
 #pragma mark - private
-- (NSInteger)countVisibleCount {
+- (void)setupCount {
+    CGFloat collectionHeight = CGRectGetHeight(self.collectionView.frame);
     CGFloat height = self.maxItemSize.height;
     CGFloat baseHeight = height - self.coverOffset;
+    CGFloat minCellHeight = height;
     NSInteger count = 1;
-    for (; height < self.collectionHeight; count++) {
+    while (height < collectionHeight) {
         CGFloat cellHeight = baseHeight - count * self.decreasingStep;
         if (cellHeight < 0) {
-            count --;
             break;
         }
+        minCellHeight = cellHeight;
         height += cellHeight;
+        count ++;
     }
-    return count;
+    
+    self.height = collectionHeight;
+    self.visibleCount = count - 1;
+    self.minCellHeight = minCellHeight;
+    self.maxDistance = height - self.maxItemSize.height;
+    self.minCellVisibleHeight = self.minCellHeight - (height - collectionHeight);
+    self.firstLoad = YES;
 }
 
 @end
