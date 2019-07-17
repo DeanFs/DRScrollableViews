@@ -23,10 +23,15 @@ PODS:
     - DRMacroDefines
   - DRMacroDefines (0.1.2)
   - DRSandboxManager (0.1.0)
-  - DRScrollableViews (0.1.0):
+  - DRScrollableViews (0.1.1):
     - DRCategories
     - DRMacroDefines
-    - DRScrollableViews/DRDragSortTableView (= 0.1.0)
+    - DRScrollableViews/DRDragSortTableView (= 0.1.1)
+    - HexColors (= 4.0.0)
+    - Masonry
+  - DRScrollableViews/DRDragSortTableView (0.1.1):
+    - DRCategories
+    - DRMacroDefines
     - HexColors (= 4.0.0)
     - Masonry
   - HexColors (4.0.0)
@@ -35,6 +40,7 @@ PODS:
 
 DEPENDENCIES:
   - DRScrollableViews (from `../`)
+  - HexColors (~> 4.0.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -57,11 +63,11 @@ SPEC CHECKSUMS:
   DRInputLimitManager: eb8195c0494e964ff5c18b78bf4af2ed6488be0c
   DRMacroDefines: 58aa271bc1c4170fa09f4f33dcad18fc4f21a57e
   DRSandboxManager: 2a48ca41b22edfc39dd2f66abd5a99e777410c61
-  DRScrollableViews: 75b4faa8a08c7acb8311843a23ea918913e31850
+  DRScrollableViews: 4d5831f77a647424d7e3e418e411a57ebd121ef6
   HexColors: 5f95843ef89aff6a72e1fd3a8ebabf205cc43379
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   pop: d582054913807fd11fd50bfe6a539d91c7e1a55a
 
-PODFILE CHECKSUM: 861ff56d5d9b85b5332b0d57e8adadfd14bd8020
+PODFILE CHECKSUM: f317024cdf8408644d3904613bb03e25b2889463
 
 COCOAPODS: 1.6.1

@@ -24,6 +24,7 @@
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		D824E1D79F79C33AB2F14F28 /* Pods_DRScrollableViews_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56587A4DDD973D824033BC60 /* Pods_DRScrollableViews_Tests.framework */; };
+		FEB9AC3622DEBFEE00B91032 /* DRDragSortTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9AC3522DEBFEE00B91032 /* DRDragSortTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +39,7 @@
 
 /* Begin PBXFileReference section */
 		160D0CA0F52C0085E397E0A7 /* Pods_DRScrollableViews_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DRScrollableViews_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		26229ABC64A5D15BD2E44B29 /* DRScrollableViews.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = DRScrollableViews.podspec; path = ../DRScrollableViews.podspec; sourceTree = "<group>"; };
+		26229ABC64A5D15BD2E44B29 /* DRScrollableViews.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = DRScrollableViews.podspec; path = ../DRScrollableViews.podspec; sourceTree = "<group>"; };
 		56587A4DDD973D824033BC60 /* Pods_DRScrollableViews_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DRScrollableViews_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58A195388D20070C39A /* DRScrollableViews_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DRScrollableViews_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -60,13 +61,15 @@
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		7FDCF6980D892BE6074B45CA /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		7FDCF6980D892BE6074B45CA /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		8165138211CEE041452D2D09 /* Pods-DRScrollableViews_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DRScrollableViews_Example.release.xcconfig"; path = "Target Support Files/Pods-DRScrollableViews_Example/Pods-DRScrollableViews_Example.release.xcconfig"; sourceTree = "<group>"; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		8DF1D4DE5D2B5BB49197F57A /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		8DF1D4DE5D2B5BB49197F57A /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		F0B069DC46AB38183AEE4D98 /* Pods-DRScrollableViews_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DRScrollableViews_Tests.debug.xcconfig"; path = "Target Support Files/Pods-DRScrollableViews_Tests/Pods-DRScrollableViews_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		F50BD50F9F99CEB522D4FC29 /* Pods-DRScrollableViews_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DRScrollableViews_Tests.release.xcconfig"; path = "Target Support Files/Pods-DRScrollableViews_Tests/Pods-DRScrollableViews_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		FC89D08016DECE3179AE9BE0 /* Pods-DRScrollableViews_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DRScrollableViews_Example.debug.xcconfig"; path = "Target Support Files/Pods-DRScrollableViews_Example/Pods-DRScrollableViews_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		FEB9AC3422DEBFEE00B91032 /* DRDragSortTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRDragSortTableViewController.h; sourceTree = "<group>"; };
+		FEB9AC3522DEBFEE00B91032 /* DRDragSortTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRDragSortTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +140,7 @@
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				6003F5A5195388D20070C39A /* DRViewController.h */,
 				6003F5A6195388D20070C39A /* DRViewController.m */,
+				FEB9AC3722DEBFF500B91032 /* DragSortTableViewDemo */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
@@ -193,8 +197,16 @@
 				F0B069DC46AB38183AEE4D98 /* Pods-DRScrollableViews_Tests.debug.xcconfig */,
 				F50BD50F9F99CEB522D4FC29 /* Pods-DRScrollableViews_Tests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		FEB9AC3722DEBFF500B91032 /* DragSortTableViewDemo */ = {
+			isa = PBXGroup;
+			children = (
+				FEB9AC3422DEBFEE00B91032 /* DRDragSortTableViewController.h */,
+				FEB9AC3522DEBFEE00B91032 /* DRDragSortTableViewController.m */,
+			);
+			name = DragSortTableViewDemo;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -209,7 +221,6 @@
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
 				7887B17AA6620AD64AF3A3B7 /* [CP] Embed Pods Frameworks */,
-				6236A9D3F5A004BB0E2A708B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -249,6 +260,9 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = Dean_F;
 				TargetAttributes = {
+					6003F589195388D20070C39A = {
+						DevelopmentTeam = RRKA38P3VU;
+					};
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
 					};
@@ -259,6 +273,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -296,30 +311,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		6236A9D3F5A004BB0E2A708B /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DRScrollableViews_Example/Pods-DRScrollableViews_Example-resources.sh",
-				"${PODS_ROOT}/../../DRScrollableViews/Assets/sector_delete@2x.png",
-				"${PODS_ROOT}/../../DRScrollableViews/Assets/sector_delete@3x.png",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/sector_delete@2x.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/sector_delete@3x.png",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DRScrollableViews_Example/Pods-DRScrollableViews_Example-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		6AD8A311DDC90A26DFED5E80 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -353,6 +344,7 @@
 				"${BUILT_PRODUCTS_DIR}/DRCategories/DRCategories.framework",
 				"${BUILT_PRODUCTS_DIR}/DRInputLimitManager/DRInputLimitManager.framework",
 				"${BUILT_PRODUCTS_DIR}/DRSandboxManager/DRSandboxManager.framework",
+				"${BUILT_PRODUCTS_DIR}/DRScrollableViews/DRScrollableViews.framework",
 				"${BUILT_PRODUCTS_DIR}/HexColors/HexColors.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
 				"${BUILT_PRODUCTS_DIR}/pop/pop.framework",
@@ -363,6 +355,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DRCategories.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DRInputLimitManager.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DRSandboxManager.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DRScrollableViews.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HexColors.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/pop.framework",
@@ -402,6 +395,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6003F59E195388D20070C39A /* DRAppDelegate.m in Sources */,
+				FEB9AC3622DEBFEE00B91032 /* DRDragSortTableViewController.m in Sources */,
 				6003F5A7195388D20070C39A /* DRViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 			);
@@ -531,6 +525,7 @@
 			baseConfigurationReference = FC89D08016DECE3179AE9BE0 /* Pods-DRScrollableViews_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = RRKA38P3VU;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DRScrollableViews/DRScrollableViews-Prefix.pch";
 				INFOPLIST_FILE = "DRScrollableViews/DRScrollableViews-Info.plist";
@@ -547,6 +542,7 @@
 			baseConfigurationReference = 8165138211CEE041452D2D09 /* Pods-DRScrollableViews_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = RRKA38P3VU;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DRScrollableViews/DRScrollableViews-Prefix.pch";
 				INFOPLIST_FILE = "DRScrollableViews/DRScrollableViews-Info.plist";
