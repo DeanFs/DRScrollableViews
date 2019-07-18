@@ -10,12 +10,13 @@
 #import "DRTimeFlowCell.h"
 #import <DRCategories/DRCategories.h>
 #import <DRMacroDefines/DRMacroDefines.h>
-#import <DRScrollableViews/DRTimeFlowLayout.h>
+#import <DRScrollableViews/DRTimeFlowView.h>
 #import <HexColors/HexColors.h>
 
-@interface DRTimeFlowViewController ()<UICollectionViewDelegate, UICollectionViewDataSource>
+@interface DRTimeFlowViewController ()<DRTimeFlowViewDelegate, DRTimeFlowViewDataSource>
 
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet DRTimeFlowView *timeFlowView;
+
 @property (nonatomic, assign) NSInteger itemCount;
 @property (nonatomic, copy) NSString *reuseIdentifier;
 @property (nonatomic, strong) NSIndexPath *lastIndex;
@@ -27,63 +28,37 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor grayColor];
     self.reuseIdentifier = NSStringFromClass([DRTimeFlowCell class]);
-    self.collectionView.backgroundColor = [UIColor grayColor];
-    self.collectionView.showsHorizontalScrollIndicator = NO;
-    self.collectionView.showsVerticalScrollIndicator = NO;
-    [self.collectionView registerNib:self.reuseIdentifier];
-    
-    DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
-    layout.maxItemSize = CGSizeMake(kDRScreenWidth-56, 74);
-    layout.decreasingStep = 4;
-    layout.coverOffset = 4;
-    self.collectionView.delegate = self;
-    self.collectionView.dataSource = self;
+    self.view.backgroundColor = [UIColor grayColor];
+    self.timeFlowView.backgroundColor = [UIColor grayColor];
+    [self.timeFlowView registerNib:[UINib nibWithNibName:self.reuseIdentifier bundle:nil] forCellWithReuseIdentifier:self.reuseIdentifier];
+    self.timeFlowView.maxItemSize = CGSizeMake(kDRScreenWidth-56, kMaxCellHeight);
+    self.timeFlowView.decreasingStep = kDecreasingStep;
+    self.timeFlowView.coverOffset = kBottomCoverHeight;
+    self.timeFlowView.delegate = self;
+    self.timeFlowView.dataSource = self;
     
     self.itemCount = 50; // arc4random() % 50 + 10;
-    
-    if (@available(iOS 11.0, *)) {
-        self.collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-    } else {
-        self.automaticallyAdjustsScrollViewInsets = NO;
-    }
 }
 
-#pragma mark <UICollectionViewDataSource>
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 1;
+#pragma mark- DRTimeFlowViewDataSource
+- (NSInteger)numberOfRowsInTimeFlowView:(DRTimeFlowView *)timeFlowView {
+    return self.itemCount;
 }
 
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.itemCount;;
-}
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    DRTimeFlowCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:self.reuseIdentifier forIndexPath:indexPath];
+- (UICollectionViewCell *)timeFlowView:(DRTimeFlowView *)timeFlowView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    DRTimeFlowCell *cell = [timeFlowView dequeueReusableCellWithReuseIdentifier:self.reuseIdentifier forIndexPath:indexPath];
     [cell setupWithDay:self.itemCount-indexPath.row-1];
     return cell;
 }
 
-#pragma mark <UICollectionViewDelegate>
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+#pragma mark - DRTimeFlowViewDelegate
+- (BOOL)timeFlowView:(DRTimeFlowView *)timeFlowView shouldSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     return YES;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+- (void)timeFlowView:(DRTimeFlowView *)timeFlowView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     kDR_LOG(@"click %ld", indexPath.row);
-}
-
-- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(nonnull UICollectionViewCell *)cell forItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    cell.layer.shadowOpacity = 0.9;
-    if (indexPath.row == 0) {
-        cell.layer.shadowOpacity = 0;
-    }    
-    if (indexPath.row < self.lastIndex.row || !self.lastIndex) {
-        [cell.superview sendSubviewToBack:cell];
-    }
-    self.lastIndex = indexPath;
 }
 
 @end

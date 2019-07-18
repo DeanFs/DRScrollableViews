@@ -12,7 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DRTimeFlowViewController">
             <connections>
-                <outlet property="collectionView" destination="znK-9v-2gV" id="VeQ-wS-63j"/>
+                <outlet property="timeFlowView" destination="vWq-kt-G2S" id="VAN-fC-OVm"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -21,18 +21,17 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="znK-9v-2gV">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vWq-kt-G2S" customClass="DRTimeFlowView">
                     <rect key="frame" x="0.0" y="75" width="414" height="568"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <collectionViewLayout key="collectionViewLayout" id="t71-xb-6P0" customClass="DRTimeFlowLayout"/>
-                </collectionView>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="znK-9v-2gV" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="55" id="9Ou-QL-DNU"/>
-                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="znK-9v-2gV" secondAttribute="bottom" constant="93" id="RDv-Rx-LlI"/>
-                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="znK-9v-2gV" secondAttribute="trailing" id="kVw-6j-YrS"/>
-                <constraint firstItem="znK-9v-2gV" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="lcW-je-7Oi"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="vWq-kt-G2S" secondAttribute="trailing" id="4Ag-9P-qrl"/>
+                <constraint firstItem="vWq-kt-G2S" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="deN-Wm-OkE"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="vWq-kt-G2S" secondAttribute="bottom" constant="93" id="eWs-L3-zo0"/>
+                <constraint firstItem="vWq-kt-G2S" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="55" id="zeE-jA-eU9"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
         </view>

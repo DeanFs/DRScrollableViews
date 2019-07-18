@@ -18,7 +18,10 @@
   "platforms": {
     "ios": "9.0"
   },
-  "resources": "DRScrollableViews/Assets/*",
+  "resources": [
+    "DRScrollableViews/Assets/*",
+    "DRScrollableViews/Classes/**/*.xib"
+  ],
   "dependencies": {
     "DRMacroDefines": [
 
@@ -39,8 +42,8 @@
       "source_files": "DRScrollableViews/Classes/DRDragSortTableView/*.{h,m}"
     },
     {
-      "name": "DRCollectionLayout",
-      "source_files": "DRScrollableViews/Classes/DRCollectionLayout/*.{h,m}"
+      "name": "DRCollectionViews",
+      "source_files": "DRScrollableViews/Classes/DRCollectionViews/*.{h,m}"
     }
   ]
 }

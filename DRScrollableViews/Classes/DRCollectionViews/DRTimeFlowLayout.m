@@ -10,12 +10,14 @@
 @interface DRTimeFlowLayout ()
 
 @property (nonatomic, assign) CGFloat height;               // collectionView Height
-@property (nonatomic, assign) NSInteger visibleCount;       // 当前屏幕大小可显示的cell总数
+@property (nonatomic, assign) CGFloat perScale;             // 从屏幕底部往上每滚动一像素的缩小比例
 @property (nonatomic, assign) NSInteger cellCount;          // 当前cell总数
+@property (nonatomic, assign) BOOL firstLayout;             // 第一次加载
+
+@property (nonatomic, assign) NSInteger visibleCount;       // 当前屏幕大小可显示的cell总数
 @property (nonatomic, assign) NSInteger cellContentHeight;  // 所有cell都显示最大时的高度
 @property (nonatomic, assign) CGFloat maxCellHeight;        // cell最大高度
 @property (nonatomic, assign) CGFloat defaultOffset;        // cellCount < visibleCount 时的默认偏移
-@property (nonatomic, assign) BOOL firstLayout;             // 第一次加载
 
 @end
 

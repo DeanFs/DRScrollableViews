@@ -30,14 +30,14 @@ TODO: Add long description of the pod here.
 
   s.ios.deployment_target = '9.0'
 
-  s.resource = 'DRScrollableViews/Assets/*'
+  s.resource = 'DRScrollableViews/Assets/*', 'DRScrollableViews/Classes/**/*.xib'
 
   s.subspec 'DRDragSortTableView' do |ss|
     ss.source_files = 'DRScrollableViews/Classes/DRDragSortTableView/*.{h,m}'
   end
 
-  s.subspec 'DRCollectionLayout' do |ss|
-    ss.source_files = 'DRScrollableViews/Classes/DRCollectionLayout/*.{h,m}'
+  s.subspec 'DRCollectionViews' do |ss|
+    ss.source_files = 'DRScrollableViews/Classes/DRCollectionViews/*.{h,m}'
   end
   
   # s.resource_bundles = {

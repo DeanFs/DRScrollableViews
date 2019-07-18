@@ -23,27 +23,6 @@
     self.layer.cornerRadius = 4;
     self.layer.borderColor = self.backgroundColor.CGColor;
     self.layer.borderWidth = 1;
-    self.layer.shadowColor = [UIColor hx_colorWithHexRGBAString:@"#D6E7F4"].CGColor;
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        CGFloat height = CGRectGetHeight(self.bounds);
-        CGFloat width = CGRectGetWidth(self.bounds);
-        CGFloat rate = (height - kDecreasingStep) / height;
-        CGFloat neWidth = width * rate;
-        CGRect shadowRect = CGRectInset(self.bounds, (width-neWidth)/2, 4);
-        shadowRect = CGRectOffset(shadowRect, 0, -5);
-        self.layer.shadowPath = [UIBezierPath bezierPathWithRect:shadowRect].CGPath;
-    });
-}
-
-- (void)layoutSubviews {
-    CGFloat height = CGRectGetHeight(self.bounds);
-    CGFloat width = CGRectGetWidth(self.bounds);
-    CGFloat rate = (height - kDecreasingStep) / height;
-    CGFloat neWidth = width * rate;
-    CGRect shadowRect = CGRectInset(self.bounds, (width-neWidth)/2, 4);
-    shadowRect = CGRectOffset(shadowRect, 0, -5);
-    self.layer.shadowPath = [UIBezierPath bezierPathWithRect:shadowRect].CGPath;
 }
 
 - (void)setupWithDay:(NSInteger)day {
