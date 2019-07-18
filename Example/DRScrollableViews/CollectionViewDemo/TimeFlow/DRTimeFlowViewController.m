@@ -11,6 +11,7 @@
 #import <DRCategories/DRCategories.h>
 #import <DRMacroDefines/DRMacroDefines.h>
 #import <DRScrollableViews/DRTimeFlowLayout.h>
+#import <HexColors/HexColors.h>
 
 @interface DRTimeFlowViewController ()<UICollectionViewDelegate, UICollectionViewDataSource>
 
@@ -39,7 +40,7 @@
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
     
-    self.itemCount = arc4random() % 10 + 5;
+    self.itemCount = 50; // arc4random() % 50 + 10;
     
     if (@available(iOS 11.0, *)) {
         self.collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
@@ -50,6 +51,7 @@
 
 #pragma mark <UICollectionViewDataSource>
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    [collectionView.collectionViewLayout invalidateLayout];
     return 1;
 }
 
@@ -71,6 +73,22 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     kDR_LOG(@"click %ld", indexPath.row);
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(nonnull UICollectionViewCell *)cell forItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    cell.layer.shadowOpacity = 0.9;
+    CGFloat height = CGRectGetHeight(cell.bounds);
+    CGFloat width = CGRectGetWidth(cell.bounds);
+    CGFloat rate = (height - kDecreasingStep) / height;
+    CGFloat neWidth = width * rate;
+    CGRect shadowRect = CGRectInset(cell.bounds, (width-neWidth)/2, 4);
+    shadowRect = CGRectOffset(shadowRect, 0, -5);
+    cell.layer.shadowPath = [UIBezierPath bezierPathWithRect:shadowRect].CGPath;
+    if (indexPath.row == 0) {
+        cell.layer.shadowOpacity = 0;
+    } else {
+        cell.layer.shadowColor = [UIColor hx_colorWithHexRGBAString:@"#D6E7F4"].CGColor;
+    }
 }
 
 @end

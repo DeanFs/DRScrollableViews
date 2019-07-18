@@ -10,6 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#define kDecreasingStep 4
+
 @interface DRTimeFlowCell : UICollectionViewCell
 
 - (void)setupWithDay:(NSInteger)day;

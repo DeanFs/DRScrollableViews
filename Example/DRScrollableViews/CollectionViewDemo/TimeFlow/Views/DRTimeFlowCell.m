@@ -7,7 +7,6 @@
 //
 
 #import "DRTimeFlowCell.h"
-#import <HexColors/HexColors.h>
 
 @interface DRTimeFlowCell ()
 
@@ -23,11 +22,6 @@
     self.layer.cornerRadius = 4;
     self.layer.borderColor = self.backgroundColor.CGColor;
     self.layer.borderWidth = 1;
-    
-    self.layer.shadowRadius = 5;
-    self.layer.shadowColor = [UIColor hx_colorWithHexRGBAString:@"#D6E7F4"].CGColor;
-    self.layer.shadowOpacity = 0.9;
-    self.layer.shadowOffset = CGSizeMake(2, -5);
 }
 
 - (void)setupWithDay:(NSInteger)day {
