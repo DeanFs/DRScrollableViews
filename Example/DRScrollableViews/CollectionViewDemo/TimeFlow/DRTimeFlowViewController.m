@@ -41,7 +41,7 @@
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
     
-    self.itemCount = 5; // arc4random() % 50 + 10;
+    self.itemCount = 50; // arc4random() % 50 + 10;
     
     if (@available(iOS 11.0, *)) {
         self.collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;

@@ -67,17 +67,22 @@
 
 - (CGSize)collectionViewContentSize {
     // 设置顶部inset，保证所有cell都能滚动到最大位置
-    self.collectionView.contentInset = UIEdgeInsetsMake(self.height - self.maxCellHeight, 0, 0, 0);
+    CGFloat topInset = self.height - self.maxCellHeight;
+    self.collectionView.contentInset = UIEdgeInsetsMake(topInset, 0, 0, 0);
     
     // 获取当前cell总数
     self.cellCount = [self.collectionView numberOfItemsInSection:0];
     // 可滚动区域大小设置的大一点
-    return CGSizeMake(CGRectGetWidth(self.collectionView.frame), self.cellContentHeight);
+    return CGSizeMake(CGRectGetWidth(self.collectionView.frame), self.cellContentHeight + topInset);
 }
 
 - (NSArray<__kindof UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect {
     CGFloat contentOffsetY = self.collectionView.contentOffset.y; // 当前滚动偏移量
-    CGFloat bottomOutSideHeight = self.cellContentHeight - contentOffsetY - self.height; // 底部偏移量
+    CGFloat contentSizeHeight = self.cellContentHeight;
+    if (self.cellCount < self.visibleCount) {
+        contentSizeHeight = self.defaultOffset + self.height;
+    }
+    CGFloat bottomOutSideHeight = contentSizeHeight - contentOffsetY - self.height; // 底部偏移量
     NSInteger bottomOutSideCount = bottomOutSideHeight / self.maxCellHeight; // 底部滚出CollectionView的cell数量
     NSInteger topOutSideCount = 0; // 顶部滚出CollectionView的cell数量
     if (contentOffsetY > 0) {
@@ -119,6 +124,9 @@
         attributes.center = CGPointMake(CGRectGetWidth(self.collectionView.frame)/2, cellCenter);
         [array insertObject:attributes atIndex:0];
         layoutIndex--;
+        if (layoutIndex < 0) {
+            break;
+        }
     }
     return array;
 }

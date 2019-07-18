@@ -24,7 +24,6 @@
     self.layer.borderColor = self.backgroundColor.CGColor;
     self.layer.borderWidth = 1;
     self.layer.shadowColor = [UIColor hx_colorWithHexRGBAString:@"#D6E7F4"].CGColor;
-    self.layer.shadowRadius = 0;
     
     dispatch_async(dispatch_get_main_queue(), ^{
         CGFloat height = CGRectGetHeight(self.bounds);
