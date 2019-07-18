@@ -11,6 +11,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 #define kDecreasingStep 4
+#define kBottomCoverHeight 4
+#define kMaxCellHeight 74
 
 @interface DRTimeFlowCell : UICollectionViewCell
 

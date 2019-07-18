@@ -72,7 +72,7 @@
     // 获取当前cell总数
     self.cellCount = [self.collectionView numberOfItemsInSection:0];
     // 可滚动区域大小设置的大一点
-    return CGSizeMake(CGRectGetWidth(self.collectionView.frame), self.cellContentHeight + self.height);
+    return CGSizeMake(CGRectGetWidth(self.collectionView.frame), self.cellContentHeight);
 }
 
 - (NSArray<__kindof UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect {
@@ -98,9 +98,13 @@
     NSMutableArray *array = [NSMutableArray array];
     while (layoutHeight < self.height) {
         CGFloat cellHeight = self.maxCellHeight - self.decreasingStep * rate * (layoutIndex < lastVisibleIndex) - self.decreasingStep * (lastVisibleIndex - layoutIndex - (layoutIndex < lastVisibleIndex));
+        if (layoutIndex+1 == lastVisibleIndex && bottomCellVisibleHeight <= self.coverOffset) {
+            bottomCellBottomY -= self.coverOffset;
+            cellHeight = self.maxCellHeight;
+        }
         CGFloat scale = cellHeight / self.maxCellHeight;
         CGFloat cellCenter = bottomCellBottomY - cellHeight / 2 + self.coverOffset*(layoutIndex<lastVisibleIndex);
-        bottomCellBottomY = bottomCellBottomY - cellHeight + self.coverOffset;
+        bottomCellBottomY = bottomCellBottomY - cellHeight + self.coverOffset;        
         if (layoutIndex < lastVisibleIndex) {
             layoutHeight += (cellHeight - self.coverOffset);
         }
