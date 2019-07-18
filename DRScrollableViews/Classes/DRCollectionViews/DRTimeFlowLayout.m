@@ -147,6 +147,22 @@
 
 // 保持顶部最小cell，保持minVisibleHeight
 - (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity {
+    CGFloat bottomOutSideHeight = self.cellContentHeight - proposedContentOffset.y - self.height;
+    if (bottomOutSideHeight > 0) {
+        NSInteger bottomOutSideCount = (bottomOutSideHeight - self.coverOffset) / (self.maxCellHeight - self.coverOffset);
+        
+        CGFloat bottomCellsHeight = 0;
+        if (bottomOutSideCount > 0) {
+            bottomCellsHeight = bottomOutSideCount * (self.maxCellHeight - self.coverOffset) + self.coverOffset;
+        }
+        
+        CGFloat bottomCellVisibleHeight = self.maxCellHeight - (bottomOutSideHeight - bottomCellsHeight);
+        if (bottomCellVisibleHeight > self.maxCellHeight / 2) {
+            proposedContentOffset.y += (self.maxCellHeight - bottomCellVisibleHeight);
+        } else {
+            proposedContentOffset.y -= bottomCellVisibleHeight;
+        }
+    }    
     return proposedContentOffset;
 }
 
