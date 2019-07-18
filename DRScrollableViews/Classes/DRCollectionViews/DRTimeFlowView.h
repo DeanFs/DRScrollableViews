@@ -37,7 +37,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) IBInspectable CGSize maxItemSize; // 最大的cell的size
 @property (nonatomic, assign) IBInspectable CGFloat decreasingStep; // cell高度递减的值
 @property (nonatomic, assign) IBInspectable CGFloat coverOffset; // 上一个cell被遮盖的高度值
-@property (nonatomic, assign) IBInspectable BOOL scrollToBottomWhenFistLoad; // 第一次加载时滚动到底部，默认YES
 
 @property (nonatomic, weak) id<DRTimeFlowViewDataSource> dataSource;
 @property (nonatomic, weak) id<DRTimeFlowViewDelegate> delegate;

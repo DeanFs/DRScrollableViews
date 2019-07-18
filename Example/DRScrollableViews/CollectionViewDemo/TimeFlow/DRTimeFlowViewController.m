@@ -38,7 +38,7 @@
     self.timeFlowView.delegate = self;
     self.timeFlowView.dataSource = self;
     
-    self.itemCount = 50; // arc4random() % 50 + 10;
+    self.itemCount = arc4random() % 10 + 7;
 }
 
 #pragma mark- DRTimeFlowViewDataSource

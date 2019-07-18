@@ -14,7 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) CGSize maxItemSize; // 最大的cell的size
 @property (nonatomic, assign) CGFloat decreasingStep; // cell高度递减的值
 @property (nonatomic, assign) CGFloat coverOffset; // 上一个cell被遮盖的高度值
-@property (nonatomic, assign) BOOL scrollToBottomWhenFistLoad; // 第一次加载时滚动到底部，默认YES
 
 /**
  实例化layout
