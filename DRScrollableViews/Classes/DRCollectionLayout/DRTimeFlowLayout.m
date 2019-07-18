@@ -72,7 +72,7 @@
     // 获取当前cell总数
     self.cellCount = [self.collectionView numberOfItemsInSection:0];
     // 可滚动区域大小设置的大一点
-    return CGSizeMake(CGRectGetWidth(self.collectionView.frame), self.cellContentHeight);
+    return CGSizeMake(CGRectGetWidth(self.collectionView.frame), self.cellContentHeight + self.height);
 }
 
 - (NSArray<__kindof UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect {
@@ -89,8 +89,9 @@
     NSInteger lastVisibleIndex = firstVisibleIndex + currentVisibleCount - 1; // 最后一个可见cell的序号
     
     // 从底部开始计算缩放，及设置坐标
-    CGFloat bottomY = self.cellContentHeight - bottomOutSideHeight;
-    CGFloat bottomCellVisibleHeight = (bottomOutSideCount + 1) * self.maxCellHeight - bottomOutSideHeight; // 布局高度
+    CGFloat bottomCellOutHeight = bottomOutSideHeight - bottomOutSideCount * self.maxCellHeight; // 最底部cell不可见高度
+    CGFloat bottomCellVisibleHeight = self.maxCellHeight - bottomCellOutHeight; // 最底部cell可见高度
+    CGFloat bottomCellBottomY = self.cellContentHeight - bottomOutSideHeight + bottomCellOutHeight;
     CGFloat rate = bottomCellVisibleHeight / self.maxCellHeight; // 偏移导致的缩小比例
     CGFloat layoutHeight = bottomCellVisibleHeight; // 完成布局计算的高度
     NSInteger layoutIndex = lastVisibleIndex;
@@ -98,8 +99,8 @@
     while (layoutHeight < self.height) {
         CGFloat cellHeight = self.maxCellHeight - self.decreasingStep * rate * (layoutIndex < lastVisibleIndex) - self.decreasingStep * (lastVisibleIndex - layoutIndex - (layoutIndex < lastVisibleIndex));
         CGFloat scale = cellHeight / self.maxCellHeight;
-//        CGFloat cellCenter = bottomY - cellHeight / 2 + self.coverOffset*(layoutIndex<lastVisibleIndex);
-        bottomY = bottomY - cellHeight + self.coverOffset;
+        CGFloat cellCenter = bottomCellBottomY - cellHeight / 2 + self.coverOffset*(layoutIndex<lastVisibleIndex);
+        bottomCellBottomY = bottomCellBottomY - cellHeight + self.coverOffset;
         if (layoutIndex < lastVisibleIndex) {
             layoutHeight += (cellHeight - self.coverOffset);
         }
@@ -111,7 +112,7 @@
         UICollectionViewLayoutAttributes *attributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
         attributes.size = self.maxItemSize;
         attributes.transform = CGAffineTransformMakeScale(scale, scale);
-//        attributes.center = CGPointMake(CGRectGetWidth(self.collectionView.frame)/2, cellCenter);
+        attributes.center = CGPointMake(CGRectGetWidth(self.collectionView.frame)/2, cellCenter);
         [array insertObject:attributes atIndex:0];
         layoutIndex--;
     }
