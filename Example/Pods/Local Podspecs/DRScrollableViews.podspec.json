@@ -22,6 +22,7 @@
     "DRScrollableViews/Assets/*",
     "DRScrollableViews/Classes/**/*.xib"
   ],
+  "source_files": "DRScrollableViews/Classes/*.{h,m}",
   "dependencies": {
     "DRMacroDefines": [
 

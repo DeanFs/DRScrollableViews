@@ -10,10 +10,10 @@
 #endif
 #endif
 
+#import "DRSectorDeleteView.h"
 #import "DRTimeFlowLayout.h"
 #import "DRTimeFlowView.h"
 #import "DRDragSortTableView.h"
-#import "DRSectorDeleteView.h"
 
 FOUNDATION_EXPORT double DRScrollableViewsVersionNumber;
 FOUNDATION_EXPORT const unsigned char DRScrollableViewsVersionString[];
