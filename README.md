@@ -4,7 +4,11 @@
 [![Version](https://img.shields.io/cocoapods/v/DRScrollableViews.svg?style=flat)](https://cocoapods.org/pods/DRScrollableViews)
 [![License](https://img.shields.io/cocoapods/l/DRScrollableViews.svg?style=flat)](https://cocoapods.org/pods/DRScrollableViews)
 [![Platform](https://img.shields.io/cocoapods/p/DRScrollableViews.svg?style=flat)](https://cocoapods.org/pods/DRScrollableViews)
-[![演示](https://github.com/DeanFs/DRScrollableViews/blob/master/演示.mp4)]
+
+
+<video id="video" controls="" preload="none" poster="http://img.blog.fandong.me/2017-08-26-Markdown-Advance-Video.jpg">
+      <source id="mp4" src="http://img.blog.fandong.me/2017-08-26-Markdown-Advance-Video.mp4" type="video/mp4">
+      </video>
 
 ## Example
 
