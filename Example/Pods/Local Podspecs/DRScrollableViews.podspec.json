@@ -22,7 +22,6 @@
     "DRScrollableViews/Assets/*",
     "DRScrollableViews/Classes/**/*.xib"
   ],
-  "source_files": "DRScrollableViews/Classes/*.{h,m}",
   "dependencies": {
     "DRMacroDefines": [
 
@@ -39,12 +38,26 @@
   },
   "subspecs": [
     {
+      "name": "Common",
+      "source_files": "DRScrollableViews/Classes/Common/*.{h,m}"
+    },
+    {
       "name": "DRDragSortTableView",
-      "source_files": "DRScrollableViews/Classes/DRDragSortTableView/*.{h,m}"
+      "source_files": "DRScrollableViews/Classes/DRDragSortTableView/*.{h,m}",
+      "dependencies": {
+        "DRScrollableViews/Common": [
+
+        ]
+      }
     },
     {
       "name": "DRCollectionViews",
-      "source_files": "DRScrollableViews/Classes/DRCollectionViews/*.{h,m}"
+      "source_files": "DRScrollableViews/Classes/DRCollectionViews/*.{h,m}",
+      "dependencies": {
+        "DRScrollableViews/Common": [
+
+        ]
+      }
     }
   ]
 }
