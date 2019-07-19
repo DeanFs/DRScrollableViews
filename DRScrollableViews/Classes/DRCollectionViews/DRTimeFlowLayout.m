@@ -6,11 +6,11 @@
 //
 
 #import "DRTimeFlowLayout.h"
+#import <DRMacroDefines/DRMacroDefines.h>
 
 @interface DRTimeFlowLayout ()
 
 @property (nonatomic, assign) CGFloat height;               // collectionView Height
-@property (nonatomic, assign) CGFloat cellContentHeight;  // 所有cell都显示最大时的高度
 @property (nonatomic, assign) CGFloat maxCellHeight;        // cell最大高度
 @property (nonatomic, assign) NSInteger cellCount;          // 当前cell总数
 @property (nonatomic, assign) BOOL firstLayout;             // 第一次加载
@@ -53,7 +53,11 @@
 
 - (void)setup {
     self.firstLayout = YES;
+    self.decreasingStep = 4;
+    self.coverOffset = 4;
+    self.maxItemSize = CGSizeMake(kDRScreenWidth-40, 80);
     _cellCount = -1;
+    _cellContentHeight = 0;
 }
 
 - (void)prepareLayout {
@@ -63,19 +67,29 @@
 }
 
 - (CGSize)collectionViewContentSize {
+    NSInteger cellCount = [self.collectionView numberOfItemsInSection:0];
+    if (cellCount == 0) {
+        _cellCount = 0;
+        self.collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        self.collectionView.contentOffset = CGPointZero;
+        return CGSizeZero;
+    }
     // 设置顶部inset，保证所有cell都能滚动到最大位置
     CGFloat topInset = self.height - self.maxCellHeight;
     self.collectionView.contentInset = UIEdgeInsetsMake(topInset, 0, 0, 0);
     
     // 获取当前cell总数
-    self.cellCount = [self.collectionView numberOfItemsInSection:0];
+    self.cellCount = cellCount;
     // 可滚动区域大小设置的大一点
     return CGSizeMake(CGRectGetWidth(self.collectionView.frame), self.cellContentHeight);
 }
 
 - (NSArray<__kindof UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect {
-    CGFloat contentOffsetY = self.collectionView.contentOffset.y; // 当前滚动偏移量
+    if (self.cellCount == 0) {
+        return @[];
+    }
     
+    CGFloat contentOffsetY = self.collectionView.contentOffset.y; // 当前滚动偏移量
     // 计算顶部滚出collectionView的cell数量
     NSInteger topOutSideCount = 0;
     if (contentOffsetY > 0) {
@@ -83,8 +97,8 @@
     }
     
     // 计算底部未滚完的高度及cell数量
-    NSInteger bottomOutSideCount = 0;
     CGFloat bottomOutSideHeight = self.cellContentHeight - contentOffsetY - self.height;
+    NSInteger bottomOutSideCount = 0;
     if (bottomOutSideHeight > 0) {
         bottomOutSideCount = (bottomOutSideHeight - self.coverOffset) / (self.maxCellHeight - self.coverOffset);
     }
@@ -172,9 +186,6 @@
 
 #pragma mark - private
 - (void)setupCount {
-    if (!self.firstLayout) {
-        return;
-    }
     self.maxCellHeight = self.maxItemSize.height;
     self.height = CGRectGetHeight(self.collectionView.bounds);
 }
@@ -182,9 +193,9 @@
 - (void)setCellCount:(NSInteger)cellCount {
     if (cellCount != _cellCount) {
         _cellCount = cellCount;
-        self.cellContentHeight = self.cellCount * (self.maxCellHeight - self.coverOffset) + self.coverOffset;
-        if (self.cellCount > 1) {
-            self.cellContentHeight += self.coverOffset;
+        _cellContentHeight = cellCount * (self.maxCellHeight - self.coverOffset) + self.coverOffset;
+        if (cellCount > 1) {
+            _cellContentHeight += self.coverOffset;
         }
         if (self.firstLayout) { // 第一次加载时，设置offset保证在最底部显示最后一条数据
             self.collectionView.contentOffset = CGPointMake(0, self.cellContentHeight - self.height);

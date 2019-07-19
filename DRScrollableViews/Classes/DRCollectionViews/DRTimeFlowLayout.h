@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) CGSize maxItemSize; // 最大的cell的size
 @property (nonatomic, assign) CGFloat decreasingStep; // cell高度递减的值
 @property (nonatomic, assign) CGFloat coverOffset; // 上一个cell被遮盖的高度值
+@property (nonatomic, assign, readonly) CGFloat cellContentHeight;  // 所有cell都显示最大时的高度
 
 /**
  实例化layout

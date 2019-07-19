@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @property (nonatomic, strong) NSIndexPath *lastIndexPath;
+@property (nonatomic, assign) BOOL haveDrag;
 
 @end
 
@@ -65,8 +66,8 @@
     [self.collectionView setContentOffset:offset animated:animated];
 }
 
-- (void)reloadTimeFlowViewComplete:(dispatch_block_t)complete {
-    
+- (void)reloadData {
+    [self.collectionView reloadData];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -139,12 +140,23 @@
 
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if ([self.delegate respondsToSelector:@selector(timeFlowView:didScrollToBottom:)] &&
+        self.haveDrag) {
+        CGFloat contentHeight = ((DRTimeFlowLayout *)self.collectionView.collectionViewLayout).cellContentHeight;
+        CGFloat bottomRest = contentHeight - scrollView.contentOffset.y - CGRectGetHeight(scrollView.frame);
+        if (bottomRest <= 0) {
+            [self.delegate timeFlowView:self didScrollToBottom:scrollView];
+            self.haveDrag = NO;
+        }
+    }
+    
     if ([self.delegate respondsToSelector:@selector(timeFlowView:didScroll:)]) {
         [self.delegate timeFlowView:self didScroll:scrollView];
     }
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    self.haveDrag = YES;
     if ([self.delegate respondsToSelector:@selector(timeFlowView:willBeginDragging:)]) {
         [self.delegate timeFlowView:self willBeginDragging:scrollView];
     }
@@ -190,14 +202,23 @@
 
 #pragma mark - private
 - (void)resetCellsLevel {
-    NSArray *indexPaths = [self.collectionView indexPathsForVisibleItems];
-    indexPaths = [indexPaths sortedArrayUsingComparator:^NSComparisonResult(NSIndexPath *obj1, NSIndexPath *obj2) {
-        return obj1.row < obj2.row;
-    }];
-    for (NSIndexPath *indexPath in indexPaths) {
-        UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
-        [cell.superview sendSubviewToBack:cell];
+    if (!self.collectionView.isDragging && !self.collectionView.isDecelerating && !self.collectionView.isTracking) {
+        NSArray *indexPaths = [self.collectionView indexPathsForVisibleItems];
+        indexPaths = [indexPaths sortedArrayUsingComparator:^NSComparisonResult(NSIndexPath *obj1, NSIndexPath *obj2) {
+            return obj1.row < obj2.row;
+        }];
+        for (NSIndexPath *indexPath in indexPaths) {
+            UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
+            [cell.superview sendSubviewToBack:cell];
+        }
+        
+        CGPoint offset = [self.collectionView.collectionViewLayout targetContentOffsetForProposedContentOffset:self.collectionView.contentOffset withScrollingVelocity:CGPointZero];
+        [self.collectionView setContentOffset:offset animated:YES];
+    } else {
+        kDR_LOG(@"dflkajdlfajldfjalf");
     }
+    
+    self.haveDrag = NO;
 }
 
 #pragma mark - lifecycle

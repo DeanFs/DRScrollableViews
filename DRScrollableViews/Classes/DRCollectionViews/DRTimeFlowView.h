@@ -7,8 +7,6 @@
 
 #import <UIKit/UIKit.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
 @class DRTimeFlowView;
 @protocol DRTimeFlowViewDataSource <NSObject>
 
@@ -47,10 +45,11 @@ NS_ASSUME_NONNULL_BEGIN
  @param index 欲删除的cell的index
  @param complete 删除接口返回后调用
  */
-- (void)timeFlowView:(DRTimeFlowView *)timeFlowView beginDeleteRowAtIndex:(NSInteger)index whenComplete:(dispatch_block_t)complete;
+- (void)timeFlowView:(DRTimeFlowView *)timeFlowView beginDeleteRowAtIndex:(NSInteger)index whenComplete:(void(^)(BOOL reuqestSuccess))complete;
 
 // scroll
 - (void)timeFlowView:(DRTimeFlowView *)timeFlowView didScroll:(UIScrollView *)scrollView;
+- (void)timeFlowView:(DRTimeFlowView *)timeFlowView didScrollToBottom:(UIScrollView *)scrollView;
 - (void)timeFlowView:(DRTimeFlowView *)timeFlowView willBeginDragging:(UIScrollView *)scrollView;
 - (void)timeFlowView:(DRTimeFlowView *)timeFlowView willEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset;
 - (void)timeFlowView:(DRTimeFlowView *)timeFlowView didEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
@@ -74,8 +73,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (__kindof UICollectionViewCell *)dequeueReusableCellWithReuseIdentifier:(NSString *)reuseIdentifier
                                                                  forIndex:(NSInteger)index;
 - (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated;
-- (void)reloadTimeFlowViewComplete:(dispatch_block_t)complete;
+- (void)reloadData;
 
 @end
-
-NS_ASSUME_NONNULL_END

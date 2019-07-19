@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet DRTimeFlowView *timeFlowView;
 
 @property (nonatomic, assign) NSInteger itemCount;
+@property (nonatomic, assign) NSInteger current;
 @property (nonatomic, copy) NSString *reuseIdentifier;
 
 @end
@@ -37,7 +38,13 @@
     self.timeFlowView.delegate = self;
     self.timeFlowView.dataSource = self;
     
-    self.itemCount = 60;
+    // 延时模拟网络请求
+    self.itemCount = 0;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.itemCount = 20;
+        self.current = self.itemCount;
+        [self.timeFlowView reloadData];
+    });
 }
 
 #pragma mark- DRTimeFlowViewDataSource
@@ -47,7 +54,7 @@
 
 - (UICollectionViewCell *)timeFlowView:(DRTimeFlowView *)timeFlowView cellForRowAtIndex:(NSInteger)index {
     DRTimeFlowCell *cell = [timeFlowView dequeueReusableCellWithReuseIdentifier:self.reuseIdentifier forIndex:index];
-    [cell setupWithDay:self.itemCount-index-1];
+    [cell setupWithDay:self.current-index-1];
     return cell;
 }
 
@@ -58,6 +65,17 @@
 
 - (void)timeFlowView:(DRTimeFlowView *)timeFlowView didSelectRowAtIndex:(NSInteger)index {
     kDR_LOG(@"click %ld", index);
+}
+
+// 加载更多
+- (void)timeFlowView:(DRTimeFlowView *)timeFlowView didScrollToBottom:(UIScrollView *)scrollView {
+    // 延时模拟网络请求
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (self.itemCount < 100) {
+            self.itemCount += 10;
+        }
+        [timeFlowView reloadData];
+    });
 }
 
 @end
