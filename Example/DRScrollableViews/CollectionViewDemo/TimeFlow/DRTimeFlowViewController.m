@@ -19,7 +19,6 @@
 
 @property (nonatomic, assign) NSInteger itemCount;
 @property (nonatomic, copy) NSString *reuseIdentifier;
-@property (nonatomic, strong) NSIndexPath *lastIndex;
 
 @end
 
@@ -38,7 +37,7 @@
     self.timeFlowView.delegate = self;
     self.timeFlowView.dataSource = self;
     
-    self.itemCount = arc4random() % 10 + 7;
+    self.itemCount = 60;
 }
 
 #pragma mark- DRTimeFlowViewDataSource
@@ -46,19 +45,19 @@
     return self.itemCount;
 }
 
-- (UICollectionViewCell *)timeFlowView:(DRTimeFlowView *)timeFlowView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    DRTimeFlowCell *cell = [timeFlowView dequeueReusableCellWithReuseIdentifier:self.reuseIdentifier forIndexPath:indexPath];
-    [cell setupWithDay:self.itemCount-indexPath.row-1];
+- (UICollectionViewCell *)timeFlowView:(DRTimeFlowView *)timeFlowView cellForRowAtIndex:(NSInteger)index {
+    DRTimeFlowCell *cell = [timeFlowView dequeueReusableCellWithReuseIdentifier:self.reuseIdentifier forIndex:index];
+    [cell setupWithDay:self.itemCount-index-1];
     return cell;
 }
 
 #pragma mark - DRTimeFlowViewDelegate
-- (BOOL)timeFlowView:(DRTimeFlowView *)timeFlowView shouldSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (BOOL)timeFlowView:(DRTimeFlowView *)timeFlowView shouldSelectRowAtIndex:(NSInteger)index {
     return YES;
 }
 
-- (void)timeFlowView:(DRTimeFlowView *)timeFlowView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    kDR_LOG(@"click %ld", indexPath.row);
+- (void)timeFlowView:(DRTimeFlowView *)timeFlowView didSelectRowAtIndex:(NSInteger)index {
+    kDR_LOG(@"click %ld", index);
 }
 
 @end

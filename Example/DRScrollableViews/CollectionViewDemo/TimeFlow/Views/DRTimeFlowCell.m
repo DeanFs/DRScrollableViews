@@ -19,10 +19,6 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    
-    self.layer.cornerRadius = 4;
-    self.layer.borderColor = self.backgroundColor.CGColor;
-    self.layer.borderWidth = 1;
 }
 
 - (void)setupWithDay:(NSInteger)day {

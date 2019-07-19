@@ -160,7 +160,7 @@
         if (bottomCellVisibleHeight > self.maxCellHeight / 2) {
             proposedContentOffset.y += (self.maxCellHeight - bottomCellVisibleHeight);
         } else {
-            proposedContentOffset.y -= bottomCellVisibleHeight;
+            proposedContentOffset.y -= (bottomCellVisibleHeight - self.coverOffset);
         }
     }    
     return proposedContentOffset;

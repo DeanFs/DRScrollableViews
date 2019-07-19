@@ -83,7 +83,7 @@
 
 - (BOOL)dragSortTableView:(DRDragSortTableView *)tableView
      canDeleteAtIndexPath:(NSIndexPath *)indexPath {
-    return NO;
+    return YES;
 }
 
 - (void)dragSortTableView:(DRDragSortTableView *)tableView deleteAtIndexPath:(NSIndexPath *)indexPath deleteDoneBlock:(dispatch_block_t)deleteDoneBlock {
