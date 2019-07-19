@@ -4,6 +4,7 @@
 [![Version](https://img.shields.io/cocoapods/v/DRScrollableViews.svg?style=flat)](https://cocoapods.org/pods/DRScrollableViews)
 [![License](https://img.shields.io/cocoapods/l/DRScrollableViews.svg?style=flat)](https://cocoapods.org/pods/DRScrollableViews)
 [![Platform](https://img.shields.io/cocoapods/p/DRScrollableViews.svg?style=flat)](https://cocoapods.org/pods/DRScrollableViews)
+[![演示](https://github.com/DeanFs/DRScrollableViews/blob/master/演示.mp4)]
 
 ## Example
 
