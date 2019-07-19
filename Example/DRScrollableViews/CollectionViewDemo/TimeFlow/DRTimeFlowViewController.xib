@@ -25,12 +25,20 @@
                     <rect key="frame" x="0.0" y="75" width="414" height="568"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="试试长按Cell删除" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n5l-UQ-iLG">
+                    <rect key="frame" x="110.33333333333333" y="673" width="193.66666666666669" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="vWq-kt-G2S" secondAttribute="trailing" id="4Ag-9P-qrl"/>
                 <constraint firstItem="vWq-kt-G2S" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="deN-Wm-OkE"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="vWq-kt-G2S" secondAttribute="bottom" constant="93" id="eWs-L3-zo0"/>
+                <constraint firstItem="n5l-UQ-iLG" firstAttribute="top" secondItem="vWq-kt-G2S" secondAttribute="bottom" constant="30" id="laB-At-OIZ"/>
+                <constraint firstItem="n5l-UQ-iLG" firstAttribute="centerX" secondItem="Q5M-cg-NOt" secondAttribute="centerX" id="qeT-Gt-qCs"/>
                 <constraint firstItem="vWq-kt-G2S" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="55" id="zeE-jA-eU9"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>

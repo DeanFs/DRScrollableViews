@@ -24,6 +24,8 @@
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		D824E1D79F79C33AB2F14F28 /* Pods_DRScrollableViews_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56587A4DDD973D824033BC60 /* Pods_DRScrollableViews_Tests.framework */; };
+		FE682F2422E1A31D00815E2F /* DRDragSortDeleteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE682F2222E1A31D00815E2F /* DRDragSortDeleteCell.m */; };
+		FE682F2522E1A31D00815E2F /* DRDragSortDeleteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE682F2322E1A31D00815E2F /* DRDragSortDeleteCell.xib */; };
 		FEB9AC3622DEBFEE00B91032 /* DRDragSortTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9AC3522DEBFEE00B91032 /* DRDragSortTableViewController.m */; };
 		FEB9AC4922DF002D00B91032 /* DRTimeFlowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9AC4722DF002D00B91032 /* DRTimeFlowCell.m */; };
 		FEB9AC4A22DF002D00B91032 /* DRTimeFlowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEB9AC4822DF002D00B91032 /* DRTimeFlowCell.xib */; };
@@ -73,6 +75,9 @@
 		F0B069DC46AB38183AEE4D98 /* Pods-DRScrollableViews_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DRScrollableViews_Tests.debug.xcconfig"; path = "Target Support Files/Pods-DRScrollableViews_Tests/Pods-DRScrollableViews_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		F50BD50F9F99CEB522D4FC29 /* Pods-DRScrollableViews_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DRScrollableViews_Tests.release.xcconfig"; path = "Target Support Files/Pods-DRScrollableViews_Tests/Pods-DRScrollableViews_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		FC89D08016DECE3179AE9BE0 /* Pods-DRScrollableViews_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DRScrollableViews_Example.debug.xcconfig"; path = "Target Support Files/Pods-DRScrollableViews_Example/Pods-DRScrollableViews_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		FE682F2122E1A31D00815E2F /* DRDragSortDeleteCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRDragSortDeleteCell.h; sourceTree = "<group>"; };
+		FE682F2222E1A31D00815E2F /* DRDragSortDeleteCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRDragSortDeleteCell.m; sourceTree = "<group>"; };
+		FE682F2322E1A31D00815E2F /* DRDragSortDeleteCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DRDragSortDeleteCell.xib; sourceTree = "<group>"; };
 		FEB9AC3422DEBFEE00B91032 /* DRDragSortTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRDragSortTableViewController.h; sourceTree = "<group>"; };
 		FEB9AC3522DEBFEE00B91032 /* DRDragSortTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRDragSortTableViewController.m; sourceTree = "<group>"; };
 		FEB9AC4622DF002D00B91032 /* DRTimeFlowCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRTimeFlowCell.h; sourceTree = "<group>"; };
@@ -218,6 +223,9 @@
 			children = (
 				FEB9AC3422DEBFEE00B91032 /* DRDragSortTableViewController.h */,
 				FEB9AC3522DEBFEE00B91032 /* DRDragSortTableViewController.m */,
+				FE682F2122E1A31D00815E2F /* DRDragSortDeleteCell.h */,
+				FE682F2222E1A31D00815E2F /* DRDragSortDeleteCell.m */,
+				FE682F2322E1A31D00815E2F /* DRDragSortDeleteCell.xib */,
 			);
 			path = DragSortTableViewDemo;
 			sourceTree = "<group>";
@@ -336,6 +344,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE682F2522E1A31D00815E2F /* DRDragSortDeleteCell.xib in Resources */,
 				FEB9AC4E22DF09B100B91032 /* TimeFlow.xcassets in Resources */,
 				FEB9AC5522DF343600B91032 /* DRTimeFlowViewController.xib in Resources */,
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
@@ -437,6 +446,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FEB9AC4922DF002D00B91032 /* DRTimeFlowCell.m in Sources */,
+				FE682F2422E1A31D00815E2F /* DRDragSortDeleteCell.m in Sources */,
 				6003F59E195388D20070C39A /* DRAppDelegate.m in Sources */,
 				FEB9AC3622DEBFEE00B91032 /* DRDragSortTableViewController.m in Sources */,
 				6003F5A7195388D20070C39A /* DRViewController.m in Sources */,

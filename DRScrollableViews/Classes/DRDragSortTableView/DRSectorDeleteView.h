@@ -10,8 +10,6 @@
 
 @interface DRSectorDeleteView : UIView
 
-+ (void)show;
-
 - (void)show;
 - (void)dismiss;
 - (void)backgroundAnimationWithIsZoom:(BOOL)isZoom;

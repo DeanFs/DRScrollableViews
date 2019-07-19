@@ -96,6 +96,9 @@
                 <outlet property="dayLabel" destination="lkW-6J-okS" id="vBD-Ue-HPy"/>
                 <outlet property="dayNameLabel" destination="yh7-Q5-uBw" id="WYM-ka-b7D"/>
                 <outlet property="dayNameLabelWidth" destination="sGG-cX-yRA" id="uT5-9i-psQ"/>
+                <outlet property="descLabel" destination="5oq-J5-xFy" id="btB-VG-YHG"/>
+                <outlet property="iconImageView" destination="xGI-fO-OQb" id="h8o-eK-N59"/>
+                <outlet property="titleLabel" destination="YFb-nd-aNO" id="Olx-Si-EfL"/>
             </connections>
             <point key="canvasLocation" x="47.826086956521742" y="35.491071428571423"/>
         </collectionViewCell>

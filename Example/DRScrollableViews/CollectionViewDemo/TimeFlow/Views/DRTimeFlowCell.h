@@ -8,16 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
 #define kDecreasingStep 4
 #define kBottomCoverHeight 4
 #define kMaxCellHeight 74
 
-@interface DRTimeFlowCell : UICollectionViewCell
+@interface DRTimeFlowModel : NSObject
 
-- (void)setupWithDay:(NSInteger)day;
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *desc;
+@property (nonatomic, assign) NSInteger day;
 
 @end
 
-NS_ASSUME_NONNULL_END
+@interface DRTimeFlowCell : UICollectionViewCell
+
+- (void)setupWithModel:(DRTimeFlowModel *)model;
+
+@end

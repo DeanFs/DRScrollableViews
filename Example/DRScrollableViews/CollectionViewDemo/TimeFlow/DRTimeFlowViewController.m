@@ -17,9 +17,10 @@
 
 @property (weak, nonatomic) IBOutlet DRTimeFlowView *timeFlowView;
 
-@property (nonatomic, assign) NSInteger itemCount;
 @property (nonatomic, assign) NSInteger current;
 @property (nonatomic, copy) NSString *reuseIdentifier;
+
+@property (nonatomic, strong) NSMutableArray *datas;
 
 @end
 
@@ -39,22 +40,21 @@
     self.timeFlowView.dataSource = self;
     
     // 延时模拟网络请求
-    self.itemCount = 0;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        self.itemCount = 20;
-        self.current = self.itemCount;
+        self.current = arc4random() % 8 + 5;
+        [self makeDateWithCount:self.current];
         [self.timeFlowView reloadData];
     });
 }
 
 #pragma mark- DRTimeFlowViewDataSource
 - (NSInteger)numberOfRowsInTimeFlowView:(DRTimeFlowView *)timeFlowView {
-    return self.itemCount;
+    return self.datas.count;
 }
 
 - (UICollectionViewCell *)timeFlowView:(DRTimeFlowView *)timeFlowView cellForRowAtIndex:(NSInteger)index {
     DRTimeFlowCell *cell = [timeFlowView dequeueReusableCellWithReuseIdentifier:self.reuseIdentifier forIndex:index];
-    [cell setupWithDay:self.current-index-1];
+    [cell setupWithModel:self.datas[index]];
     return cell;
 }
 
@@ -71,11 +71,50 @@
 - (void)timeFlowView:(DRTimeFlowView *)timeFlowView didScrollToBottom:(UIScrollView *)scrollView {
     // 延时模拟网络请求
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (self.itemCount < 100) {
-            self.itemCount += 10;
+        if (self.datas.count < 100) {
+            [self makeDateWithCount:10];
         }
         [timeFlowView reloadData];
     });
+}
+
+- (void)timeFlowView:(DRTimeFlowView *)timeFlowView beginDeleteRowAtIndex:(NSInteger)index whenComplete:(void (^)(BOOL))complete {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.datas removeObjectAtIndex:index];
+        complete(YES);
+    });
+}
+
+#pragma mark - private
+- (void)makeDateWithCount:(NSInteger)count {
+    if (!self.datas) {
+        self.datas = [NSMutableArray array];
+    }
+    NSArray *titles = @[@"高考",
+                        @"相亲",
+                        @"旅游",
+                        @"国庆节",
+                        @"还款日",
+                        @"生理期",
+                        @"宝贝生日",
+                        @"一周年结婚几年日",
+                        @"这是一个很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长的标题"];
+    NSArray *descs = @[@"6/08  这是最重要的一天",
+                       @"6/20  包含3张图片",
+                       @"6/20  内蒙古",
+                       @"10/01",
+                       @"08/20",
+                       @"06/20",
+                       @"06/26",
+                       @"06/20 记得给宝贝惊喜",
+                       @"06/06 就问你长不长"];
+    for (NSInteger i=0; i<count; i++) {
+        DRTimeFlowModel *model = [DRTimeFlowModel new];
+        model.title = titles[self.datas.count % titles.count];
+        model.desc = descs[self.datas.count % descs.count];
+        model.day = self.current - self.datas.count - 1;
+        [self.datas addObject:model];
+    }
 }
 
 @end

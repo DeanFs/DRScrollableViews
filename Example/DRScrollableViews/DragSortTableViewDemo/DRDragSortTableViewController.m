@@ -10,6 +10,8 @@
 #import <DRScrollableViews/DRDragSortTableView.h>
 #import <DRMacroDefines/DRMacroDefines.h>
 #import <HexColors/HExColors.h>
+#import <DRCategories/UITableView+DRExtension.h>
+#import "DRDragSortDeleteCell.h"
 
 @interface DRDragSortTableViewController () <DRDragSortTableViewDelegate>
 
@@ -24,7 +26,9 @@
     
     DRDragSortTableView *tableView = (DRDragSortTableView *)self.tableView;
     tableView.dr_dragSortDelegate = self;
-    tableView.rowHeight = 50;
+    tableView.rowHeight = 90;
+    [tableView registerNib:NSStringFromClass([DRDragSortDeleteCell class])];
+    tableView.backgroundColor = [UIColor grayColor];
     
     NSMutableArray *sections = [NSMutableArray array];
     for (NSInteger i=0; i<3; i++) {
@@ -32,7 +36,11 @@
         NSMutableArray *rows = [NSMutableArray array];
         [sections addObject:rows];
         for (NSInteger j=0; j<count; j++) {
-            [rows addObject:[NSString stringWithFormat:@"s%ld-r%ld", i, j]];
+            DRDragSortDeleteModel *model = [DRDragSortDeleteModel new];
+            model.title = [NSString stringWithFormat:@"s%ld-r%ld", i, j];
+            model.canSort = YES;
+            model.canDelete = (i == j);
+            [rows addObject:model];
         }
     }
     self.datas = sections;
@@ -50,12 +58,8 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"tableViewCell"];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"tableViewCell"];
-        cell.backgroundColor = [UIColor whiteColor];
-    }
-    cell.textLabel.text = self.datas[indexPath.section][indexPath.row];
+    DRDragSortDeleteCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([DRDragSortDeleteCell class])];
+    [cell setupWithModel:self.datas[indexPath.section][indexPath.row]];
     return cell;
 }
 
@@ -77,13 +81,14 @@
 #pragma mark - DRDragSortTableViewDelegate
 - (BOOL)dragSortTableView:(DRDragSortTableView *)tableView
        canSortAtIndexPath:(NSIndexPath *)indexPath fromIndexPath:(NSIndexPath *)fromIndexPath{
-    NSLog(@"from:%ld, to:%ld", fromIndexPath.row, indexPath.row);
-    return YES;
+    DRDragSortDeleteModel *model = self.datas[indexPath.section][indexPath.row];
+    return model.canSort;
 }
 
 - (BOOL)dragSortTableView:(DRDragSortTableView *)tableView
      canDeleteAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
+    DRDragSortDeleteModel *model = self.datas[indexPath.section][indexPath.row];
+    return model.canDelete;
 }
 
 - (void)dragSortTableView:(DRDragSortTableView *)tableView deleteAtIndexPath:(NSIndexPath *)indexPath deleteDoneBlock:(dispatch_block_t)deleteDoneBlock {

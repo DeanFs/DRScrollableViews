@@ -73,12 +73,6 @@ static const CGFloat DRSectorDeleteViewWidth = 140.0;
     return self;
 }
 
-+ (void)show {
-    DRSectorDeleteView *view = [[DRSectorDeleteView alloc] init];
-    [view show];
-    [kDRWindow addSubview:view];
-}
-
 - (void)show {
     AudioServicesPlaySystemSound(1519);
     CGFloat width = DRSectorDeleteViewWidth;

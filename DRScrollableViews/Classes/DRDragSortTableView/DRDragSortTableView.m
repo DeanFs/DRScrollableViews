@@ -42,7 +42,7 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
     
-    self.tableRectInWindow = [self.superview convertRect:self.frame toView:self.currentWindow];
+    self.tableRectInWindow = [self.superview convertRect:self.frame toView:kDRWindow];
 }
 
 - (void)dealloc {
@@ -95,8 +95,8 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
     // 根据indexPath获取cell
     if (startIndexPath) {
         self.dragView = [self cellForRowAtIndexPath:self.startIndexPath];
-        if ([self.dragView respondsToSelector:@selector(dragView)]) {
-            self.dragView = [self.dragView performSelector:@selector(dragView)];
+        if ([self.dragView respondsToSelector:@selector(dragCell)]) {
+            self.dragView = [self.dragView performSelector:@selector(dragCell)];
         }
     }
 }
@@ -141,14 +141,14 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
         self.dragBegan = YES;
         
         [self onLongPressBeganWithSender:sender canSort:canSort];
-    } else if (sender.state == UIGestureRecognizerStateChanged){ // 手指一动
+    } else if (sender.state == UIGestureRecognizerStateChanged){ // 手指移动
         // 没有触发开始拖拽
         if (!self.dragBegan) {
             return;
         }
         // 既不能拖动排序，也不能拖动删除
         if (!canSort && !self.canDeleteStartCell) {
-            CGPoint imagePoint = [sender locationInView:self.currentWindow];
+            CGPoint imagePoint = [sender locationInView:kDRWindow];
             if ([self isMoveToEdgeWithPonit:imagePoint]) {
                 [self updateCellImageCenterWithPoint:imagePoint];
             }
@@ -177,7 +177,7 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
     AudioServicesPlaySystemSound(1519); // 振动反馈
     
     if (self.canDeleteStartCell) { // 显示右下角删除区
-        [self.currentWindow addSubview:self.deleteView];
+        [kDRWindow addSubview:self.deleteView];
         [self.deleteView show];
     }
     
@@ -189,10 +189,10 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
     self.dragImageView = [self createCellImageView];
     self.dragImageView.alpha = 0.0;
     [self updateCellImageCenterWithPoint:[self.dragView.superview convertPoint:self.dragView.center
-                                                                        toView:self.currentWindow]];
+                                                                        toView:kDRWindow]];
     
     // 更改imageView的中心点为手指点击位置
-    CGPoint imageCenter = [sender locationInView:self.currentWindow];
+    CGPoint imageCenter = [sender locationInView:kDRWindow];
     [UIView animateWithDuration:0.25 animations:^{
         [self updateCellImageCenterWithPoint:imageCenter];
         self.dragImageView.transform = CGAffineTransformMakeScale(self.cellFrameScale, self.cellFrameScale);
@@ -211,7 +211,7 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
 - (void)onLongPressMove:(UILongPressGestureRecognizer *)sender
                 canSort:(BOOL)canSort
               indexPath:(NSIndexPath *)indexPath {
-    CGPoint point = [sender locationInView:self.currentWindow];
+    CGPoint point = [sender locationInView:kDRWindow];
     [self updateCellImageCenterWithPoint:point];
     
     if (self.canDeleteStartCell) { // 可以删除
@@ -249,7 +249,7 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
 - (void)onLongPressEnd:(UILongPressGestureRecognizer *)sender {
     BOOL delete = NO;
     if (self.canDeleteStartCell) { // 可删除
-        CGPoint point = [sender locationInView:self.currentWindow];
+        CGPoint point = [sender locationInView:kDRWindow];
         delete = CGRectContainsPoint(self.deleteView.frame, point);
         [self.deleteView dismiss];
     }
@@ -326,7 +326,7 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
         self.dragImageView.alpha = 0;
         self.dragImageView.transform = CGAffineTransformIdentity;
         [self updateCellImageCenterWithPoint:[self.dragView.superview convertPoint:self.dragView.center
-                                                                            toView:self.currentWindow]];
+                                                                            toView:kDRWindow]];
     } completion:^(BOOL finished) {
         [self.dragImageView removeFromSuperview];
         self.dragImageView = nil;
@@ -340,17 +340,13 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
     }
     if (point.y < self.tableRectInWindow.origin.y + self.dragView.bounds.size.height/2) {
         point.y = self.tableRectInWindow.origin.y + self.dragView.bounds.size.height/2;
-    } else if (point.y > self.currentWindow.bounds.size.height - self.dragView.bounds.size.height/2) {
-        point.y = self.currentWindow.bounds.size.height - self.dragView.bounds.size.height/2;
+    } else if (point.y > kDRWindow.bounds.size.height - self.dragView.bounds.size.height/2) {
+        point.y = kDRWindow.bounds.size.height - self.dragView.bounds.size.height/2;
     }
     self.dragImageView.center = point;
 }
 
 #pragma mark - lazy load
-- (UIWindow *)currentWindow {
-    return [UIApplication sharedApplication].keyWindow;
-}
-
 // 垃圾桶视图
 - (DRSectorDeleteView *)deleteView {
     static DRSectorDeleteView *deleteV = nil;
@@ -371,7 +367,7 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
     cellImageView.layer.shadowRadius = 5.0;
     cellImageView.layer.shadowOpacity = 0.4;
     cellImageView.layer.shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6].CGColor;
-    [self.currentWindow addSubview:cellImageView];
+    [kDRWindow addSubview:cellImageView];
     return cellImageView;
 }
 
