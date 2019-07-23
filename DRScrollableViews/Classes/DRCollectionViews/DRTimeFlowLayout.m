@@ -29,7 +29,8 @@
 - (void)prepareLayout {
     [super prepareLayout];
     
-    [self setupCount];
+    self.maxCellHeight = self.maxItemSize.height;
+    self.height = CGRectGetHeight(self.collectionView.bounds);
 }
 
 - (CGSize)collectionViewContentSize {
@@ -130,24 +131,29 @@
         [array insertObject:attributes atIndex:0];
         [indexs insertObject:@(layoutIndex) atIndex:0];
         
-        layoutIndex--;
-        if (layoutIndex < 0) {
-            break;
-        }
-        
         bottomCellBottomY -= cellHeight;
-        layoutHeight += cellHeight;
         if (layoutIndex == lastVisibleIndex) {
             if (bottomCellVisibleHeight > 0 && bottomCellVisibleHeight < self.coverOffset) {
                 bottomCellBottomY += bottomCellVisibleHeight;
-                layoutHeight -= bottomCellVisibleHeight;
             } else {
                 bottomCellBottomY += self.coverOffset;
-                layoutHeight -= self.coverOffset;
             }
         } else {
             bottomCellBottomY += self.coverOffset;
-            layoutHeight -= self.coverOffset;
+        }
+        
+        if (layoutIndex < lastVisibleIndex) {
+            layoutHeight += cellHeight;
+            if (bottomCellVisibleHeight > 0 && bottomCellVisibleHeight < self.coverOffset) {
+                layoutHeight -= bottomCellVisibleHeight;
+            } else {
+                layoutHeight -= self.coverOffset;
+            }
+        }
+        
+        layoutIndex--;
+        if (layoutIndex < 0) {
+            break;
         }
     }
     _visibleIndexs = indexs;
@@ -159,17 +165,15 @@
     CGFloat bottomOutSideHeight = self.cellContentHeight - proposedContentOffset.y - self.height;
     if (bottomOutSideHeight > 0) {
         NSInteger bottomOutSideCount = bottomOutSideHeight / self.maxCellHeight;
-        
         CGFloat bottomCellsHeight = 0;
         if (bottomOutSideCount > 0) {
             bottomCellsHeight = bottomOutSideCount * self.maxCellHeight;
         }
-        
         CGFloat bottomCellVisibleHeight = self.maxCellHeight - (bottomOutSideHeight - bottomCellsHeight);
         if (bottomCellVisibleHeight > self.maxCellHeight / 2) {
             proposedContentOffset.y += (self.maxCellHeight - bottomCellVisibleHeight);
         } else {
-            proposedContentOffset.y -= (bottomCellVisibleHeight - self.coverOffset);
+            proposedContentOffset.y -= bottomCellVisibleHeight;
         }
     }    
     return proposedContentOffset;
@@ -177,12 +181,6 @@
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {
     return !CGRectEqualToRect(newBounds, self.collectionView.bounds);
-}
-
-#pragma mark - private
-- (void)setupCount {
-    self.maxCellHeight = self.maxItemSize.height;
-    self.height = CGRectGetHeight(self.collectionView.bounds);
 }
 
 @end

@@ -59,7 +59,6 @@
 - (void)timeFlowView:(DRTimeFlowView *)timeFlowView didEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
 - (void)timeFlowView:(DRTimeFlowView *)timeFlowView willBeginDecelerating:(UIScrollView *)scrollView;
 - (void)timeFlowView:(DRTimeFlowView *)timeFlowView didEndDecelerating:(UIScrollView *)scrollView;
-- (void)timeFlowView:(DRTimeFlowView *)timeFlowView didEndScrollingAnimation:(UIScrollView *)scrollView;
 
 @end
 

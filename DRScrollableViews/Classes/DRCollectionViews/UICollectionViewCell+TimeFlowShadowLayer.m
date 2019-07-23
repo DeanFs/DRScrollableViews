@@ -11,21 +11,23 @@
 @implementation UICollectionViewCell (TimeFlowShadowLayer)
 
 - (CALayer *)shadowLayer {
-    CALayer *layer = objc_getAssociatedObject(self, @selector(addShadowLayerWithShadowColor:offset:maxHeight:));
+    CALayer *layer = objc_getAssociatedObject(self, @selector(addShadowLayerWithShadowColor:offset:cornerRadius:));
     return layer;
 }
 
 - (void)setShadowLayer:(CALayer *)shadowLayer {
-    objc_setAssociatedObject(self, @selector(addShadowLayerWithShadowColor:offset:maxHeight:), shadowLayer, OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, @selector(addShadowLayerWithShadowColor:offset:cornerRadius:), shadowLayer, OBJC_ASSOCIATION_ASSIGN);
 }
 
 - (void)addShadowLayerWithShadowColor:(UIColor *)color
-                               offset:(CGFloat)offset {
+                               offset:(CGFloat)offset
+                         cornerRadius:(CGFloat)cornerRadius {
     CGFloat height = CGRectGetHeight(self.bounds);
     CGFloat width = CGRectGetWidth(self.bounds);
     
     CAGradientLayer *layer = [[CAGradientLayer alloc] init];
     layer.frame = CGRectMake(0, height-offset, width, offset);
+    layer.cornerRadius = cornerRadius;
     layer.colors = @[(__bridge id)[UIColor colorWithWhite:1.0 alpha:0].CGColor, (__bridge id)color.CGColor];
     layer.startPoint = CGPointMake(0, 0);
     layer.endPoint = CGPointMake(0, 1.0);

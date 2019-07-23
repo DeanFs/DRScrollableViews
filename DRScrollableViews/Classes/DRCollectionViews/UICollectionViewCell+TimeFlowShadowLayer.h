@@ -14,7 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) CALayer *shadowLayer;
 
 - (void)addShadowLayerWithShadowColor:(UIColor *)color
-                               offset:(CGFloat)offset;
+                               offset:(CGFloat)offset
+                         cornerRadius:(CGFloat)cornerRadius;
 
 @end
 

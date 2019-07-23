@@ -147,7 +147,8 @@
     }
     if (self.cellShadowColor && !cell.shadowLayer) {
         [cell addShadowLayerWithShadowColor:self.cellShadowColor
-                                     offset:self.coverOffset + self.cellShadowOffset];
+                                     offset:self.coverOffset + self.cellShadowOffset
+                               cornerRadius:self.cellCornerRadius];
     }
     [self.visibleCellsMap setObject:cell forKey:@(indexPath.row)];
     [self setupVisibleCells];
@@ -203,14 +204,9 @@
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    [self setupVisibleCells];
     if ([self.delegate respondsToSelector:@selector(timeFlowView:didEndDecelerating:)]) {
         [self.delegate timeFlowView:self didEndDecelerating:scrollView];
-    }
-}
-
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
-    if ([self.delegate respondsToSelector:@selector(timeFlowView:didEndScrollingAnimation:)]) {
-        [self.delegate timeFlowView:self didEndScrollingAnimation:scrollView];
     }
 }
 
