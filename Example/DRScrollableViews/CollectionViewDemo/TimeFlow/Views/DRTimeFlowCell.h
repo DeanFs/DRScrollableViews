@@ -8,10 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-#define kDecreasingStep 4
-#define kBottomCoverHeight 4
-#define kMaxCellHeight 74
-
 @interface DRTimeFlowModel : NSObject
 
 @property (nonatomic, copy) NSString *title;

@@ -12,18 +12,21 @@
 #import <HexColors/HexColors.h>
 #import <Masonry/Masonry.h>
 #import <DRCategories/UIImage+DRExtension.h>
+#import "UICollectionViewCell+TimeFlowShadowLayer.h"
 
 @interface DRTimeFlowView () <UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (strong, nonatomic) IBOutlet UIView *containerView;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
-@property (nonatomic, strong) NSIndexPath *lastIndexPath;
+// delete
 @property (nonatomic, strong) UILongPressGestureRecognizer *longGesture;
 @property (nonatomic, strong) NSIndexPath *longPressIndexPath;
 @property (nonatomic, weak) UICollectionViewCell *dragCell; // 长按手势开始时的cell
 @property (nonatomic, strong) UIImageView *dragImageView; // 拖拽的视图的截图
-@property (nonatomic, assign) BOOL haveDrag;
+
+@property (nonatomic, assign) BOOL haveDrag; // 用于判断上拉到底部执行代理回调
+@property (nonatomic, strong) NSMutableDictionary<NSNumber *, UICollectionViewCell *> *visibleCellsMap; // 缓存当前可见的cell
 
 @end
 
@@ -80,8 +83,19 @@
     [self.collectionView setContentOffset:offset animated:animated];
 }
 
+- (void)reloadDataScrollToIndex:(NSInteger)index {
+    DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
+    [layout reloadDataScrollToIndex:index];
+    [self.collectionView reloadData];
+}
+
 - (void)reloadData {
     [self.collectionView reloadData];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        CGPoint offset = [self.collectionView.collectionViewLayout targetContentOffsetForProposedContentOffset:self.collectionView.contentOffset withScrollingVelocity:CGPointZero];
+        [self.collectionView setContentOffset:offset animated:YES];
+    });
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -125,27 +139,18 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(nonnull UICollectionViewCell *)cell forItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    cell.layer.cornerRadius = 4;
-    cell.layer.borderColor = cell.backgroundColor.CGColor;
-    cell.layer.borderWidth = 1;
-    cell.layer.shadowColor = [UIColor hx_colorWithHexRGBAString:@"#D6E7F4"].CGColor;
-    CGFloat height = CGRectGetHeight(cell.bounds);
-    CGFloat width = CGRectGetWidth(cell.bounds);
-    CGFloat rate = (height - self.decreasingStep) / height;
-    CGFloat neWidth = width * rate;
-    CGRect shadowRect = CGRectInset(cell.bounds, (width-neWidth)/2, self.decreasingStep/2);
-    shadowRect = CGRectOffset(shadowRect, 0, -5-self.decreasingStep/2);
-    cell.layer.shadowPath = [UIBezierPath bezierPathWithRect:shadowRect].CGPath;
-   
-    cell.layer.shadowOpacity = 0.9;
-    if (indexPath.row == 0) {
-        cell.layer.shadowOpacity = 0;
+    if (cell.layer.cornerRadius != self.cellCornerRadius) {
+        cell.clipsToBounds = NO;
+        cell.layer.cornerRadius = self.cellCornerRadius;
+        cell.layer.borderColor = cell.backgroundColor.CGColor;
+        cell.layer.borderWidth = 1;
     }
-    
-    if (indexPath.row < self.lastIndexPath.row || !self.lastIndexPath) {
-        [cell.superview sendSubviewToBack:cell];
+    if (self.cellShadowColor && !cell.shadowLayer) {
+        [cell addShadowLayerWithShadowColor:self.cellShadowColor
+                                     offset:self.coverOffset + self.cellShadowOffset];
     }
-    self.lastIndexPath = indexPath;
+    [self.visibleCellsMap setObject:cell forKey:@(indexPath.row)];
+    [self setupVisibleCells];
     
     if ([self.delegate respondsToSelector:@selector(timeFlowView:willDisplayCell:forRowAtIndex:)]) {
         [self.delegate timeFlowView:self willDisplayCell:cell forRowAtIndex:indexPath.row];
@@ -156,6 +161,9 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if ([self.delegate respondsToSelector:@selector(timeFlowView:didScrollToBottom:)] &&
         self.haveDrag) {
+        if (scrollView.isDragging) {
+            return;
+        }
         CGFloat contentHeight = ((DRTimeFlowLayout *)self.collectionView.collectionViewLayout).cellContentHeight;
         CGFloat bottomRest = contentHeight - scrollView.contentOffset.y - CGRectGetHeight(scrollView.frame);
         if (bottomRest <= 0) {
@@ -183,10 +191,6 @@
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    if (!decelerate) {
-        [self resetCellsLevel];
-    }
-    
     if ([self.delegate respondsToSelector:@selector(timeFlowView:didEndDragging:willDecelerate:)]) {
         [self.delegate timeFlowView:self didEndDragging:scrollView willDecelerate:decelerate];
     }
@@ -199,40 +203,30 @@
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    [self resetCellsLevel];
-    
     if ([self.delegate respondsToSelector:@selector(timeFlowView:didEndDecelerating:)]) {
         [self.delegate timeFlowView:self didEndDecelerating:scrollView];
     }
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
-    [self resetCellsLevel];
-    
     if ([self.delegate respondsToSelector:@selector(timeFlowView:didEndScrollingAnimation:)]) {
         [self.delegate timeFlowView:self didEndScrollingAnimation:scrollView];
     }
 }
 
 #pragma mark - private
-- (void)resetCellsLevel {
-    if (!self.collectionView.isDragging && !self.collectionView.isDecelerating && !self.collectionView.isTracking) {
-        NSArray *indexPaths = [self.collectionView indexPathsForVisibleItems];
-        indexPaths = [indexPaths sortedArrayUsingComparator:^NSComparisonResult(NSIndexPath *obj1, NSIndexPath *obj2) {
-            return obj1.row < obj2.row;
-        }];
-        for (NSIndexPath *indexPath in indexPaths) {
-            UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
-            [cell.superview sendSubviewToBack:cell];
-        }
-        
-        CGPoint offset = [self.collectionView.collectionViewLayout targetContentOffsetForProposedContentOffset:self.collectionView.contentOffset withScrollingVelocity:CGPointZero];
-        [self.collectionView setContentOffset:offset animated:YES];
+- (void)setupVisibleCells {
+    DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
+    UICollectionViewCell *lastCell;
+    for (NSNumber *index in layout.visibleIndexs) {
+        lastCell = self.visibleCellsMap[index];
+        lastCell.shadowLayer.hidden = NO;
+        [lastCell.superview bringSubviewToFront:lastCell];
     }
-    
-    self.haveDrag = NO;
+    lastCell.shadowLayer.hidden = YES;
 }
 
+#pragma mark - long press to delete
 - (void)onLongPressGestureStateChange:(UILongPressGestureRecognizer *)sender {
     CGPoint point = [sender locationInView:self.collectionView];
     NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:point];
@@ -272,6 +266,11 @@
     UICollectionViewLayoutAttributes *attr = [self.collectionView layoutAttributesForItemAtIndexPath:self.longPressIndexPath];
     CGAffineTransform transform = attr.transform;
     self.dragCell = [self.collectionView cellForItemAtIndexPath:self.longPressIndexPath];
+    self.dragCell.shadowLayer.hidden = YES;
+    if (self.longPressIndexPath.row > 0) {
+        UICollectionViewCell *lastCell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:self.longPressIndexPath.row-1 inSection:0]];
+        lastCell.shadowLayer.hidden = YES;
+    }
     [UIView animateWithDuration:kDRAnimationDuration animations:^{
         // 先动画让cell变回正常大小
         self.dragCell.transform = CGAffineTransformMakeScale(1.0, 1.0);
@@ -327,7 +326,7 @@
         self.longGesture.enabled = NO;
         
         kDRWeakSelf
-        [self.delegate timeFlowView:self beginDeleteRowAtIndex:self.longPressIndexPath.row whenComplete:^(BOOL reuqestSuccess) {
+        [self.delegate timeFlowView:self beginDeleteRowAtIndex:self.longPressIndexPath.row whenComplete:^{
             weakSelf.collectionView.scrollEnabled = YES;
             weakSelf.longGesture.enabled = YES;
             weakSelf.dragCell.hidden = NO;
@@ -369,6 +368,7 @@
         self.dragImageView = nil;
         self.longPressIndexPath = nil;
     }];
+    [self setupVisibleCells];
 }
 
 #pragma mark - lazy load
@@ -380,6 +380,13 @@
         deleteV = [DRSectorDeleteView new];
     });
     return deleteV;
+}
+
+- (NSMutableDictionary<NSNumber *, UICollectionViewCell *> *)visibleCellsMap {
+    if (!_visibleCellsMap) {
+        _visibleCellsMap = [NSMutableDictionary dictionary];
+    }
+    return _visibleCellsMap;
 }
 
 #pragma mark - lifecycle
@@ -421,6 +428,13 @@
         if (@available(iOS 11.0, *)) {
             self.collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         }
+        
+        self.maxItemSize = CGSizeMake(kDRScreenWidth-56, 74);
+        self.decreasingStep = 4;
+        self.coverOffset = 4;
+        self.cellCornerRadius = 4;
+        self.cellShadowColor = [UIColor hx_colorWithHexRGBAString:@"D6E7F4"];
+        self.cellShadowOffset = 18;
     }
 }
 

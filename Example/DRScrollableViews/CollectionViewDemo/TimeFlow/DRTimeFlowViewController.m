@@ -32,18 +32,16 @@
     self.reuseIdentifier = NSStringFromClass([DRTimeFlowCell class]);
     self.view.backgroundColor = [UIColor grayColor];
     self.timeFlowView.backgroundColor = [UIColor grayColor];
+    
     [self.timeFlowView registerNib:[UINib nibWithNibName:self.reuseIdentifier bundle:nil] forCellWithReuseIdentifier:self.reuseIdentifier];
-    self.timeFlowView.maxItemSize = CGSizeMake(kDRScreenWidth-56, kMaxCellHeight);
-    self.timeFlowView.decreasingStep = kDecreasingStep;
-    self.timeFlowView.coverOffset = kBottomCoverHeight;
     self.timeFlowView.delegate = self;
     self.timeFlowView.dataSource = self;
     
     // 延时模拟网络请求
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        self.current = arc4random() % 8 + 5;
-        [self makeDateWithCount:self.current];
-        [self.timeFlowView reloadData];
+        self.current = 15;
+        [self makeDateWithCount:arc4random() % 30 + 15];
+        [self.timeFlowView reloadDataScrollToIndex:self.current];
     });
 }
 
@@ -54,7 +52,6 @@
 
 - (UICollectionViewCell *)timeFlowView:(DRTimeFlowView *)timeFlowView cellForRowAtIndex:(NSInteger)index {
     DRTimeFlowCell *cell = [timeFlowView dequeueReusableCellWithReuseIdentifier:self.reuseIdentifier forIndex:index];
-    [cell setupWithModel:self.datas[index]];
     return cell;
 }
 
@@ -71,18 +68,22 @@
 - (void)timeFlowView:(DRTimeFlowView *)timeFlowView didScrollToBottom:(UIScrollView *)scrollView {
     // 延时模拟网络请求
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (self.datas.count < 100) {
-            [self makeDateWithCount:10];
+        if (self.datas.count < 200) {
+            [self makeDateWithCount:30];
+            [timeFlowView reloadData];
         }
-        [timeFlowView reloadData];
     });
 }
 
-- (void)timeFlowView:(DRTimeFlowView *)timeFlowView beginDeleteRowAtIndex:(NSInteger)index whenComplete:(void (^)(BOOL))complete {
+- (void)timeFlowView:(DRTimeFlowView *)timeFlowView beginDeleteRowAtIndex:(NSInteger)index whenComplete:(dispatch_block_t)complete {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.datas removeObjectAtIndex:index];
-        complete(YES);
+        complete();
     });
+}
+
+- (void)timeFlowView:(DRTimeFlowView *)timeFlowView willDisplayCell:(UICollectionViewCell *)cell forRowAtIndex:(NSInteger)index {
+    [(DRTimeFlowCell *)cell setupWithModel:self.datas[index]];
 }
 
 #pragma mark - private
@@ -112,7 +113,7 @@
         DRTimeFlowModel *model = [DRTimeFlowModel new];
         model.title = titles[self.datas.count % titles.count];
         model.desc = descs[self.datas.count % descs.count];
-        model.day = self.current - self.datas.count - 1;
+        model.day = self.current - self.datas.count;
         [self.datas addObject:model];
     }
 }

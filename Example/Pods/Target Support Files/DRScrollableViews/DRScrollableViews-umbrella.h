@@ -13,6 +13,7 @@
 #import "DRSectorDeleteView.h"
 #import "DRTimeFlowLayout.h"
 #import "DRTimeFlowView.h"
+#import "UICollectionViewCell+TimeFlowShadowLayer.h"
 #import "DRDragSortTableView.h"
 
 FOUNDATION_EXPORT double DRScrollableViewsVersionNumber;

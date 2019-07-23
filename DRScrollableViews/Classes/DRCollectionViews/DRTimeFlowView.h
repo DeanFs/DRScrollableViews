@@ -49,7 +49,7 @@
  @param index 欲删除的cell的index
  @param complete 删除接口返回后调用
  */
-- (void)timeFlowView:(DRTimeFlowView *)timeFlowView beginDeleteRowAtIndex:(NSInteger)index whenComplete:(void(^)(BOOL reuqestSuccess))complete;
+- (void)timeFlowView:(DRTimeFlowView *)timeFlowView beginDeleteRowAtIndex:(NSInteger)index whenComplete:(dispatch_block_t)complete;
 
 // scroll
 - (void)timeFlowView:(DRTimeFlowView *)timeFlowView didScrollToBottom:(UIScrollView *)scrollView;
@@ -65,9 +65,12 @@
 
 @interface DRTimeFlowView : UIView
 
-@property (nonatomic, assign) IBInspectable CGSize maxItemSize; // 最大的cell的size
-@property (nonatomic, assign) IBInspectable CGFloat decreasingStep; // cell高度递减的值
-@property (nonatomic, assign) IBInspectable CGFloat coverOffset; // 上一个cell被遮盖的高度值
+@property (nonatomic, assign) IBInspectable CGSize maxItemSize; // 最大的cell的size，默认(screen_width-56, 74)
+@property (nonatomic, assign) IBInspectable CGFloat decreasingStep; // cell高度递减的值，默认4
+@property (nonatomic, assign) IBInspectable CGFloat coverOffset; // 上一个cell被遮盖的高度值，默认4
+@property (nonatomic, assign) IBInspectable CGFloat cellCornerRadius; // cell圆角半径，默认4
+@property (nonatomic, strong) IBInspectable UIColor *cellShadowColor; // cell阴影的颜色，默认0xD6E7F4
+@property (nonatomic, assign) IBInspectable CGFloat cellShadowOffset; // 可见阴影长度, 默认18
 
 @property (nonatomic, weak) id<DRTimeFlowViewDataSource> dataSource;
 @property (nonatomic, weak) id<DRTimeFlowViewDelegate> delegate;
@@ -76,7 +79,10 @@
 - (void)registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier;
 - (__kindof UICollectionViewCell *)dequeueReusableCellWithReuseIdentifier:(NSString *)reuseIdentifier
                                                                  forIndex:(NSInteger)index;
-- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated;
+
+// 刷新显示，并定位到第几条
+- (void)reloadDataScrollToIndex:(NSInteger)index;
+// 刷新显示
 - (void)reloadData;
 
 @end
