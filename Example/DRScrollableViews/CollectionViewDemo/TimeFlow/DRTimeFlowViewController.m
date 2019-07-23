@@ -52,6 +52,7 @@
 
 - (UICollectionViewCell *)timeFlowView:(DRTimeFlowView *)timeFlowView cellForRowAtIndex:(NSInteger)index {
     DRTimeFlowCell *cell = [timeFlowView dequeueReusableCellWithReuseIdentifier:self.reuseIdentifier forIndex:index];
+    [cell setupWithModel:self.datas[index]];
     return cell;
 }
 
@@ -75,15 +76,15 @@
     });
 }
 
+- (BOOL)timeFlowView:(DRTimeFlowView *)timeFlowView shouldDeleteRowAtIndex:(NSInteger)index {
+    return index <= self.current;
+}
+
 - (void)timeFlowView:(DRTimeFlowView *)timeFlowView beginDeleteRowAtIndex:(NSInteger)index whenComplete:(dispatch_block_t)complete {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.datas removeObjectAtIndex:index];
         complete();
     });
-}
-
-- (void)timeFlowView:(DRTimeFlowView *)timeFlowView willDisplayCell:(UICollectionViewCell *)cell forRowAtIndex:(NSInteger)index {
-    [(DRTimeFlowCell *)cell setupWithModel:self.datas[index]];
 }
 
 #pragma mark - private

@@ -229,34 +229,29 @@
     
     if (sender.state == UIGestureRecognizerStateBegan) { // 长按手势开始
         if (indexPath) {
-            if ([self.delegate respondsToSelector:@selector(timeFlowView:shouldDeleteRowAtIndex:)]) {
-                if (![self.delegate timeFlowView:self shouldDeleteRowAtIndex:indexPath.row]) {
-                    return;
-                }
-            }
-            self.longPressIndexPath = indexPath;
-            [self onLongPressBeganWithSender:sender];
+            [self onLongPressBeganWithSender:sender indexPath:indexPath];
         }
     } else if (sender.state == UIGestureRecognizerStateChanged){ // 手指移动
-        if (!self.longPressIndexPath) {
-            return;
-        }
         [self onLongPressMove:sender];
     } else { // 长按结束
-        if (!self.longPressIndexPath) {
-            return;
-        }
         [self onLongPressEnd:sender];
     }
 }
 
-- (void)onLongPressBeganWithSender:(UILongPressGestureRecognizer *)sender {
-    if ([self.delegate respondsToSelector:@selector(timeFlowView:willDeleteRowAtIndex:)]) {
-        [self.delegate timeFlowView:self willDeleteRowAtIndex:self.longPressIndexPath.row];
+- (void)onLongPressBeganWithSender:(UILongPressGestureRecognizer *)sender indexPath:(NSIndexPath *)indexPath {
+    self.longPressIndexPath = indexPath;
+    BOOL canDelete = YES;
+    if ([self.delegate respondsToSelector:@selector(timeFlowView:shouldDeleteRowAtIndex:)]) {
+        canDelete = [self.delegate timeFlowView:self shouldDeleteRowAtIndex:indexPath.row];
     }
-    
-    [kDRWindow addSubview:self.deleteView];
-    [self.deleteView show];
+    if (canDelete) {
+        if ([self.delegate respondsToSelector:@selector(timeFlowView:willDeleteRowAtIndex:)]) {
+            [self.delegate timeFlowView:self willDeleteRowAtIndex:self.longPressIndexPath.row];
+        }
+        
+        [kDRWindow addSubview:self.deleteView];
+        [self.deleteView show];
+    }
     
     // 获取长按的cell
     UICollectionViewLayoutAttributes *attr = [self.collectionView layoutAttributesForItemAtIndexPath:self.longPressIndexPath];
