@@ -13,6 +13,7 @@
 @property (nonatomic, assign) CGFloat height;               // collectionView Height
 @property (nonatomic, assign) CGFloat maxCellHeight;        // cell最大高度
 @property (nonatomic, assign) NSInteger cellCount;          // 当前cell总数
+@property (nonatomic, assign) CGFloat cellContentHeight; // 所有cell都显示最大时的高度
 
 @property (nonatomic, assign) BOOL needScroll;
 @property (nonatomic, assign) NSInteger targetIndex;
@@ -34,25 +35,18 @@
 }
 
 - (CGSize)collectionViewContentSize {
-    NSInteger cellCount = [self.collectionView numberOfItemsInSection:0];
-    if (cellCount == 0) {
-        _cellCount = 0;
-        self.collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-        self.collectionView.contentOffset = CGPointZero;
-        return CGSizeZero;
-    }
-    // 设置顶部inset，保证所有cell都能滚动到最大位置
-    self.collectionView.contentInset = UIEdgeInsetsMake(self.height - self.maxCellHeight, 0, 0, 0);
-    
     // 获取当前cell总数，并计算内容大小
-    self.cellCount = cellCount;
-    _cellContentHeight = cellCount * self.maxCellHeight;
+    _cellCount = [self.collectionView numberOfItemsInSection:0];
+    self.cellContentHeight = self.cellCount * self.maxCellHeight;
+    
+    // 设置顶部inset，保证所有cell都能滚动到最大位置
+    self.collectionView.contentInset = UIEdgeInsetsMake(self.height, 0, self.maxCellHeight, 0);
     
     // 设置偏移
     if (self.needScroll) {
         CGFloat offset = self.cellContentHeight - self.height;
-        if (self.targetIndex < cellCount-1) { // 不是最后一条
-            NSInteger bottomOutSideCount = cellCount - self.targetIndex -1;
+        if (self.targetIndex < self.cellCount-1) { // 不是最后一条
+            NSInteger bottomOutSideCount = self.cellCount - self.targetIndex -1;
             offset -= bottomOutSideCount * self.maxItemSize.height;
         }
         [self.collectionView setContentOffset:CGPointMake(0, offset)];
@@ -162,20 +156,26 @@
 
 // 保持顶部最小cell，保持minVisibleHeight
 - (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity {
-    CGFloat bottomOutSideHeight = self.cellContentHeight - proposedContentOffset.y - self.height;
-    if (bottomOutSideHeight > 0) {
-        NSInteger bottomOutSideCount = bottomOutSideHeight / self.maxCellHeight;
-        CGFloat bottomCellsHeight = 0;
-        if (bottomOutSideCount > 0) {
-            bottomCellsHeight = bottomOutSideCount * self.maxCellHeight;
+    if (proposedContentOffset.y < self.maxCellHeight - self.height) { // 第一条在collectionView外
+        proposedContentOffset.y = self.maxCellHeight - self.height;
+    } else {
+        CGFloat bottomOutSideHeight = self.cellContentHeight - proposedContentOffset.y - self.height;
+        if (bottomOutSideHeight > 0) {
+            NSInteger bottomOutSideCount = bottomOutSideHeight / self.maxCellHeight;
+            CGFloat bottomCellsHeight = 0;
+            if (bottomOutSideCount > 0) {
+                bottomCellsHeight = bottomOutSideCount * self.maxCellHeight;
+            }
+            CGFloat bottomCellVisibleHeight = self.maxCellHeight - (bottomOutSideHeight - bottomCellsHeight);
+            if (bottomCellVisibleHeight > self.maxCellHeight / 2) {
+                proposedContentOffset.y += (self.maxCellHeight - bottomCellVisibleHeight);
+            } else {
+                proposedContentOffset.y -= bottomCellVisibleHeight;
+            }
+        } else if (bottomOutSideHeight < 0) {
+            proposedContentOffset.y += bottomOutSideHeight;
         }
-        CGFloat bottomCellVisibleHeight = self.maxCellHeight - (bottomOutSideHeight - bottomCellsHeight);
-        if (bottomCellVisibleHeight > self.maxCellHeight / 2) {
-            proposedContentOffset.y += (self.maxCellHeight - bottomCellVisibleHeight);
-        } else {
-            proposedContentOffset.y -= bottomCellVisibleHeight;
-        }
-    }    
+    }
     return proposedContentOffset;
 }
 

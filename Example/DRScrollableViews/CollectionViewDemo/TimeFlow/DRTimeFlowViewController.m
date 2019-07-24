@@ -69,7 +69,7 @@
 - (void)timeFlowView:(DRTimeFlowView *)timeFlowView didScrollToBottom:(UIScrollView *)scrollView {
     // 延时模拟网络请求
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (self.datas.count < 2000) {
+        if (self.datas.count < 300) {
             [self makeDateWithCount:50];
             [timeFlowView reloadData];
         }

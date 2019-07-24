@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
 @property (nonatomic, assign) BOOL canUseDelete; // 是否可以使用拖动删除功能
 @property (nonatomic, assign) BOOL canDeleteStartCell; // 当前吸起的cell是否可删除
 @property (nonatomic, assign) CGRect tableRectInWindow; // tableView相对keyWindow的frame
-@property (nonatomic, weak) UIView *dragView; // 长按手势开始时的cell
+@property (nonatomic, weak) UIView<DRDragSortCellDelegate> *dragView; // 长按手势开始时的cell
 
 @end
 

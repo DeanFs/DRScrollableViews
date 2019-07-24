@@ -25,7 +25,7 @@
 @property (nonatomic, weak) UICollectionViewCell *dragCell; // 长按手势开始时的cell
 @property (nonatomic, strong) UIImageView *dragImageView; // 拖拽的视图的截图
 
-@property (nonatomic, assign) BOOL haveDrag; // 用于判断上拉到底部执行代理回调
+@property (nonatomic, assign) BOOL haveDrag; // 用于判断上拉到底部执行代理回调;
 @property (nonatomic, strong) NSMutableDictionary<NSNumber *, UICollectionViewCell *> *visibleCellsMap; // 缓存当前可见的cell
 
 @end
@@ -90,11 +90,16 @@
 }
 
 - (void)reloadData {
+    DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
+    NSInteger cellCount = layout.cellCount;
     [self.collectionView reloadData];
-    
     dispatch_async(dispatch_get_main_queue(), ^{
-        CGPoint offset = [self.collectionView.collectionViewLayout targetContentOffsetForProposedContentOffset:self.collectionView.contentOffset withScrollingVelocity:CGPointZero];
-        [self.collectionView setContentOffset:offset animated:YES];
+        if (cellCount < layout.cellCount) {
+            CGPoint offset = self.collectionView.contentOffset;
+            offset.y += self.maxItemSize.height;
+            offset = [layout targetContentOffsetForProposedContentOffset:offset withScrollingVelocity:CGPointZero];
+            [self.collectionView setContentOffset:offset animated:YES];
+        }
     });
 }
 
@@ -165,7 +170,7 @@
         if (scrollView.isDragging) {
             return;
         }
-        CGFloat contentHeight = ((DRTimeFlowLayout *)self.collectionView.collectionViewLayout).cellContentHeight;
+        CGFloat contentHeight = scrollView.contentSize.height;
         CGFloat bottomRest = contentHeight - scrollView.contentOffset.y - CGRectGetHeight(scrollView.frame);
         if (bottomRest <= 0) {
             [self.delegate timeFlowView:self didScrollToBottom:scrollView];
@@ -410,12 +415,8 @@
             make.top.left.bottom.right.mas_offset(0);
         }];
         
-        self.collectionView.backgroundColor = [UIColor grayColor];
-        self.collectionView.showsHorizontalScrollIndicator = NO;
-        self.collectionView.showsVerticalScrollIndicator = NO;
         self.collectionView.delegate = self;
         self.collectionView.dataSource = self;
-        
         if (@available(iOS 11.0, *)) {
             self.collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         }
