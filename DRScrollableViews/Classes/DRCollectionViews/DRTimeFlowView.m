@@ -79,10 +79,6 @@
     self.collectionView.backgroundColor = backgroundColor;
 }
 
-- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated {
-    [self.collectionView setContentOffset:offset animated:animated];
-}
-
 - (void)reloadDataScrollToIndex:(NSInteger)index {
     DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
     [layout reloadDataScrollToIndex:index];
