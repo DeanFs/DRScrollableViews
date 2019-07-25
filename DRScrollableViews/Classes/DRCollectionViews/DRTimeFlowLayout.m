@@ -17,16 +17,14 @@
 
 @property (nonatomic, assign) BOOL needScroll;
 @property (nonatomic, assign) NSInteger targetIndex;
-@property (nonatomic, assign) BOOL scrollAnimated;
 
 @end
 
 @implementation DRTimeFlowLayout
 
-- (void)reloadDataScrollToIndex:(NSInteger)index animated:(BOOL)animated {
+- (void)reloadDataScrollToIndex:(NSInteger)index {
     self.needScroll = YES;
     self.targetIndex = index;
-    self.scrollAnimated = animated;
 }
 
 - (void)prepareLayout {
@@ -51,7 +49,7 @@
             NSInteger bottomOutSideCount = self.cellCount - self.targetIndex -1;
             offset -= bottomOutSideCount * self.maxItemSize.height;
         }
-        [self.collectionView setContentOffset:CGPointMake(0, offset) animated:self.scrollAnimated];
+        [self.collectionView setContentOffset:CGPointMake(0, offset)];
         self.needScroll = NO;
     }
     
@@ -64,23 +62,14 @@
         return @[];
     }
     
+    // 获取最底部可见cell的序号
     CGFloat contentOffsetY = self.collectionView.contentOffset.y; // 当前滚动偏移量
-    // 计算顶部滚出collectionView的cell数量
-    NSInteger topOutSideCount = 0;
-    if (contentOffsetY > 0) {
-        topOutSideCount = contentOffsetY / self.maxCellHeight;
-    }
-    
-    // 计算底部未滚完的高度及cell数量
     CGFloat bottomOutSideHeight = self.cellContentHeight - contentOffsetY - self.height;
     NSInteger bottomOutSideCount = 0;
     if (bottomOutSideHeight > 0) {
         bottomOutSideCount = bottomOutSideHeight / self.maxCellHeight;
     }
-    
-    // 获取最底部可见cell的序号
-    NSInteger currentVisibleCount = self.cellCount - topOutSideCount - bottomOutSideCount; // 当前可见cell数
-    NSInteger lastVisibleIndex = topOutSideCount + currentVisibleCount - 1; // 最后一个可见cell的序号
+    NSInteger lastVisibleIndex = self.cellCount - bottomOutSideCount - 1; // 最后一个可见cell的序号
     if (lastVisibleIndex < 0) { // 全部滚出collectionView外
         return @[];
     }

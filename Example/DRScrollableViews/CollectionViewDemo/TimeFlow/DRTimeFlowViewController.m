@@ -41,7 +41,7 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.current = arc4random() % 15;
         [self makeDateWithCount:arc4random() % 200 + 15];
-        [self.timeFlowView reloadDataScrollToIndex:self.current animated:NO];
+        [self.timeFlowView reloadDataScrollToIndex:self.current];
     });
 }
 

@@ -79,9 +79,52 @@
     self.collectionView.backgroundColor = backgroundColor;
 }
 
-- (void)reloadDataScrollToIndex:(NSInteger)index animated:(BOOL)animated {
+// 获取当前显示的第一个cell的序号
+- (NSInteger)currentTopCellIndex {
+    CGFloat contentOffsetY = self.collectionView.contentOffset.y;
+    if (contentOffsetY <= CGRectGetHeight(self.collectionView.frame)) {
+        return -1;
+    }
+    if (contentOffsetY > 0) {
+        return (NSInteger)(contentOffsetY / self.maxItemSize.height);
+    }
+    return 0;
+}
+
+// 获取当前显示的最底部一个cell的序号
+- (NSInteger)currentBottomCellIndex {
+    CGFloat contentOffsetY = self.collectionView.contentOffset.y;
+    if (contentOffsetY <= CGRectGetHeight(self.collectionView.frame)) {
+        return -1;
+    }
     DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
-    [layout reloadDataScrollToIndex:index animated:animated];
+    CGFloat height = CGRectGetHeight(self.collectionView.frame);
+    CGFloat contentHeight = self.collectionView.contentSize.height;
+    CGFloat bottomOutSideHeight = contentHeight - contentOffsetY - height;
+    NSInteger bottomOutSideCount = 0;
+    if (bottomOutSideHeight > 0) {
+        bottomOutSideCount = bottomOutSideHeight / self.maxItemSize.height;
+    }
+    return layout.cellCount - bottomOutSideCount - 1; // 最后一个可见cell的序号
+}
+
+// 设置最底部cell的index，即将底index个cell滚动到底部
+- (void)scrollToBottomIndex:(NSInteger)index animated:(BOOL)animated {
+    DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
+    CGFloat height = CGRectGetHeight(self.collectionView.frame);
+    CGFloat contentHeight = self.collectionView.contentSize.height;
+    if (index >= layout.cellCount-1) {
+        [self.collectionView setContentOffset:CGPointMake(0, contentHeight-height) animated:animated];
+    } else {
+        CGFloat outsideHeight = self.maxItemSize.height * (layout.cellCount-index-1);
+        [self.collectionView setContentOffset:CGPointMake(0, contentHeight-outsideHeight-height) animated:animated];
+    }
+}
+
+// 刷新显示，并将第index个cell定位在底部
+- (void)reloadDataScrollToIndex:(NSInteger)index {
+    DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
+    [layout reloadDataScrollToIndex:index];
     [self.collectionView reloadData];
 }
 
@@ -281,11 +324,6 @@
     UICollectionViewLayoutAttributes *attr = [self.collectionView layoutAttributesForItemAtIndexPath:self.longPressIndexPath];
     CGAffineTransform transform = attr.transform;
     self.dragCell = [self.collectionView cellForItemAtIndexPath:self.longPressIndexPath];
-    self.dragCell.shadowLayer.hidden = YES;
-    if (self.longPressIndexPath.row > 0) {
-        UICollectionViewCell *lastCell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:self.longPressIndexPath.row-1 inSection:0]];
-        lastCell.shadowLayer.hidden = YES;
-    }
     [UIView animateWithDuration:kDRAnimationDuration animations:^{
         // 先动画让cell变回正常大小
         self.dragCell.transform = CGAffineTransformMakeScale(1.0, 1.0);
@@ -294,6 +332,12 @@
             sender.state != UIGestureRecognizerStateCancelled &&
             sender.state != UIGestureRecognizerStateFailed &&
             sender.state != UIGestureRecognizerStatePossible) {
+            // 隐藏阴影图层
+            self.dragCell.shadowLayer.hidden = YES;
+            if (self.longPressIndexPath.row > 0) {
+                UICollectionViewCell *lastCell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:self.longPressIndexPath.row-1 inSection:0]];
+                lastCell.shadowLayer.hidden = YES;
+            }
             // 创建一个imageView并添加到window，imageView的image由cell截图得来
             self.dragImageView = [self createCellImageView];
             // 使用手指的中心位置设置截图中心点

@@ -78,9 +78,14 @@
 - (void)registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier;
 - (__kindof UICollectionViewCell *)dequeueReusableCellWithReuseIdentifier:(NSString *)reuseIdentifier
                                                                  forIndex:(NSInteger)index;
-
-// 刷新显示，并定位到第几条
-- (void)reloadDataScrollToIndex:(NSInteger)index animated:(BOOL)animated;
+// 获取当前显示的第一个cell的序号
+- (NSInteger)currentTopCellIndex;
+// 获取当前显示的最底部一个cell的序号
+- (NSInteger)currentBottomCellIndex;
+// 设置最底部cell的index，即将底index个cell滚动到底部
+- (void)scrollToBottomIndex:(NSInteger)index animated:(BOOL)animated;
+// 刷新显示，并将第index个cell定位在底部
+- (void)reloadDataScrollToIndex:(NSInteger)index;
 // 刷新显示
 - (void)reloadData;
 

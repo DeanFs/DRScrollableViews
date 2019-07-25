@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) NSInteger cellCount;          // 当前cell总数
 @property (nonatomic, strong, readonly) NSArray<NSNumber *> *visibleIndexs; // 当前可见的cell序号集合
 
-- (void)reloadDataScrollToIndex:(NSInteger)index animated:(BOOL)animated;
+- (void)reloadDataScrollToIndex:(NSInteger)index;
 
 @end
 
