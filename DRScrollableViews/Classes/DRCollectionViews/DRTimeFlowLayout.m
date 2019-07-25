@@ -111,8 +111,8 @@
     NSInteger layoutIndex = lastVisibleIndex;
     NSMutableArray *array = [NSMutableArray array];
     NSMutableArray<NSNumber *> *indexs = [NSMutableArray array];
-    
-    while (layoutHeight <= self.height) {
+    CGFloat wholeHeight = self.height + self.maxCellHeight; // 顶部多欲布局一个cell
+    while (layoutHeight <= wholeHeight) {
         CGFloat cellHeight = self.maxCellHeight - self.decreasingStep * rate * (layoutIndex < lastVisibleIndex) - self.decreasingStep * (lastVisibleIndex - layoutIndex - (layoutIndex < lastVisibleIndex && bottomOutSideHeight > 0));
         if (cellHeight < 0) {
             break;
