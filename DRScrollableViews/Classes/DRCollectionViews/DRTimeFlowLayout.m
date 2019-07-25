@@ -17,14 +17,16 @@
 
 @property (nonatomic, assign) BOOL needScroll;
 @property (nonatomic, assign) NSInteger targetIndex;
+@property (nonatomic, assign) BOOL scrollAnimated;
 
 @end
 
 @implementation DRTimeFlowLayout
 
-- (void)reloadDataScrollToIndex:(NSInteger)index {
+- (void)reloadDataScrollToIndex:(NSInteger)index animated:(BOOL)animated {
     self.needScroll = YES;
     self.targetIndex = index;
+    self.scrollAnimated = animated;
 }
 
 - (void)prepareLayout {
@@ -49,7 +51,7 @@
             NSInteger bottomOutSideCount = self.cellCount - self.targetIndex -1;
             offset -= bottomOutSideCount * self.maxItemSize.height;
         }
-        [self.collectionView setContentOffset:CGPointMake(0, offset)];
+        [self.collectionView setContentOffset:CGPointMake(0, offset) animated:self.scrollAnimated];
         self.needScroll = NO;
     }
     
@@ -109,7 +111,7 @@
     NSInteger layoutIndex = lastVisibleIndex;
     NSMutableArray *array = [NSMutableArray array];
     NSMutableArray<NSNumber *> *indexs = [NSMutableArray array];
-    while (layoutHeight < self.height) {
+    while (layoutHeight <= self.height) {
         CGFloat cellHeight = self.maxCellHeight - self.decreasingStep * rate * (layoutIndex < lastVisibleIndex) - self.decreasingStep * (lastVisibleIndex - layoutIndex - (layoutIndex < lastVisibleIndex && bottomOutSideHeight > 0));
         if (cellHeight < 0) {
             break;

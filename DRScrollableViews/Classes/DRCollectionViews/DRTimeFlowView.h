@@ -49,7 +49,7 @@
  @param index 欲删除的cell的index
  @param complete 删除接口返回后调用
  */
-- (void)timeFlowView:(DRTimeFlowView *)timeFlowView beginDeleteRowAtIndex:(NSInteger)index whenComplete:(dispatch_block_t)complete;
+- (void)timeFlowView:(DRTimeFlowView *)timeFlowView beginDeleteRowAtIndex:(NSInteger)index whenComplete:(void(^)(BOOL deleteSuccess))complete;
 
 // scroll
 - (void)timeFlowView:(DRTimeFlowView *)timeFlowView didScrollToBottom:(UIScrollView *)scrollView;
@@ -80,7 +80,7 @@
                                                                  forIndex:(NSInteger)index;
 
 // 刷新显示，并定位到第几条
-- (void)reloadDataScrollToIndex:(NSInteger)index;
+- (void)reloadDataScrollToIndex:(NSInteger)index animated:(BOOL)animated;
 // 刷新显示
 - (void)reloadData;
 

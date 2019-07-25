@@ -79,9 +79,9 @@
     self.collectionView.backgroundColor = backgroundColor;
 }
 
-- (void)reloadDataScrollToIndex:(NSInteger)index {
+- (void)reloadDataScrollToIndex:(NSInteger)index animated:(BOOL)animated {
     DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
-    [layout reloadDataScrollToIndex:index];
+    [layout reloadDataScrollToIndex:index animated:animated];
     [self.collectionView reloadData];
 }
 
@@ -90,13 +90,29 @@
     NSInteger cellCount = layout.cellCount;
     [self.collectionView reloadData];
     dispatch_async(dispatch_get_main_queue(), ^{
+        CGPoint offset = self.collectionView.contentOffset;
         if (cellCount < layout.cellCount) {
-            CGPoint offset = self.collectionView.contentOffset;
             offset.y += self.maxItemSize.height;
-            offset = [layout targetContentOffsetForProposedContentOffset:offset withScrollingVelocity:CGPointZero];
-            [self.collectionView setContentOffset:offset animated:YES];
         }
+        offset = [layout targetContentOffsetForProposedContentOffset:offset withScrollingVelocity:CGPointZero];
+        [self.collectionView setContentOffset:offset animated:YES];
     });
+}
+
+- (void)reloadDataForDelete:(BOOL)success {
+    self.collectionView.scrollEnabled = YES;
+    self.longGesture.enabled = YES;
+    self.dragCell.hidden = NO;
+    self.dragCell = nil;
+    self.longPressIndexPath = nil;
+    
+    if (success) {
+        CGFloat offset = self.collectionView.contentOffset.y;
+        offset -= self.maxItemSize.height;
+        [self.collectionView setContentOffset:CGPointMake(0, offset)];
+    }
+    
+    [self reloadData];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -161,16 +177,11 @@
 
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if ([self.delegate respondsToSelector:@selector(timeFlowView:didScrollToBottom:)] &&
-        self.haveDrag) {
-        if (scrollView.isDragging) {
-            return;
-        }
-        CGFloat contentHeight = scrollView.contentSize.height;
-        CGFloat bottomRest = contentHeight - scrollView.contentOffset.y - CGRectGetHeight(scrollView.frame);
-        if (bottomRest <= 0) {
-            [self.delegate timeFlowView:self didScrollToBottom:scrollView];
-            self.haveDrag = NO;
+    if (!self.haveDrag) {
+        CGFloat minOffset = self.maxItemSize.height - CGRectGetHeight(scrollView.frame);
+        if (scrollView.contentOffset.y < minOffset && scrollView.contentSize.height > 0) {
+            scrollView.contentOffset = CGPointMake(0, minOffset);
+            [self setupVisibleCells];
         }
     }
     
@@ -209,6 +220,14 @@
     if ([self.delegate respondsToSelector:@selector(timeFlowView:didEndDecelerating:)]) {
         [self.delegate timeFlowView:self didEndDecelerating:scrollView];
     }
+    if ([self.delegate respondsToSelector:@selector(timeFlowView:didScrollToBottom:)]) {
+        CGFloat contentHeight = scrollView.contentSize.height;
+        CGFloat bottomRest = contentHeight - scrollView.contentOffset.y - CGRectGetHeight(scrollView.frame);
+        if (bottomRest <= 0) {
+            [self.delegate timeFlowView:self didScrollToBottom:scrollView];
+        }
+    }
+    self.haveDrag = NO;
 }
 
 #pragma mark - private
@@ -318,13 +337,8 @@
         self.longGesture.enabled = NO;
         
         kDRWeakSelf
-        [self.delegate timeFlowView:self beginDeleteRowAtIndex:self.longPressIndexPath.row whenComplete:^{
-            weakSelf.collectionView.scrollEnabled = YES;
-            weakSelf.longGesture.enabled = YES;
-            weakSelf.dragCell.hidden = NO;
-            weakSelf.dragCell = nil;
-            weakSelf.longPressIndexPath = nil;
-            [weakSelf.collectionView reloadData];
+        [self.delegate timeFlowView:self beginDeleteRowAtIndex:self.longPressIndexPath.row whenComplete:^(BOOL deleteSuccess) {
+            [weakSelf reloadDataForDelete:deleteSuccess];
         }];
     } else {
         [self recoverDragView];
