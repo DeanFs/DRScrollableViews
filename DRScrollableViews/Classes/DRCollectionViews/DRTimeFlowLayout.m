@@ -111,6 +111,7 @@
     NSInteger layoutIndex = lastVisibleIndex;
     NSMutableArray *array = [NSMutableArray array];
     NSMutableArray<NSNumber *> *indexs = [NSMutableArray array];
+    
     while (layoutHeight <= self.height) {
         CGFloat cellHeight = self.maxCellHeight - self.decreasingStep * rate * (layoutIndex < lastVisibleIndex) - self.decreasingStep * (lastVisibleIndex - layoutIndex - (layoutIndex < lastVisibleIndex && bottomOutSideHeight > 0));
         if (cellHeight < 0) {

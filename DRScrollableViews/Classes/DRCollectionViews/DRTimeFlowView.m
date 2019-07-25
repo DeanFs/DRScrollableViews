@@ -107,9 +107,13 @@
     self.longPressIndexPath = nil;
     
     if (success) {
+        CGFloat contentHeight = self.collectionView.contentSize.height;
         CGFloat offset = self.collectionView.contentOffset.y;
-        offset -= self.maxItemSize.height;
-        [self.collectionView setContentOffset:CGPointMake(0, offset)];
+        CGFloat height = CGRectGetHeight(self.collectionView.frame);
+        if (contentHeight - offset - height < self.maxItemSize.height) {
+            offset -= self.maxItemSize.height;
+            [self.collectionView setContentOffset:CGPointMake(0, offset)];
+        }
     }
     
     [self reloadData];
