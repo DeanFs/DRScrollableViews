@@ -82,10 +82,16 @@
 - (NSInteger)currentTopCellIndex;
 // 获取当前显示的最底部一个cell的序号
 - (NSInteger)currentBottomCellIndex;
+// 滚动，将可见cell的第一个置为第index个
+- (void)scrollToTopIndex:(NSInteger)index animated:(BOOL)animated;
 // 设置最底部cell的index，即将底index个cell滚动到底部
 - (void)scrollToBottomIndex:(NSInteger)index animated:(BOOL)animated;
-// 刷新显示，并将第index个cell定位在底部
-- (void)reloadDataScrollToIndex:(NSInteger)index;
+// 刷新显示，并将第bottomIndex个cell定位在底部
+- (void)reloadDataScrollToBottomIndex:(NSInteger)bottomIndex;
+// 刷新显示，并将第bottomIndex个cell定位在底部，并将第hideIndex个cell设置为透明
+- (void)reloadDataScrollToBottomIndex:(NSInteger)bottomIndex hideCellAtIndex:(NSInteger)hideIndex;
+// 尾部加载更多数据
+- (void)realoadAppendData;
 // 刷新显示
 - (void)reloadData;
 

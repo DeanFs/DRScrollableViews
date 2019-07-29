@@ -7,6 +7,7 @@
 
 #import "DRTimeFlowLayout.h"
 #import <DRMacroDefines/DRMacroDefines.h>
+#import <DRCategories/NSArray+DRExtension.h>
 
 @interface DRTimeFlowLayout ()
 
@@ -16,15 +17,24 @@
 @property (nonatomic, assign) CGFloat cellContentHeight; // 所有cell都显示最大时的高度
 
 @property (nonatomic, assign) BOOL needScroll;
-@property (nonatomic, assign) NSInteger targetIndex;
+@property (nonatomic, assign) NSInteger scrollTargetIndex;
+@property (nonatomic, assign) BOOL needHide;
+@property (nonatomic, assign) NSInteger hideTargetIndex;
 
 @end
 
 @implementation DRTimeFlowLayout
 
-- (void)reloadDataScrollToIndex:(NSInteger)index {
+- (void)reloadDataScrollToBottomIndex:(NSInteger)bottomIndex {
     self.needScroll = YES;
-    self.targetIndex = index;
+    self.scrollTargetIndex = bottomIndex;
+}
+
+- (void)reloadDataScrollToBottomIndex:(NSInteger)bottomIndex hideIndex:(NSInteger)hideIndex {
+    self.needScroll = YES;
+    self.scrollTargetIndex = bottomIndex;
+    self.needHide = YES;
+    self.hideTargetIndex = hideIndex;
 }
 
 - (void)prepareLayout {
@@ -45,8 +55,8 @@
     // 设置偏移
     if (self.needScroll) {
         CGFloat offset = self.cellContentHeight - self.height;
-        if (self.targetIndex < self.cellCount-1) { // 不是最后一条
-            NSInteger bottomOutSideCount = self.cellCount - self.targetIndex -1;
+        if (self.scrollTargetIndex < self.cellCount-1) { // 不是最后一条
+            NSInteger bottomOutSideCount = self.cellCount - self.scrollTargetIndex -1;
             offset -= bottomOutSideCount * self.maxItemSize.height;
         }
         [self.collectionView setContentOffset:CGPointMake(0, offset)];
@@ -114,8 +124,12 @@
         attributes.size = self.maxItemSize;
         attributes.transform = CGAffineTransformMakeScale(scale, scale);
         attributes.center = CGPointMake(CGRectGetWidth(self.collectionView.frame)/2, cellCenterY);
-        [array insertObject:attributes atIndex:0];
-        [indexs insertObject:@(layoutIndex) atIndex:0];
+        if (self.needHide && layoutIndex == self.hideTargetIndex) {
+            attributes.alpha = 0.0;
+            self.needHide = NO;
+        }
+        [array safeInsertObject:attributes atIndex:0];
+        [indexs safeInsertObject:@(layoutIndex) atIndex:0];
         
         bottomCellBottomY -= cellHeight;
         if (layoutIndex == lastVisibleIndex) {

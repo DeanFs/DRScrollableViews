@@ -12,6 +12,7 @@
 #import <HexColors/HexColors.h>
 #import <Masonry/Masonry.h>
 #import <DRCategories/UIImage+DRExtension.h>
+#import <DRCategories/NSDictionary+DRExtension.h>
 #import "UICollectionViewCell+TimeFlowShadowLayer.h"
 
 @interface DRTimeFlowView () <UICollectionViewDelegate, UICollectionViewDataSource>
@@ -82,7 +83,7 @@
 // 获取当前显示的第一个cell的序号
 - (NSInteger)currentTopCellIndex {
     CGFloat contentOffsetY = self.collectionView.contentOffset.y;
-    if (contentOffsetY <= CGRectGetHeight(self.collectionView.frame)) {
+    if (contentOffsetY <= -CGRectGetHeight(self.collectionView.frame)) {
         return -1;
     }
     if (contentOffsetY > 0) {
@@ -94,7 +95,7 @@
 // 获取当前显示的最底部一个cell的序号
 - (NSInteger)currentBottomCellIndex {
     CGFloat contentOffsetY = self.collectionView.contentOffset.y;
-    if (contentOffsetY <= CGRectGetHeight(self.collectionView.frame)) {
+    if (contentOffsetY <= -CGRectGetHeight(self.collectionView.frame)) {
         return -1;
     }
     DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
@@ -106,6 +107,15 @@
         bottomOutSideCount = bottomOutSideHeight / self.maxItemSize.height;
     }
     return layout.cellCount - bottomOutSideCount - 1; // 最后一个可见cell的序号
+}
+
+// 滚动，将可见cell的第一个置为第index个
+- (void)scrollToTopIndex:(NSInteger)index animated:(BOOL)animated {
+    DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
+    CGPoint offset = CGPointMake(0, (index-1)*self.maxItemSize.height);
+    offset = [layout targetContentOffsetForProposedContentOffset:offset withScrollingVelocity:CGPointZero];
+    [self.collectionView setContentOffset:offset
+                                 animated:animated];
 }
 
 // 设置最底部cell的index，即将底index个cell滚动到底部
@@ -121,14 +131,22 @@
     }
 }
 
-// 刷新显示，并将第index个cell定位在底部
-- (void)reloadDataScrollToIndex:(NSInteger)index {
+// 刷新显示，并将第bottomIndex个cell定位在底部
+- (void)reloadDataScrollToBottomIndex:(NSInteger)bottomIndex {
     DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
-    [layout reloadDataScrollToIndex:index];
+    [layout reloadDataScrollToBottomIndex:bottomIndex];
     [self.collectionView reloadData];
 }
 
-- (void)reloadData {
+// 刷新显示，并将第bottomIndex个cell定位在底部，并将第hideIndex个cell设置为透明
+- (void)reloadDataScrollToBottomIndex:(NSInteger)bottomIndex hideCellAtIndex:(NSInteger)hideIndex {
+    DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
+    [layout reloadDataScrollToBottomIndex:bottomIndex hideIndex:hideIndex];
+    [self.collectionView reloadData];
+}
+
+// 尾部加载更多数据
+- (void)realoadAppendData {
     DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
     NSInteger cellCount = layout.cellCount;
     [self.collectionView reloadData];
@@ -140,6 +158,14 @@
         offset = [layout targetContentOffsetForProposedContentOffset:offset withScrollingVelocity:CGPointZero];
         [self.collectionView setContentOffset:offset animated:YES];
     });
+}
+
+- (void)reloadData {
+    [self.collectionView reloadData];
+    
+    DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
+    CGPoint offset = [layout targetContentOffsetForProposedContentOffset:self.collectionView.contentOffset withScrollingVelocity:CGPointZero];
+    [self.collectionView setContentOffset:offset animated:NO];
 }
 
 - (void)reloadDataForDelete:(BOOL)success {
@@ -214,7 +240,7 @@
                                      offset:self.coverOffset + self.cellShadowOffset
                                cornerRadius:self.cellCornerRadius];
     }
-    [self.visibleCellsMap setObject:cell forKey:@(indexPath.row)];
+    [self.visibleCellsMap safeSetObject:cell forKey:@(indexPath.row)];
     [self setupVisibleCells];
     
     if ([self.delegate respondsToSelector:@selector(timeFlowView:willDisplayCell:forRowAtIndex:)]) {
@@ -275,6 +301,10 @@
         }
     }
     self.haveDrag = NO;
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
+    [self setupVisibleCells];
 }
 
 #pragma mark - private
