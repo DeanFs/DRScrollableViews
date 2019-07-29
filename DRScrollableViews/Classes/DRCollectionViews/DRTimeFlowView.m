@@ -109,6 +109,10 @@
     return layout.cellCount - bottomOutSideCount - 1; // 最后一个可见cell的序号
 }
 
+- (CGPoint)contentOffset {
+    return self.collectionView.contentOffset;
+}
+
 // 滚动，将可见cell的第一个置为第index个
 - (void)scrollToTopIndex:(NSInteger)index animated:(BOOL)animated {
     DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
