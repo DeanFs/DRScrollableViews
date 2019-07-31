@@ -167,9 +167,11 @@
 - (void)reloadData {
     [self.collectionView reloadData];
     
-    DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
-    CGPoint offset = [layout targetContentOffsetForProposedContentOffset:self.collectionView.contentOffset withScrollingVelocity:CGPointZero];
-    [self.collectionView setContentOffset:offset animated:NO];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
+        CGPoint offset = [layout targetContentOffsetForProposedContentOffset:self.collectionView.contentOffset withScrollingVelocity:CGPointZero];
+        [self.collectionView setContentOffset:offset animated:NO];
+    });
 }
 
 - (void)reloadDataForDelete:(BOOL)success {

@@ -15,26 +15,26 @@ PODS:
     - pop
   - DRMacroDefines (0.1.2)
   - DRSandboxManager (0.1.0)
-  - DRScrollableViews (0.1.10):
+  - DRScrollableViews (0.2.0):
     - DRCategories
     - DRMacroDefines
-    - DRScrollableViews/Common (= 0.1.10)
-    - DRScrollableViews/DRCollectionViews (= 0.1.10)
-    - DRScrollableViews/DRDragSortTableView (= 0.1.10)
+    - DRScrollableViews/Common (= 0.2.0)
+    - DRScrollableViews/DRCollectionViews (= 0.2.0)
+    - DRScrollableViews/DRDragSortTableView (= 0.2.0)
     - HexColors (= 4.0.0)
     - Masonry
-  - DRScrollableViews/Common (0.1.10):
+  - DRScrollableViews/Common (0.2.0):
     - DRCategories
     - DRMacroDefines
     - HexColors (= 4.0.0)
     - Masonry
-  - DRScrollableViews/DRCollectionViews (0.1.10):
+  - DRScrollableViews/DRCollectionViews (0.2.0):
     - DRCategories
     - DRMacroDefines
     - DRScrollableViews/Common
     - HexColors (= 4.0.0)
     - Masonry
-  - DRScrollableViews/DRDragSortTableView (0.1.10):
+  - DRScrollableViews/DRDragSortTableView (0.2.0):
     - DRCategories
     - DRMacroDefines
     - DRScrollableViews/Common
@@ -66,7 +66,7 @@ SPEC CHECKSUMS:
   DRCategories: be99ac83f5e3cb162140f324539447dd251d73bd
   DRMacroDefines: 58aa271bc1c4170fa09f4f33dcad18fc4f21a57e
   DRSandboxManager: 2a48ca41b22edfc39dd2f66abd5a99e777410c61
-  DRScrollableViews: d344d601ce882c13349adde3a58b458cc718fb27
+  DRScrollableViews: 4716086ca36d89d17ad39f047781e3ac810a089e
   HexColors: 5f95843ef89aff6a72e1fd3a8ebabf205cc43379
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   pop: d582054913807fd11fd50bfe6a539d91c7e1a55a
