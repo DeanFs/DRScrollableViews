@@ -33,6 +33,7 @@
     self.view.backgroundColor = [UIColor grayColor];
     self.timeFlowView.backgroundColor = [UIColor grayColor];
     
+    self.timeFlowView.cellShadowColor = [UIColor hx_colorWithHexRGBAString:@"ECD2C188"];
     [self.timeFlowView registerNib:[UINib nibWithNibName:self.reuseIdentifier bundle:nil] forCellWithReuseIdentifier:self.reuseIdentifier];
     self.timeFlowView.delegate = self;
     self.timeFlowView.dataSource = self;

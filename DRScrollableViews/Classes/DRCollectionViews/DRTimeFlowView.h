@@ -69,7 +69,7 @@
 @property (nonatomic, assign) IBInspectable CGFloat coverOffset; // 上一个cell被遮盖的高度值，默认4
 @property (nonatomic, assign) IBInspectable CGFloat cellCornerRadius; // cell圆角半径，默认4
 @property (nonatomic, strong) IBInspectable UIColor *cellShadowColor; // cell阴影的颜色，默认0xD6E7F4
-@property (nonatomic, assign) IBInspectable CGFloat cellShadowOffset; // 可见阴影长度, 默认18
+@property (nonatomic, assign) IBInspectable CGFloat cellShadowOffset; // 可见阴影长度, 默认20
 @property (nonatomic, assign, readonly) CGPoint contentOffset;
 
 @property (nonatomic, weak) id<DRTimeFlowViewDataSource> dataSource;

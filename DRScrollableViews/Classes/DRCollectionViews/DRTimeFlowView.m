@@ -435,9 +435,9 @@
     }
     
     UIImageView *cellImageView = [[UIImageView alloc] initWithImage:[UIImage imageFromView:self.dragCell]];
-    cellImageView.layer.shadowRadius = 5.0;
-    cellImageView.layer.shadowOpacity = 0.4;
-    cellImageView.layer.shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6].CGColor;
+    cellImageView.layer.shadowRadius = self.cellShadowOffset;
+    cellImageView.layer.shadowOpacity = 1.0;
+    cellImageView.layer.shadowColor = self.cellShadowColor.CGColor;
     [kDRWindow addSubview:cellImageView];
     return cellImageView;
 }
@@ -520,7 +520,7 @@
         self.coverOffset = 4;
         self.cellCornerRadius = 4;
         self.cellShadowColor = [UIColor hx_colorWithHexRGBAString:@"D6E7F4"];
-        self.cellShadowOffset = 18;
+        self.cellShadowOffset = 20;
     }
 }
 
