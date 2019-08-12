@@ -95,8 +95,8 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
     // 根据indexPath获取cell
     if (startIndexPath) {
         self.dragView = [self cellForRowAtIndexPath:self.startIndexPath];
-        if ([self.dragView respondsToSelector:@selector(dragCell)]) {
-            self.dragView = [self.dragView performSelector:@selector(dragCell)];
+        if ([self.dragView respondsToSelector:@selector(subDragViewFromCellInDragSortTableView:)]) {
+            self.dragView = [self.dragView subDragViewFromCellInDragSortTableView:self];
         }
     }
 }
