@@ -80,6 +80,8 @@
 - (void)registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier;
 - (__kindof UICollectionViewCell *)dequeueReusableCellWithReuseIdentifier:(NSString *)reuseIdentifier
                                                                  forIndex:(NSInteger)index;
+- (__kindof UICollectionViewCell *)cellAtIndex:(NSInteger)index;
+
 // 获取当前显示的第一个cell的序号
 - (NSInteger)currentTopCellIndex;
 // 获取当前显示的最底部一个cell的序号

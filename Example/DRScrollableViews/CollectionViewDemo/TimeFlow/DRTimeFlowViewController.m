@@ -64,6 +64,17 @@
 
 - (void)timeFlowView:(DRTimeFlowView *)timeFlowView didSelectRowAtIndex:(NSInteger)index {
     kDR_LOG(@"click %ld", index);
+    DRTimeFlowCell *cell = [timeFlowView cellAtIndex:index];
+    CGAffineTransform oldTrans = cell.transform;
+    [UIView animateWithDuration:0.1 animations:^{
+        cell.transform = CGAffineTransformScale(oldTrans, 1.1, 1.1);
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.1 animations:^{
+            cell.transform = oldTrans;
+        } completion:^(BOOL finished) {
+            
+        }];
+    }];
 }
 
 // 加载更多

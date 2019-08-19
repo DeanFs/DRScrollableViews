@@ -48,6 +48,10 @@
                                                           forIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
 }
 
+- (__kindof UICollectionViewCell *)cellAtIndex:(NSInteger)index {
+    return [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+}
+
 - (void)setMaxItemSize:(CGSize)maxItemSize {
     _maxItemSize = maxItemSize;
     DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
