@@ -66,6 +66,11 @@
     layout.coverOffset = coverOffset;
 }
 
+- (void)setBouncesEnable:(BOOL)bouncesEnable {
+    _bouncesEnable = bouncesEnable;
+    self.collectionView.bounces = bouncesEnable;
+}
+
 - (void)setDelegate:(id<DRTimeFlowViewDelegate>)delegate {
     _delegate = delegate;
     if ([delegate respondsToSelector:@selector(timeFlowView:beginDeleteRowAtIndex:whenComplete:)]) {

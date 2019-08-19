@@ -67,6 +67,7 @@
 @property (nonatomic, assign) IBInspectable CGSize maxItemSize; // 最大的cell的size，默认(screen_width-56, 74)
 @property (nonatomic, assign) IBInspectable CGFloat decreasingStep; // cell高度递减的值，默认4
 @property (nonatomic, assign) IBInspectable CGFloat coverOffset; // 上一个cell被遮盖的高度值，默认4
+@property (nonatomic, assign) IBInspectable BOOL bouncesEnable; // 是否可以回弹
 @property (nonatomic, assign) IBInspectable CGFloat cellCornerRadius; // cell圆角半径，默认4
 @property (nonatomic, strong) IBInspectable UIColor *cellShadowColor; // cell阴影的颜色，默认0xD6E7F4
 @property (nonatomic, assign) IBInspectable CGFloat cellShadowOffset; // 可见阴影长度, 默认20
