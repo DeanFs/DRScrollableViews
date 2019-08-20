@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UICollectionViewCell (TimeFlowShadowLayer)
 
 @property (nonatomic, weak) CALayer *shadowLayer;
+@property (nonatomic, strong) UIColor *shadowColor;
 
 - (void)addShadowLayerWithShadowColor:(UIColor *)color
                                offset:(CGFloat)offset

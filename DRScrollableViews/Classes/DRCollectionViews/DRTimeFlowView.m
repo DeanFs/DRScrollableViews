@@ -250,10 +250,14 @@
         cell.layer.borderColor = cell.backgroundColor.CGColor;
         cell.layer.borderWidth = 1;
     }
-    if (self.cellShadowColor && !cell.shadowLayer) {
-        [cell addShadowLayerWithShadowColor:self.cellShadowColor
-                                     offset:self.coverOffset + self.cellShadowOffset
-                               cornerRadius:self.cellCornerRadius];
+    if (self.cellShadowColor) {
+        if (!cell.shadowLayer) {
+            [cell addShadowLayerWithShadowColor:self.cellShadowColor
+                                         offset:self.coverOffset + self.cellShadowOffset
+                                   cornerRadius:self.cellCornerRadius];
+        } else {
+            cell.shadowColor = self.cellShadowColor;
+        }
     }
     [self.visibleCellsMap safeSetObject:cell forKey:@(indexPath.row)];
     [self setupVisibleCells];

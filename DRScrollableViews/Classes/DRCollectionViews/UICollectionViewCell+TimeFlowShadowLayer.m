@@ -36,4 +36,9 @@
     self.shadowLayer = layer;
 }
 
+- (void)setShadowColor:(UIColor *)shadowColor {
+    CAGradientLayer *layer = (CAGradientLayer *)self.shadowLayer;
+    layer.colors = @[(__bridge id)[UIColor colorWithWhite:1.0 alpha:0].CGColor, (__bridge id)shadowColor.CGColor];
+}
+
 @end
