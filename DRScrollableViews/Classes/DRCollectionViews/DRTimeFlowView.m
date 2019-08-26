@@ -129,6 +129,9 @@
     offset = [layout targetContentOffsetForProposedContentOffset:offset withScrollingVelocity:CGPointZero];
     [self.collectionView setContentOffset:offset
                                  animated:animated];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kDRAnimationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self setupVisibleCells];
+    });
 }
 
 // 设置最底部cell的index，即将底index个cell滚动到底部
@@ -142,6 +145,9 @@
         CGFloat outsideHeight = self.maxItemSize.height * (layout.cellCount-index-1);
         [self.collectionView setContentOffset:CGPointMake(0, contentHeight-outsideHeight-height) animated:animated];
     }
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kDRAnimationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self setupVisibleCells];
+    });
 }
 
 // 刷新显示，并将第bottomIndex个cell定位在底部
@@ -296,6 +302,9 @@
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (!decelerate) {
+        [self setupVisibleCells];
+    }
     if ([self.delegate respondsToSelector:@selector(timeFlowView:didEndDragging:willDecelerate:)]) {
         [self.delegate timeFlowView:self didEndDragging:scrollView willDecelerate:decelerate];
     }
