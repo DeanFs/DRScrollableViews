@@ -129,7 +129,7 @@
     offset = [layout targetContentOffsetForProposedContentOffset:offset withScrollingVelocity:CGPointZero];
     [self.collectionView setContentOffset:offset
                                  animated:animated];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kDRAnimationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self setupVisibleCells];
     });
 }
@@ -145,7 +145,7 @@
         CGFloat outsideHeight = self.maxItemSize.height * (layout.cellCount-index-1);
         [self.collectionView setContentOffset:CGPointMake(0, contentHeight-outsideHeight-height) animated:animated];
     }
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kDRAnimationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self setupVisibleCells];
     });
 }
@@ -303,7 +303,9 @@
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     if (!decelerate) {
-        [self setupVisibleCells];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self setupVisibleCells];
+        });
     }
     if ([self.delegate respondsToSelector:@selector(timeFlowView:didEndDragging:willDecelerate:)]) {
         [self.delegate timeFlowView:self didEndDragging:scrollView willDecelerate:decelerate];
@@ -317,7 +319,9 @@
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    [self setupVisibleCells];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self setupVisibleCells];
+    });
     if ([self.delegate respondsToSelector:@selector(timeFlowView:didEndDecelerating:)]) {
         [self.delegate timeFlowView:self didEndDecelerating:scrollView];
     }
@@ -332,7 +336,9 @@
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
-    [self setupVisibleCells];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self setupVisibleCells];
+    });
 }
 
 #pragma mark - private
