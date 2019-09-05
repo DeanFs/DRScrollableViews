@@ -35,16 +35,24 @@
         return @[];
     }
     
-    // 获取左侧第一个可见cell的序号
-    CGFloat contentOffsetX = self.collectionView.contentOffset.x; // 当前滚动偏移量
-    NSInteger firstVisibleIndex = contentOffsetX / self.itemWidth;
+    // 当前滚动偏移量
+    CGFloat contentOffsetX = self.collectionView.contentOffset.x;
+    if (contentOffsetX < -self.width || contentOffsetX > self.collectionView.contentSize.width) {
+        return @[];
+    }
     
-    // 获取第一个可见cell的可见宽度
-    CGFloat firstVisibleCellWidth = (firstVisibleIndex+1) * self.itemWidth - contentOffsetX;
+    // 获取左侧第一个可见cell的序号
+    NSInteger firstVisibleIndex = 0;
+    CGFloat layoutWidth = 0;
+    if (contentOffsetX > 0) {
+        firstVisibleIndex = contentOffsetX / self.itemWidth;
+        layoutWidth = (firstVisibleIndex+1) * self.itemWidth - contentOffsetX;
+    } else {
+        layoutWidth = -contentOffsetX;
+    }
     
     // 设置布局信息
     NSInteger layoutIndex = firstVisibleIndex;
-    CGFloat layoutWidth = firstVisibleCellWidth;
     CGFloat fullWidth = self.width + self.itemWidth;
     NSMutableArray *array = [NSMutableArray array];
     while (layoutWidth <= fullWidth) {
