@@ -26,6 +26,11 @@
 		D824E1D79F79C33AB2F14F28 /* Pods_DRScrollableViews_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56587A4DDD973D824033BC60 /* Pods_DRScrollableViews_Tests.framework */; };
 		FE682F2422E1A31D00815E2F /* DRDragSortDeleteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE682F2222E1A31D00815E2F /* DRDragSortDeleteCell.m */; };
 		FE682F2522E1A31D00815E2F /* DRDragSortDeleteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE682F2322E1A31D00815E2F /* DRDragSortDeleteCell.xib */; };
+		FE89B14E231FE8FB009DC194 /* DRFoldableOptionItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE89B14D231FE8FB009DC194 /* DRFoldableOptionItemViewController.m */; };
+		FE89B153231FED3F009DC194 /* DRFoldableOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE89B151231FED3F009DC194 /* DRFoldableOptionCell.m */; };
+		FE89B154231FED3F009DC194 /* DRFoldableOptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE89B152231FED3F009DC194 /* DRFoldableOptionCell.xib */; };
+		FE89B156231FED67009DC194 /* FoldableOptionView.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FE89B155231FED67009DC194 /* FoldableOptionView.xcassets */; };
+		FE89B15A231FEF9E009DC194 /* DRFoldableItemModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FE89B159231FEF9E009DC194 /* DRFoldableItemModel.m */; };
 		FEB9AC3622DEBFEE00B91032 /* DRDragSortTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9AC3522DEBFEE00B91032 /* DRDragSortTableViewController.m */; };
 		FEB9AC4922DF002D00B91032 /* DRTimeFlowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9AC4722DF002D00B91032 /* DRTimeFlowCell.m */; };
 		FEB9AC4A22DF002D00B91032 /* DRTimeFlowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEB9AC4822DF002D00B91032 /* DRTimeFlowCell.xib */; };
@@ -78,6 +83,14 @@
 		FE682F2122E1A31D00815E2F /* DRDragSortDeleteCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRDragSortDeleteCell.h; sourceTree = "<group>"; };
 		FE682F2222E1A31D00815E2F /* DRDragSortDeleteCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRDragSortDeleteCell.m; sourceTree = "<group>"; };
 		FE682F2322E1A31D00815E2F /* DRDragSortDeleteCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DRDragSortDeleteCell.xib; sourceTree = "<group>"; };
+		FE89B14C231FE8FB009DC194 /* DRFoldableOptionItemViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRFoldableOptionItemViewController.h; sourceTree = "<group>"; };
+		FE89B14D231FE8FB009DC194 /* DRFoldableOptionItemViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRFoldableOptionItemViewController.m; sourceTree = "<group>"; };
+		FE89B150231FED3F009DC194 /* DRFoldableOptionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRFoldableOptionCell.h; sourceTree = "<group>"; };
+		FE89B151231FED3F009DC194 /* DRFoldableOptionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRFoldableOptionCell.m; sourceTree = "<group>"; };
+		FE89B152231FED3F009DC194 /* DRFoldableOptionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DRFoldableOptionCell.xib; sourceTree = "<group>"; };
+		FE89B155231FED67009DC194 /* FoldableOptionView.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = FoldableOptionView.xcassets; sourceTree = "<group>"; };
+		FE89B158231FEF9E009DC194 /* DRFoldableItemModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRFoldableItemModel.h; sourceTree = "<group>"; };
+		FE89B159231FEF9E009DC194 /* DRFoldableItemModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRFoldableItemModel.m; sourceTree = "<group>"; };
 		FEB9AC3422DEBFEE00B91032 /* DRDragSortTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRDragSortTableViewController.h; sourceTree = "<group>"; };
 		FEB9AC3522DEBFEE00B91032 /* DRDragSortTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRDragSortTableViewController.m; sourceTree = "<group>"; };
 		FEB9AC4622DF002D00B91032 /* DRTimeFlowCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRTimeFlowCell.h; sourceTree = "<group>"; };
@@ -154,11 +167,11 @@
 			children = (
 				6003F59C195388D20070C39A /* DRAppDelegate.h */,
 				6003F59D195388D20070C39A /* DRAppDelegate.m */,
-				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				6003F5A5195388D20070C39A /* DRViewController.h */,
 				6003F5A6195388D20070C39A /* DRViewController.m */,
 				FEB9AC3922DEFCE200B91032 /* DragSortTableViewDemo */,
 				FEB9AC3D22DEFD2C00B91032 /* CollectionViewDemo */,
+				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
@@ -218,6 +231,37 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		FE89B14F231FE901009DC194 /* FoldableOptionItemDemo */ = {
+			isa = PBXGroup;
+			children = (
+				FE89B15B231FF002009DC194 /* Models */,
+				FE89B157231FEF71009DC194 /* Views */,
+				FE89B14C231FE8FB009DC194 /* DRFoldableOptionItemViewController.h */,
+				FE89B14D231FE8FB009DC194 /* DRFoldableOptionItemViewController.m */,
+				FE89B155231FED67009DC194 /* FoldableOptionView.xcassets */,
+			);
+			path = FoldableOptionItemDemo;
+			sourceTree = "<group>";
+		};
+		FE89B157231FEF71009DC194 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FE89B150231FED3F009DC194 /* DRFoldableOptionCell.h */,
+				FE89B151231FED3F009DC194 /* DRFoldableOptionCell.m */,
+				FE89B152231FED3F009DC194 /* DRFoldableOptionCell.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FE89B15B231FF002009DC194 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FE89B158231FEF9E009DC194 /* DRFoldableItemModel.h */,
+				FE89B159231FEF9E009DC194 /* DRFoldableItemModel.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		FEB9AC3922DEFCE200B91032 /* DragSortTableViewDemo */ = {
 			isa = PBXGroup;
 			children = (
@@ -234,6 +278,7 @@
 			isa = PBXGroup;
 			children = (
 				FEB9AC4C22DF007B00B91032 /* TimeFlow */,
+				FE89B14F231FE901009DC194 /* FoldableOptionItemDemo */,
 			);
 			path = CollectionViewDemo;
 			sourceTree = "<group>";
@@ -347,7 +392,9 @@
 				FEB9AC4E22DF09B100B91032 /* TimeFlow.xcassets in Resources */,
 				FEB9AC5522DF343600B91032 /* DRTimeFlowViewController.xib in Resources */,
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
+				FE89B154231FED3F009DC194 /* DRFoldableOptionCell.xib in Resources */,
 				FEB9AC4A22DF002D00B91032 /* DRTimeFlowCell.xib in Resources */,
+				FE89B156231FED67009DC194 /* FoldableOptionView.xcassets in Resources */,
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
@@ -447,8 +494,11 @@
 				FEB9AC4922DF002D00B91032 /* DRTimeFlowCell.m in Sources */,
 				FE682F2422E1A31D00815E2F /* DRDragSortDeleteCell.m in Sources */,
 				6003F59E195388D20070C39A /* DRAppDelegate.m in Sources */,
+				FE89B15A231FEF9E009DC194 /* DRFoldableItemModel.m in Sources */,
 				FEB9AC3622DEBFEE00B91032 /* DRDragSortTableViewController.m in Sources */,
+				FE89B153231FED3F009DC194 /* DRFoldableOptionCell.m in Sources */,
 				6003F5A7195388D20070C39A /* DRViewController.m in Sources */,
+				FE89B14E231FE8FB009DC194 /* DRFoldableOptionItemViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				FEB9AC5422DF343600B91032 /* DRTimeFlowViewController.m in Sources */,
 			);
@@ -547,7 +597,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -594,7 +644,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
