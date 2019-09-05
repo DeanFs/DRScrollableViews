@@ -43,7 +43,6 @@
     
     self.foldableOptionView.delegate = self;
     self.foldableOptionView.dataSource = self;
-    self.foldableOptionView.itemWidth = 85;
     [self.foldableOptionView registerNib:[UINib nibWithNibName:NSStringFromClass([DRFoldableOptionCell class]) bundle:nil] forCellWithReuseIdentifier:NSStringFromClass([DRFoldableOptionCell class])];
 }
 

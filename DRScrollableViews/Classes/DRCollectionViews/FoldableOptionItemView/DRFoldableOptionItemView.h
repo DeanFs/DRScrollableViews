@@ -27,7 +27,7 @@
 
 @interface DRFoldableOptionItemView : UIView
 
-@property (nonatomic, assign) IBInspectable CGFloat itemWidth;
+@property (nonatomic, assign) IBInspectable CGFloat itemWidth; // default 85;
 @property (nonatomic, weak) id<DRFoldableOptionItemViewDataSource> dataSource;
 @property (nonatomic, weak) id<DRFoldableOptionItemViewDelegate> delegate;
 

@@ -231,9 +231,19 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.delegate respondsToSelector:@selector(timeFlowView:didSelectRowAtIndex:)]) {
-        [self.delegate timeFlowView:self didSelectRowAtIndex:indexPath.row];
-    }
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    CGAffineTransform oldTrans = cell.transform;
+    [UIView animateWithDuration:0.1 animations:^{
+        cell.transform = CGAffineTransformScale(oldTrans, 1.1, 1.1);
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.1 animations:^{
+            cell.transform = oldTrans;
+        } completion:^(BOOL finished) {
+            if ([self.delegate respondsToSelector:@selector(timeFlowView:didSelectRowAtIndex:)]) {
+                [self.delegate timeFlowView:self didSelectRowAtIndex:indexPath.row];
+            }
+        }];
+    }];
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {

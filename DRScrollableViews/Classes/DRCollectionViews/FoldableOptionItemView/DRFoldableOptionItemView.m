@@ -62,9 +62,18 @@
 
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.delegate respondsToSelector:@selector(foldableOptionItemView:didSelectItemAtIndex:)]) {
-        [self.delegate foldableOptionItemView:self didSelectItemAtIndex:indexPath.row];
-    }
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    [UIView animateWithDuration:0.1 animations:^{
+        cell.transform = CGAffineTransformMakeScale(1.3, 1.3);
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.1 animations:^{
+            cell.transform = CGAffineTransformIdentity;
+        } completion:^(BOOL finished) {
+            if ([self.delegate respondsToSelector:@selector(foldableOptionItemView:didSelectItemAtIndex:)]) {
+                [self.delegate foldableOptionItemView:self didSelectItemAtIndex:indexPath.row];
+            }
+        }];
+    }];
 }
 
 #pragma mark - lifecycle
@@ -108,6 +117,8 @@
         if (@available(iOS 11.0, *)) {
             self.collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         }
+        
+        self.itemWidth = 85;
     }
 }
 
