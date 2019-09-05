@@ -87,10 +87,11 @@
     
     // 设置展开/收起时的缩放
     if (self.expandHeight < self.height) {
-        CGFloat gapRate = (1 - 0.1 * array.count) / 2;
+        CGFloat stepRate = 0.07;
+        CGFloat gapRate = (1 - stepRate * array.count) / 2;
         CGFloat startShowHeight = gapRate * self.height;
         CGFloat durationHeight = startShowHeight;
-        CGFloat stepHeight = self.height / 10;
+        CGFloat stepHeight = self.height * stepRate;
         for (NSInteger i=0; i<array.count; i++) {
             UICollectionViewLayoutAttributes *attributes = array[i];
             startShowHeight = durationHeight + stepHeight * i;
