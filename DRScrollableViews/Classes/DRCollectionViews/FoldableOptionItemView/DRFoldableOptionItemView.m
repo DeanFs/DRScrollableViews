@@ -119,6 +119,7 @@
         }
         
         self.itemWidth = 85;
+        self.layout.expandHeight = 0;
     }
 }
 
