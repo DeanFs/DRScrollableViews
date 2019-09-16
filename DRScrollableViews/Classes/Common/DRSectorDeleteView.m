@@ -85,12 +85,17 @@ static const CGFloat DRSectorDeleteViewWidth = 140.0;
 }
 
 - (void)dismiss {
+    [self dismissComplete:nil];
+}
+
+- (void)dismissComplete:(dispatch_block_t)complete {
     CGFloat width = DRSectorDeleteViewWidth;
     self.frame = CGRectMake(kDRScreenWidth - width, kDRScreenHeight - width, width, width);
     [UIView animateWithDuration:kDRAnimationDuration animations:^{
         self.frame = CGRectMake(kDRScreenWidth, kDRScreenHeight, width, width);
     } completion:^(BOOL finished) {
         [self removeFromSuperview];
+        kDR_SAFE_BLOCK(complete);
     }];
 }
 

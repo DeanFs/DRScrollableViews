@@ -365,6 +365,10 @@
 
 #pragma mark - long press to delete
 - (void)onLongPressGestureStateChange:(UILongPressGestureRecognizer *)sender {
+    if ([self.delegate respondsToSelector:@selector(timeFlowView:onLongPressGestureStateChange:longPressGesture:)]) {
+        [self.delegate timeFlowView:self onLongPressGestureStateChange:sender.state longPressGesture:sender];
+    }
+    
     CGPoint point = [sender locationInView:self.collectionView];
     NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:point];
     
@@ -380,6 +384,9 @@
 }
 
 - (void)onLongPressBeganWithSender:(UILongPressGestureRecognizer *)sender indexPath:(NSIndexPath *)indexPath {
+    if ([self.delegate respondsToSelector:@selector(timeFlowView:isDragging:)]) {
+        [self.delegate timeFlowView:self isDragging:YES];
+    }
     self.longPressIndexPath = indexPath;
     BOOL canDelete = YES;
     if ([self.delegate respondsToSelector:@selector(timeFlowView:shouldDeleteRowAtIndex:)]) {
@@ -443,7 +450,12 @@
 - (void)onLongPressEnd:(UILongPressGestureRecognizer *)sender {
     CGPoint point = [sender locationInView:kDRWindow];
     BOOL delete = CGRectContainsPoint(self.deleteView.frame, point);
-    [self.deleteView dismiss];
+    kDRWeakSelf
+    [self.deleteView dismissComplete:^{
+        if ([weakSelf.delegate respondsToSelector:@selector(timeFlowView:isDragging:)]) {
+            [weakSelf.delegate timeFlowView:weakSelf isDragging:NO];
+        }
+    }];
     
     if (delete) {
         // 移除截图视图

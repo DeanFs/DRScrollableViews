@@ -21,6 +21,10 @@
 
 @optional
 
+// 长按手势识别
+- (void)timeFlowView:(DRTimeFlowView *)timeFlowView onLongPressGestureStateChange:(UIGestureRecognizerState)longPressGestureState longPressGesture:(UILongPressGestureRecognizer *)longPressGesture;
+- (void)timeFlowView:(DRTimeFlowView *)timeFlowView isDragging:(BOOL)isDragging;
+
 // refresh cells
 - (void)timeFlowView:(DRTimeFlowView *)timeFlowView
      willDisplayCell:(UICollectionViewCell *)cell

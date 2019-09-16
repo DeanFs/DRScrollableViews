@@ -88,6 +88,10 @@
     });
 }
 
+- (void)timeFlowView:(DRTimeFlowView *)timeFlowView isDragging:(BOOL)isDragging {
+    kDR_LOG(@"长按：%d", isDragging);
+}
+
 #pragma mark - private
 - (void)makeDateWithCount:(NSInteger)count {
     if (!self.datas) {

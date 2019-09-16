@@ -12,6 +12,7 @@
 
 - (void)show;
 - (void)dismiss;
+- (void)dismissComplete:(dispatch_block_t)complete;
 - (void)backgroundAnimationWithIsZoom:(BOOL)isZoom;
 
 @end
