@@ -426,6 +426,8 @@
             // 隐藏并恢复cell大小
             self.dragCell.hidden = YES;
             self.dragCell.transform = transform;
+        } else {
+            [self.collectionView reloadData];
         }
     }];
 }
