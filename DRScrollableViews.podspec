@@ -41,10 +41,6 @@ TODO: Add long description of the pod here.
     	sss.source_files = 'DRScrollableViews/Classes/DRTableViews/DRDragSortTableView/*.{h,m}'
     	sss.dependency 'DRScrollableViews/Common'
   	end
-
-  	# ss.subspec 'DRAutoScrollLabelsView' do |sss|
-   #  	sss.source_files = 'DRScrollableViews/Classes/DRTableViews/DRAutoScrollLabelsView/*.{h,m}'
-  	# end
   end
   
 
