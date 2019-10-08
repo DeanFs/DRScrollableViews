@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'DRScrollableViews'
-  s.version          = '0.3.8'
+  s.version          = '0.3.7'
   s.summary          = 'UITableView, UICollectionView等的一些特殊效果'
 
 # This description is used to generate tags and improve search results.
@@ -25,7 +25,7 @@ TODO: Add long description of the pod here.
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Dean_F' => 'stone.feng1990@gmail.com' }
-  s.source           = { :git => 'git@github.com:DeanFs/DRScrollableViews.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/DeanFs/DRScrollableViews.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '9.0'
