@@ -16,5 +16,6 @@
 - (void)backgroundAnimationWithIsZoom:(BOOL)isZoom;
 - (void)setDeteteText:(NSString *)deleteText;
 - (void)setDeleteTextFont:(UIFont *)textFont;
+- (void)setDeleteIconImage:(UIImage *)image;
 
 @end

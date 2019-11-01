@@ -19,6 +19,7 @@ static const CGFloat DRSectorDeleteViewWidth = 140.0;
 
 @property (nonatomic, strong) UIView *backgroundView;
 @property (nonatomic, weak) UILabel *deleteTextLabel;
+@property (nonatomic, weak) UIImageView *imageView;
 
 @property (nonatomic, assign) BOOL isZoom;
 
@@ -60,6 +61,7 @@ static const CGFloat DRSectorDeleteViewWidth = 140.0;
             make.right.equalTo(self).offset(-40.0);
             make.bottom.equalTo(self).offset(-50.0);
         }];
+        self.imageView = imageView;
         
         //标题
         UILabel *label = [[UILabel alloc] init];
@@ -125,6 +127,10 @@ static const CGFloat DRSectorDeleteViewWidth = 140.0;
 
 - (void)setDeleteTextFont:(UIFont *)textFont {
     self.deleteTextLabel.font = textFont;
+}
+
+- (void)setDeleteIconImage:(UIImage *)image {
+    self.imageView.image = image;
 }
 
 - (void)dealloc {
