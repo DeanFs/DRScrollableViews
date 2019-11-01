@@ -11,12 +11,14 @@
 #import <Masonry/Masonry.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import <DRMacroDefines/DRMacroDefines.h>
+#import <DRCategories/UIFont+DRExtentsion.h>
 
 static const CGFloat DRSectorDeleteViewWidth = 140.0;
 
 @interface DRSectorDeleteView ()
 
 @property (nonatomic, strong) UIView *backgroundView;
+@property (nonatomic, weak) UILabel *deleteTextLabel;
 
 @property (nonatomic, assign) BOOL isZoom;
 
@@ -62,13 +64,14 @@ static const CGFloat DRSectorDeleteViewWidth = 140.0;
         //标题
         UILabel *label = [[UILabel alloc] init];
         label.text = @"拖至此处删除";
-        label.font = [UIFont systemFontOfSize:10.0];
+        label.font = [UIFont dr_PingFangSC_RegularWithSize:10];
         label.textColor = [UIColor whiteColor];
         [self addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(imageView);
             make.top.equalTo(imageView.mas_bottom).offset(10.0);
         }];
+        self.deleteTextLabel = label;
     }
     return self;
 }
@@ -116,8 +119,16 @@ static const CGFloat DRSectorDeleteViewWidth = 140.0;
     }
 }
 
+- (void)setDeteteText:(NSString *)deleteText {
+    self.deleteTextLabel.text = deleteText;
+}
+
+- (void)setDeleteTextFont:(UIFont *)textFont {
+    self.deleteTextLabel.font = textFont;
+}
+
 - (void)dealloc {
-    NSLog(@"%@ dealloc", NSStringFromClass([self class]));
+    kDR_LOG(@"%@ dealloc", NSStringFromClass([self class]));
 }
 
 @end

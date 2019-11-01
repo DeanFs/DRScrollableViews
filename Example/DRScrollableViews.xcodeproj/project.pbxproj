@@ -51,7 +51,7 @@
 
 /* Begin PBXFileReference section */
 		160D0CA0F52C0085E397E0A7 /* Pods_DRScrollableViews_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DRScrollableViews_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		26229ABC64A5D15BD2E44B29 /* DRScrollableViews.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = DRScrollableViews.podspec; path = ../DRScrollableViews.podspec; sourceTree = "<group>"; };
+		26229ABC64A5D15BD2E44B29 /* DRScrollableViews.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = DRScrollableViews.podspec; path = ../DRScrollableViews.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		56587A4DDD973D824033BC60 /* Pods_DRScrollableViews_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DRScrollableViews_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58A195388D20070C39A /* DRScrollableViews_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DRScrollableViews_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };

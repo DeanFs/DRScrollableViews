@@ -14,5 +14,7 @@
 - (void)dismiss;
 - (void)dismissComplete:(dispatch_block_t)complete;
 - (void)backgroundAnimationWithIsZoom:(BOOL)isZoom;
+- (void)setDeteteText:(NSString *)deleteText;
+- (void)setDeleteTextFont:(UIFont *)textFont;
 
 @end
