@@ -1,5 +1,5 @@
 //
-//  UIFont+DRExtentsion.h
+//  UIFont+DRExtension.h
 //  Records
 //
 //  Created by admin on 2018/11/14.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UIFont (DRExtentsion)
+@interface UIFont (DRExtension)
 
 + (UIFont *)dr_PingFangSC_RegularWithSize:(CGFloat)fontSize;
 + (UIFont *)dr_PingFangSC_MediumWithSize:(CGFloat)fontSize;

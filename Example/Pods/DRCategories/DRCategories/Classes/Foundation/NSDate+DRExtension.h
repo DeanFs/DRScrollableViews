@@ -179,6 +179,31 @@ typedef NS_ENUM(NSInteger, DRCalenderUnitsType) {
  */
 - (int64_t)yyyyMMddHHMMTimestamp;
 
+/**
+ 获取日期时间字段组合
+ 
+ @return 日期时间字段组合
+ */
++ (NSInteger)dateComponentsUnitsWithType:(DRCalenderUnitsType)type;
+
+
+/**
+ 农历日期转公历
+
+ @param lunarDate 农历日期
+ @param leapMonth 是否闰月
+ @return 公历日期
+ */
++ (NSDate *)dateFromLunarDate:(NSDate *)lunarDate leapMonth:(BOOL)leapMonth;
+
+/**
+ 公历转农历
+
+ @param date 公历日期
+ @param complete 转换完成回调
+ */
++ (void)lunarDateFromDate:(NSDate *)date complete:(void(^)(NSDate *lunarDate, BOOL leapMonth))complete;
+
 @end
 
 
@@ -368,6 +393,7 @@ static const NSInteger DRCalendarFirstDay = 2;
 - (NSDate *)nextYearLastDay;
 + (NSDate *)nextYearLastDay;
 + (NSDate *)minDate;
++ (NSDate *)maxDate;
 
 //之前一天
 - (NSDate *)lastDay;
@@ -460,13 +486,6 @@ static const NSInteger DRCalendarFirstDay = 2;
  @return 设置小十分钟后的date
  */
 - (NSDate *)resetHour:(NSInteger)hour minute:(NSInteger)minute;
-
-/**
- 获取日期时间字段组合
-
- @return 日期时间字段组合
- */
-+ (NSInteger)dateComponentsUnitsWithType:(DRCalenderUnitsType)type;
 
 /**
  拼接上另一个日期的小时分钟

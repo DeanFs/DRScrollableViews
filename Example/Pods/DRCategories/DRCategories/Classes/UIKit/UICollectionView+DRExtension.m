@@ -7,30 +7,26 @@
 //
 
 #import "UICollectionView+DRExtension.h"
+#import <DRMacroDefines/DRMacroDefines.h>
 
 @implementation UICollectionView (DRExtension)
 
 - (void)registerNib:(NSString *)nibName {
-    [self registerNib:[UINib nibWithNibName:nibName bundle:nil]
-          forCellWithReuseIdentifier:nibName];
+    [self registerNib:[UINib nibWithNibName:nibName bundle:nil] forCellWithReuseIdentifier:nibName];
 }
 
 /*
  使用nib来注册header对象
  */
 - (void)registerHeaderNib:(NSString *)nibName {
-    [self registerNib:[UINib nibWithNibName:nibName bundle:nil]
-          forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                 withReuseIdentifier:nibName];
+    [self registerNib:[UINib nibWithNibName:nibName bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:nibName];
 }
 
 /*
  使用nib来注册footer对象
  */
 - (void)registerFooterNib:(NSString *)nibName {
-    [self registerNib:[UINib nibWithNibName:nibName bundle:nil]
-          forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
-                 withReuseIdentifier:nibName];
+    [self registerNib:[UINib nibWithNibName:nibName bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:nibName];
 }
 
 /*

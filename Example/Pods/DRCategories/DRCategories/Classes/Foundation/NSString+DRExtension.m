@@ -21,6 +21,7 @@
 #import "NSDictionary+DRExtension.h"
 #import <DRMacroDefines/DRMacroDefines.h>
 #import "NSNumber+DRExtension.h"
+#import "NSDateComponents+DRExtension.h"
 
 @implementation NSString (DRExtension)
 
@@ -31,19 +32,16 @@
  @return 20分钟，1小时20分钟，1天1小时20分钟
  */
 + (NSString *)descForTimeDuration:(int64_t)duration {
+    NSDateComponents *components = [NSDateComponents componentsFromTimeInterval:duration];
     NSMutableString *timeString = [NSMutableString string];
-    if (duration > 0) {
-        if (duration >= 86400) {
-            [timeString appendFormat:@"%lli天", duration / 86400];
-            duration %= 86400;
-        }
-        if (duration >= 3600) {
-            [timeString appendFormat:@"%lli小时", duration / 3600];
-            duration %= 3600;
-        }
-        if (duration > 59) {
-            [timeString appendFormat:@"%lli分钟", duration / 60];
-        }
+    if (components.day > 0) {
+        [timeString appendFormat:@"%ld天", components.day];
+    }
+    if (components.hour > 0) {
+        [timeString appendFormat:@"%ld小时", components.hour];
+    }
+    if (components.minute > 0) {
+        [timeString appendFormat:@"%ld分钟", components.minute];
     }
     return timeString;
 }

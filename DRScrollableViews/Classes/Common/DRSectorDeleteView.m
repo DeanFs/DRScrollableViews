@@ -11,7 +11,7 @@
 #import <Masonry/Masonry.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import <DRMacroDefines/DRMacroDefines.h>
-#import <DRCategories/UIFont+DRExtentsion.h>
+#import <DRCategories/UIFont+DRExtension.h>
 
 static const CGFloat DRSectorDeleteViewWidth = 140.0;
 

@@ -7,6 +7,7 @@
 //
 
 #import "UITableView+DRExtension.h"
+#import <DRMacroDefines/DRMacroDefines.h>
 
 @implementation UITableView (DRExtension)
 
