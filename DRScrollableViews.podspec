@@ -37,23 +37,14 @@ TODO: Add long description of the pod here.
   end
 
   s.subspec 'DRTableViews' do |ss|
-  	ss.subspec 'DRDragSortTableView' do |sss|
-    	sss.source_files = 'DRScrollableViews/Classes/DRTableViews/DRDragSortTableView/*.{h,m}'
-    	sss.dependency 'DRScrollableViews/Common'
-  	end
+    ss.source_files = 'DRScrollableViews/Classes/DRTableViews/*.{h,m}'
+    ss.dependency 'DRScrollableViews/Common'
   end
   
 
   s.subspec 'DRCollectionViews' do |ss|
-    ss.subspec 'TimeFlowView' do |sss|
-      sss.source_files = 'DRScrollableViews/Classes/DRCollectionViews/TimeFlowView/*.{h,m}'
-      sss.dependency 'DRScrollableViews/Common'
-    end
-
-    ss.subspec 'FoldableOptionItemView' do |sss|
-      sss.source_files = 'DRScrollableViews/Classes/DRCollectionViews/FoldableOptionItemView/*.{h,m}'
-    end
-
+    ss.source_files = 'DRScrollableViews/Classes/DRCollectionViews/*.{h,m}'
+    ss.dependency 'DRScrollableViews/Common'
   end
   
   # s.resource_bundles = {

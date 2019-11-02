@@ -43,35 +43,21 @@
     },
     {
       "name": "DRTableViews",
-      "subspecs": [
-        {
-          "name": "DRDragSortTableView",
-          "source_files": "DRScrollableViews/Classes/DRTableViews/DRDragSortTableView/*.{h,m}",
-          "dependencies": {
-            "DRScrollableViews/Common": [
+      "source_files": "DRScrollableViews/Classes/DRTableViews/*.{h,m}",
+      "dependencies": {
+        "DRScrollableViews/Common": [
 
-            ]
-          }
-        }
-      ]
+        ]
+      }
     },
     {
       "name": "DRCollectionViews",
-      "subspecs": [
-        {
-          "name": "TimeFlowView",
-          "source_files": "DRScrollableViews/Classes/DRCollectionViews/TimeFlowView/*.{h,m}",
-          "dependencies": {
-            "DRScrollableViews/Common": [
+      "source_files": "DRScrollableViews/Classes/DRCollectionViews/*.{h,m}",
+      "dependencies": {
+        "DRScrollableViews/Common": [
 
-            ]
-          }
-        },
-        {
-          "name": "FoldableOptionItemView",
-          "source_files": "DRScrollableViews/Classes/DRCollectionViews/FoldableOptionItemView/*.{h,m}"
-        }
-      ]
+        ]
+      }
     }
   ]
 }

@@ -17,8 +17,8 @@
 
 @interface DRTimeFlowView () <UICollectionViewDelegate, UICollectionViewDataSource>
 
-@property (strong, nonatomic) IBOutlet UIView *containerView;
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) UICollectionView *collectionView;
+@property (nonatomic, strong) DRTimeFlowLayout *layout;
 
 // delete
 @property (nonatomic, strong) UILongPressGestureRecognizer *longGesture;
@@ -54,20 +54,17 @@
 
 - (void)setMaxItemSize:(CGSize)maxItemSize {
     _maxItemSize = maxItemSize;
-    DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
-    layout.maxItemSize = maxItemSize;
+    self.layout.maxItemSize = maxItemSize;
 }
 
 - (void)setDecreasingStep:(CGFloat)decreasingStep {
     _decreasingStep = decreasingStep;
-    DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
-    layout.decreasingStep = decreasingStep;
+    self.layout.decreasingStep = decreasingStep;
 }
 
 - (void)setCoverOffset:(CGFloat)coverOffset {
     _coverOffset = coverOffset;
-    DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
-    layout.coverOffset = coverOffset;
+    self.layout.coverOffset = coverOffset;
 }
 
 - (void)setBouncesEnable:(BOOL)bouncesEnable {
@@ -81,12 +78,6 @@
         self.longGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPressGestureStateChange:)];
         [self.collectionView addGestureRecognizer:self.longGesture];
     }
-}
-
-- (void)setBackgroundColor:(UIColor *)backgroundColor {
-    [super setBackgroundColor:backgroundColor];
-    self.containerView.backgroundColor = backgroundColor;
-    self.collectionView.backgroundColor = backgroundColor;
 }
 
 // 获取当前显示的第一个cell的序号
@@ -107,7 +98,6 @@
     if (contentOffsetY <= -CGRectGetHeight(self.collectionView.frame)) {
         return -1;
     }
-    DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
     CGFloat height = CGRectGetHeight(self.collectionView.frame);
     CGFloat contentHeight = self.collectionView.contentSize.height;
     CGFloat bottomOutSideHeight = contentHeight - contentOffsetY - height;
@@ -115,7 +105,7 @@
     if (bottomOutSideHeight > 0) {
         bottomOutSideCount = bottomOutSideHeight / self.maxItemSize.height;
     }
-    return layout.cellCount - bottomOutSideCount - 1; // 最后一个可见cell的序号
+    return self.layout.cellCount - bottomOutSideCount - 1; // 最后一个可见cell的序号
 }
 
 - (CGPoint)contentOffset {
@@ -124,9 +114,8 @@
 
 // 滚动，将可见cell的第一个置为第index个
 - (void)scrollToTopIndex:(NSInteger)index animated:(BOOL)animated {
-    DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
     CGPoint offset = CGPointMake(0, (index-1)*self.maxItemSize.height);
-    offset = [layout targetContentOffsetForProposedContentOffset:offset withScrollingVelocity:CGPointZero];
+    offset = [self.layout targetContentOffsetForProposedContentOffset:offset withScrollingVelocity:CGPointZero];
     [self.collectionView setContentOffset:offset
                                  animated:animated];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -136,13 +125,12 @@
 
 // 设置最底部cell的index，即将底index个cell滚动到底部
 - (void)scrollToBottomIndex:(NSInteger)index animated:(BOOL)animated {
-    DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
     CGFloat height = CGRectGetHeight(self.collectionView.frame);
     CGFloat contentHeight = self.collectionView.contentSize.height;
-    if (index >= layout.cellCount-1) {
+    if (index >= self.layout.cellCount-1) {
         [self.collectionView setContentOffset:CGPointMake(0, contentHeight-height) animated:animated];
     } else {
-        CGFloat outsideHeight = self.maxItemSize.height * (layout.cellCount-index-1);
+        CGFloat outsideHeight = self.maxItemSize.height * (self.layout.cellCount-index-1);
         [self.collectionView setContentOffset:CGPointMake(0, contentHeight-outsideHeight-height) animated:animated];
     }
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -152,29 +140,26 @@
 
 // 刷新显示，并将第bottomIndex个cell定位在底部
 - (void)reloadDataScrollToBottomIndex:(NSInteger)bottomIndex {
-    DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
-    [layout reloadDataScrollToBottomIndex:bottomIndex];
+    [self.layout reloadDataScrollToBottomIndex:bottomIndex];
     [self.collectionView reloadData];
 }
 
 // 刷新显示，并将第bottomIndex个cell定位在底部，并将第hideIndex个cell设置为透明
 - (void)reloadDataScrollToBottomIndex:(NSInteger)bottomIndex hideCellAtIndex:(NSInteger)hideIndex {
-    DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
-    [layout reloadDataScrollToBottomIndex:bottomIndex hideIndex:hideIndex];
+    [self.layout reloadDataScrollToBottomIndex:bottomIndex hideIndex:hideIndex];
     [self.collectionView reloadData];
 }
 
 // 尾部加载更多数据
 - (void)realoadAppendData {
-    DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
-    NSInteger cellCount = layout.cellCount;
+    NSInteger cellCount = self.layout.cellCount;
     [self.collectionView reloadData];
     dispatch_async(dispatch_get_main_queue(), ^{
         CGPoint offset = self.collectionView.contentOffset;
-        if (cellCount < layout.cellCount) {
+        if (cellCount < self.layout.cellCount) {
             offset.y += self.maxItemSize.height;
         }
-        offset = [layout targetContentOffsetForProposedContentOffset:offset withScrollingVelocity:CGPointZero];
+        offset = [self.layout targetContentOffsetForProposedContentOffset:offset withScrollingVelocity:CGPointZero];
         [self.collectionView setContentOffset:offset animated:YES];
     });
 }
@@ -183,8 +168,7 @@
     [self.collectionView reloadData];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
-        CGPoint offset = [layout targetContentOffsetForProposedContentOffset:self.collectionView.contentOffset withScrollingVelocity:CGPointZero];
+        CGPoint offset = [self.layout targetContentOffsetForProposedContentOffset:self.collectionView.contentOffset withScrollingVelocity:CGPointZero];
         [self.collectionView setContentOffset:offset animated:NO];
     });
 }
@@ -353,9 +337,8 @@
 
 #pragma mark - private
 - (void)setupVisibleCells {
-    DRTimeFlowLayout *layout = (DRTimeFlowLayout *)self.collectionView.collectionViewLayout;
     UICollectionViewCell *lastCell;
-    for (NSNumber *index in layout.visibleIndexs) {
+    for (NSNumber *index in self.layout.visibleIndexs) {
         lastCell = self.visibleCellsMap[index];
         lastCell.shadowLayer.hidden = NO;
         [lastCell.superview bringSubviewToFront:lastCell];
@@ -554,18 +537,23 @@
 }
 
 - (void)setup {
-    if (!self.containerView) {
-        self.containerView = kDR_LOAD_XIB_NAMED(NSStringFromClass([self class]));
-        [self addSubview:self.containerView];
-        [self.containerView mas_makeConstraints:^(MASConstraintMaker *make) {
+    if (!self.collectionView) {
+        self.layout = [[DRTimeFlowLayout alloc] init];
+
+        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:self.layout];
+        collectionView.backgroundColor = [UIColor clearColor];
+        collectionView.delegate = self;
+        collectionView.dataSource = self;
+        collectionView.showsVerticalScrollIndicator = NO;
+        collectionView.showsHorizontalScrollIndicator = NO;
+        if (@available(iOS 11.0, *)) {
+            collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        }
+        [self addSubview:collectionView];
+        [collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.left.bottom.right.mas_offset(0);
         }];
-        
-        self.collectionView.delegate = self;
-        self.collectionView.dataSource = self;
-        if (@available(iOS 11.0, *)) {
-            self.collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-        }
+        self.collectionView = collectionView;
         
         self.maxItemSize = CGSizeMake(kDRScreenWidth-56, 74);
         self.decreasingStep = 4;
