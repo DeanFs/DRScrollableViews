@@ -112,12 +112,6 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
     CGPoint point = [sender locationInView:self];
     NSIndexPath *indexPath = [self indexPathForRowAtPoint:point];
     
-    if (sender.state == UIGestureRecognizerStateBegan) {
-        if ([self.dr_dragSortDelegate respondsToSelector:@selector(dragSortTableViewDragBegan:indexPath:)]) {
-            [self.dr_dragSortDelegate dragSortTableViewDragBegan:self indexPath:indexPath];
-        }
-    }
-    
     // 当前cell是否支持拖动排序
     NSNumber *canSortN = self.canSortCache[indexPath];
     BOOL canSort;
@@ -187,6 +181,11 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
     
     // 创建一个imageView，imageView的image由cell渲染得来
     self.dragImageView = [self createCellImageView];
+    if ([self.dr_dragSortDelegate respondsToSelector:@selector(dragSortTableViewDragBegan:indexPath:dragView:)]) {
+        [self.dr_dragSortDelegate dragSortTableViewDragBegan:self
+                                                   indexPath:self.startIndexPath
+                                                    dragView:self.dragImageView];
+    }
     self.dragImageView.alpha = 0.0;
     [self updateCellImageCenterWithPoint:[self.dragView.superview convertPoint:self.dragView.center
                                                                         toView:kDRWindow]];

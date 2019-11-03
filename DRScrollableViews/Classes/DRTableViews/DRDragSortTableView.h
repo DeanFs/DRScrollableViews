@@ -70,8 +70,11 @@
           deleteDoneBlock:(dispatch_block_t)deleteDoneBlock;
 
 // 拖拽手势开始结束回调
-- (void)dragSortTableViewDragBegan:(DRDragSortTableView *)tableView indexPath:(NSIndexPath *)indexPath;
-- (void)dragSortTableViewDragEnd:(DRDragSortTableView *)tableView indexPath:(NSIndexPath *)indexPath;
+- (void)dragSortTableViewDragBegan:(DRDragSortTableView *)tableView
+                         indexPath:(NSIndexPath *)indexPath
+                          dragView:(UIView *)dragView;
+- (void)dragSortTableViewDragEnd:(DRDragSortTableView *)tableView
+                       indexPath:(NSIndexPath *)indexPath;
 
 @end
 
