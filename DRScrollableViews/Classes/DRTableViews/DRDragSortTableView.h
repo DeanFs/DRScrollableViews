@@ -88,6 +88,9 @@
  */
 - (UIView *)subDragViewFromCellInDragSortTableView:(DRDragSortTableView *)tableView;
 
+/// 返回cell中可以响应长按手势的区域范围
+- (CGRect)canReactLongPressSubRect;
+
 @end
 
 

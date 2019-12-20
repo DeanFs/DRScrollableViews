@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <DRScrollableViews/DRDragSortTableView.h>
 
 @interface DRDragSortDeleteModel : NSObject
 
@@ -17,7 +18,7 @@
 @end
 
 
-@interface DRDragSortDeleteCell : UITableViewCell
+@interface DRDragSortDeleteCell : UITableViewCell <DRDragSortCellDelegate>
 
 - (void)setupWithModel:(DRDragSortDeleteModel *)model;
 

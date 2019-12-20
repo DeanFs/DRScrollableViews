@@ -51,4 +51,12 @@
 }
 
 
+- (CGRect)canReactLongPressSubRect {
+    return CGRectMake(0, 0, 100, 90);
+}
+
+- (UIView *)subDragViewFromCellInDragSortTableView:(DRDragSortTableView *)tableView {
+    return self.titleLabel;
+}
+
 @end

@@ -91,14 +91,6 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
 - (void)setStartIndexPath:(NSIndexPath *)startIndexPath {
     _startIndexPath = startIndexPath;
     _canDeleteStartCell = [self canDeleteAtStartIndexPath];
-    
-    // 根据indexPath获取cell
-    if (startIndexPath) {
-        self.dragView = [self cellForRowAtIndexPath:self.startIndexPath];
-        if ([self.dragView respondsToSelector:@selector(subDragViewFromCellInDragSortTableView:)]) {
-            self.dragView = [self.dragView subDragViewFromCellInDragSortTableView:self];
-        }
-    }
 }
 
 #pragma mark - Long Press Gesture Action
@@ -123,13 +115,14 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
     }
     
     if (sender.state == UIGestureRecognizerStateBegan) { // 长按手势开始
+        if (![self canReactLongPressAtIndexPath:indexPath point:point]) {
+            [self.canSortCache removeAllObjects];
+            return;
+        }
         self.startIndexPath = indexPath;
         // 既不能拖动排序，也不能拖动删除
         if (!canSort && !self.canDeleteStartCell) {
-            return;
-        }
-        CGPoint dragViewPoint = [sender locationInView:self.dragView.superview];
-        if (!CGRectContainsPoint(self.dragView.frame, dragViewPoint)) {
+            [self.canSortCache removeAllObjects];
             return;
         }
         self.dragBegan = YES;
@@ -138,6 +131,7 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
     } else if (sender.state == UIGestureRecognizerStateChanged){ // 手指移动
         // 没有触发开始拖拽
         if (!self.dragBegan) {
+            [self.canSortCache removeAllObjects];
             return;
         }
         // 既不能拖动排序，也不能拖动删除
@@ -146,6 +140,7 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
             if ([self isMoveToEdgeWithPonit:imagePoint]) {
                 [self updateCellImageCenterWithPoint:imagePoint];
             }
+            [self.canSortCache removeAllObjects];
             return;
         }
         [self onLongPressMove:sender canSort:canSort indexPath:indexPath];
@@ -155,11 +150,13 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
         }
         // 没有触发开始拖拽
         if (!self.dragBegan) {
+            [self.canSortCache removeAllObjects];
             return;
         }
         self.dragBegan = NO;
         // 既不能拖动排序，也不能拖动删除
         if (!self.fromIndexPath && !self.canDeleteStartCell) {
+            [self.canSortCache removeAllObjects];
             return;
         }
         [self onLongPressEnd:sender];
@@ -388,6 +385,28 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
         return [self.dr_dragSortDelegate dragSortTableView:self canDeleteAtIndexPath:self.startIndexPath];
     }
     return NO;
+}
+
+- (BOOL)canReactLongPressAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point {
+    if (indexPath == nil) {
+        return NO;
+    }
+    
+    BOOL canReact = YES;
+    self.dragView = (UIView<DRDragSortCellDelegate> *)[self cellForRowAtIndexPath:indexPath];
+    CGPoint cellPoint = [self convertPoint:point toView:self.dragView];
+    if ([self.dragView respondsToSelector:@selector(canReactLongPressSubRect)]) {
+        CGRect cellReactRect = [self.dragView canReactLongPressSubRect];
+        canReact = CGRectContainsPoint(cellReactRect, cellPoint);
+    }
+    if (canReact) {
+        if ([self.dragView respondsToSelector:@selector(subDragViewFromCellInDragSortTableView:)]) {
+            self.dragView = (UIView<DRDragSortCellDelegate> *)[self.dragView subDragViewFromCellInDragSortTableView:self];
+            canReact = CGRectContainsPoint(self.dragView.frame, cellPoint);
+        }
+    }
+    
+    return canReact;
 }
 
 #pragma mark - 拖拽到边缘自动滚动
