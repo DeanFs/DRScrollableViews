@@ -81,6 +81,7 @@
 #pragma mark - 如果洗完拖动cell中的某个子视图，需要给cell添加DRDragSortCellDelegate协议，并实现dragView方法
 @protocol DRDragSortCellDelegate <NSObject>
 
+@optional
 /**
  返回cell中需要拖拽的子视图
 
