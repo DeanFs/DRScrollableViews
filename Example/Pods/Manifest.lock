@@ -1,20 +1,23 @@
 PODS:
-  - DRCategories (0.1.18):
-    - DRCategories/Foundation (= 0.1.18)
-    - DRCategories/UIKit (= 0.1.18)
+  - DRCategories (0.1.26):
+    - DRCategories/Foundation (= 0.1.26)
+    - DRCategories/UIKit (= 0.1.26)
     - DRMacroDefines
     - DRSandboxManager
     - pop
-  - DRCategories/Foundation (0.1.18):
+    - RegExCategories
+  - DRCategories/Foundation (0.1.26):
     - DRMacroDefines
     - DRSandboxManager
     - pop
-  - DRCategories/UIKit (0.1.18):
+    - RegExCategories
+  - DRCategories/UIKit (0.1.26):
     - DRMacroDefines
     - DRSandboxManager
     - pop
+    - RegExCategories
   - DRMacroDefines (0.1.2)
-  - DRSandboxManager (0.1.0)
+  - DRSandboxManager (0.1.6)
   - DRScrollableViews (0.3.12):
     - DRCategories
     - DRMacroDefines
@@ -42,12 +45,16 @@ PODS:
     - Masonry
   - HexColors (4.0.0)
   - Masonry (1.1.0)
+  - MJRefresh (3.3.1)
   - pop (1.0.12)
+  - RegExCategories (1.0)
 
 DEPENDENCIES:
   - DRCategories
+  - DRSandboxManager
   - DRScrollableViews (from `../`)
   - HexColors (~> 4.0.0)
+  - MJRefresh
 
 SPEC REPOS:
   trunk:
@@ -56,21 +63,25 @@ SPEC REPOS:
     - DRSandboxManager
     - HexColors
     - Masonry
+    - MJRefresh
     - pop
+    - RegExCategories
 
 EXTERNAL SOURCES:
   DRScrollableViews:
     :path: "../"
 
 SPEC CHECKSUMS:
-  DRCategories: 9dc993a28182d13716de8b47c1626d90d317108e
+  DRCategories: 5ce7e79748e3cbfd8813f34431c36f44eed0fd09
   DRMacroDefines: 58aa271bc1c4170fa09f4f33dcad18fc4f21a57e
-  DRSandboxManager: 2a48ca41b22edfc39dd2f66abd5a99e777410c61
+  DRSandboxManager: dc4c6a07a6ab2b0f01aac05ab2d1c128587e91a7
   DRScrollableViews: 9f261d069dd9cf2d689b3e70dcf6d691de110019
   HexColors: 5f95843ef89aff6a72e1fd3a8ebabf205cc43379
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  MJRefresh: eeda70fbf0ad277f3178cef1cd0c3532591d6237
   pop: d582054913807fd11fd50bfe6a539d91c7e1a55a
+  RegExCategories: e68befacacd5bda853c88f70ec745cb2d0cfb89c
 
-PODFILE CHECKSUM: 38c7264e4a51bad494f796d60b7cedc72822b683
+PODFILE CHECKSUM: afac6d227f2f694cc3178c6ee57946f51932ec3c
 
 COCOAPODS: 1.8.4

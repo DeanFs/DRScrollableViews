@@ -45,7 +45,7 @@
     }
     [formt setUsesGroupingSeparator:NO]; // 不显示千分位符
     [formt setNumberStyle:NSNumberFormatterDecimalStyle];
-    [formt setRoundingMode:NSNumberFormatterRoundFloor];
+    [formt setRoundingMode:NSNumberFormatterRoundHalfUp];
     
     if (block) {
         block(formt);

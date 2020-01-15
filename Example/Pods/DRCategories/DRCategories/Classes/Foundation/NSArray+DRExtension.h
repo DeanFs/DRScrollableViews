@@ -68,6 +68,7 @@ NS_SWIFT_UNAVAILABLE("");
 
 - (void)safeInsertObject:(id)anObject atIndex:(NSUInteger)index;
 - (void)safeInsertObjects:(NSArray<id> *)objects atIndexes:(NSIndexSet *)indexes;
+- (void)moveObjectAtIndex:(NSInteger)fromIndex toIndex:(NSInteger)toIndex;
 
 @end
 

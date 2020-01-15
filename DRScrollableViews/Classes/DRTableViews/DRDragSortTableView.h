@@ -31,10 +31,14 @@
  @param tableView tableView
  @param fromIndexPath 上一次移动到的位置
  @param toIndexPath 当前移动到的位置
+ @param betweenSections 跨组移动
+ @param succession 两个cell是连续，即交换的两个cell之间没有他cell
  */
 - (void)dragSortTableView:(DRDragSortTableView *)tableView
         exchangeIndexPath:(NSIndexPath *)fromIndexPath
-              toIndexPath:(NSIndexPath *)toIndexPath;
+              toIndexPath:(NSIndexPath *)toIndexPath
+          betweenSections:(BOOL)betweenSections
+               succession:(BOOL)succession;
 
 /**
  松手，停止拖拽时调用

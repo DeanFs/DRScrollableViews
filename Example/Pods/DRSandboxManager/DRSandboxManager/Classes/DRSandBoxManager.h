@@ -8,8 +8,6 @@
 #import <Foundation/Foundation.h>
 #import <Photos/Photos.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface DRSandBoxManager : NSObject
 
 #pragma mark - 磁盘信息获取
@@ -111,16 +109,34 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSData *)getDataForPath:(NSString *)path;
 
 
-#pragma mark - 保存图片到手机相册
+#pragma mark - 保存图片、视频
 /**
  保存指定照片到相册
  
- @param image 指定要保存的图片
+ @param image 指定要保存的图片，UIImage，NSData，NSString(图片路径)，NSUrl(图片路径)
  @param saveDoneBlock 保存完成回调
  */
-+ (void)saveToDiskWithImage:(UIImage *)image
-              saveDoneBlock:(void(^)(BOOL success, NSError *error))saveDoneBlock;
++ (void)saveToSystemAlbumWithImage:(id)image
+                     saveDoneBlock:(void(^)(BOOL success, NSError *error))saveDoneBlock;
+
+/**
+ 保存指定视频到相册
+ 
+ @param video 指定要保存的视频路径，NSSting 或者 NSUrl 均可
+ @param saveDoneBlock 保存完成回调
+ */
++ (void)saveToSystemAlbumWithVideo:(id)video
+                     saveDoneBlock:(void(^)(BOOL success, NSError *error))saveDoneBlock;
+
+/**
+ 保存指定图片到三盒指定路径
+ 
+ @param image 待保存图片
+ @param path 图片要保存到的路径，绝对路径，或者是Document下的相对路径，如@"Test/Image/image.jpg"
+ @param saveDoneBlock 保存完成回调
+ */
++ (void)saveToSandboxWithImage:(UIImage *)image
+                      withPath:(NSString *)path
+                 saveDoneBlock:(void(^)(BOOL success, NSError *error))saveDoneBlock;
 
 @end
-
-NS_ASSUME_NONNULL_END

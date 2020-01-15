@@ -37,6 +37,13 @@ NS_ASSUME_NONNULL_BEGIN
 // 手机号码加空格的格式化
 - (NSString *)phoneFormat;
 
+// 数值格式化，带千分位符，值定最多小数位
+- (NSString *)numberFormatWithMaxDecimalCount:(int)maxDecimalCount;
+
+/// 阿里云图片链接限定图片短边的长度，等比缩放
+/// @param width 短边长度
+- (NSString *)ossImageUrlSetImageSmallSideWidth:(CGFloat)width;
+
 @end
 
 @interface NSString (DRIDFA)

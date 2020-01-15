@@ -145,4 +145,15 @@
     }
 }
 
+- (void)moveObjectAtIndex:(NSInteger)fromIndex toIndex:(NSInteger)toIndex {
+    NSInteger maxIndex = self.count - 1;
+    if (fromIndex > maxIndex || toIndex > maxIndex) {
+        return;
+    }
+    
+    id obj = [self objectAtIndex:fromIndex];
+    [self removeObject:obj];
+    [self insertObject:obj atIndex:toIndex];
+}
+
 @end

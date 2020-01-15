@@ -1776,8 +1776,8 @@ static mutex _mutex;
 
 //相差多少周
 - (NSInteger)numberOfWeeksDifferenceWithDate:(NSDate *)date {
-    NSDateComponents *comps = [NSDate.calendar components:NSCalendarUnitYear | NSCalendarUnitWeekOfYear fromDate:self toDate:date  options:0];
-    return [comps weekOfYear];
+    NSDateComponents *comps = [NSDate.calendar components:NSCalendarUnitWeekdayOrdinal fromDate:self toDate:date  options:0];
+    return [comps weekdayOrdinal];
 }
 
 //相差多少月

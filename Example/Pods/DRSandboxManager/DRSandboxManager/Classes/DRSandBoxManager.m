@@ -25,10 +25,13 @@
         
         NSNumber *fileSystemSizeInBytes = [dictionary objectForKey: NSFileSystemSize];
         NSNumber *freeFileSystemSizeInBytes = [dictionary objectForKey:NSFileSystemFreeSize];
-        block(nil, [freeFileSystemSizeInBytes longLongValue], [fileSystemSizeInBytes longLongValue]);
-        
+        if (block != nil) {
+            block(nil, [freeFileSystemSizeInBytes longLongValue], [fileSystemSizeInBytes longLongValue]);
+        }
     } else {
-        block(error, 0, 0);
+        if (block != nil) {
+            block(error, 0, 0);
+        }
     }
 }
 
@@ -45,7 +48,9 @@
         NSError *error = [NSError errorWithDomain:@"filePath 不可为空"
                                              code:-1
                                          userInfo:nil];
-        block(error, 0);
+        if (block != nil) {
+            block(error, 0);
+        }
         return;
     }
     
@@ -55,15 +60,21 @@
     if ([manager fileExistsAtPath:filePath]) {
         unsigned long long fileSize = [[manager attributesOfItemAtPath:filePath error:&error] fileSize];
         if (error) {
-            block(error, 0);
+            if (block != nil) {
+                block(error, 0);
+            }
         } else {
-            block(nil, fileSize);
+            if (block != nil) {
+                block(nil, fileSize);
+            }
         }
     } else {
         error = [NSError errorWithDomain:[NSString stringWithFormat:@"不存在文件 : %@", filePath]
                                     code:-1
                                 userInfo:nil];
-        block(error, 0);
+        if (block != nil) {
+            block(error, 0);
+        }
     }
 }
 
@@ -90,7 +101,9 @@
         NSError *error = [NSError errorWithDomain:@"dirName 不可为空"
                                              code:-1
                                          userInfo:nil];
-        block(NO, error, nil);
+        if (block != nil) {
+            block(NO, error, nil);
+        }
         return;
     }
     
@@ -108,11 +121,15 @@
     
     if (!(isDirExist && isDir)) {
         if (![fileManager createDirectoryAtPath:dirPath withIntermediateDirectories:YES attributes:nil error:&error]) {
-            block(NO, error, nil);
+            if (block != nil) {
+                block(NO, error, nil);
+            }
             return;
         }
     }
-    block(YES, nil, dirPath);
+    if (block != nil) {
+        block(YES, nil, dirPath);
+    }
 }
 
 /**
@@ -126,12 +143,15 @@
 + (void)getFilePathWithName:(NSString *)fileName
                       inDir:(NSString *)dirName
                   doneBlock:(void(^)(NSError *error, NSString *filePath))block {
-    
     [self getDirectoryInDocumentWithName:dirName doneBlock:^(BOOL success, NSError *error, NSString *dirPath) {
         if (!success) {
-            block(error, nil);
+            if (block != nil) {
+                block(error, nil);
+            }
         } else {
-            block(nil, [dirPath stringByAppendingPathComponent:fileName]);
+            if (block != nil) {
+                block(nil, [dirPath stringByAppendingPathComponent:fileName]);
+            }
         }
     }];
 }
@@ -160,9 +180,13 @@
     NSFileManager *fileManage = [NSFileManager defaultManager];
     NSError *error;
     if([fileManage moveItemAtPath:path toPath:targetPath error:&error]) {
-        block(YES, nil);
+        if (block != nil) {
+            block(YES, nil);
+        }
     } else {
-        block(NO, error);
+        if (block != nil) {
+            block(NO, error);
+        }
     }
 }
 
@@ -200,12 +224,15 @@
     
     NSFileManager *manager = [NSFileManager defaultManager];
     if([manager fileExistsAtPath:filePath]) {
-        
         NSError *error;
         if ([manager removeItemAtPath:filePath error:&error]) {
-            block(filePath, YES, nil);
+            if (block != nil) {
+                block(filePath, YES, nil);
+            }
         } else {
-            block(filePath, NO, error);
+            if (block != nil) {
+                block(filePath, NO, error);
+            }
         }
     }
 }
@@ -223,15 +250,36 @@
 }
 
 
-#pragma mark - 保存图片到手机相册
+#pragma mark - 保存图片、视频
 /**
  保存指定照片到相册
  
- @param image 指定要保存的图片
+ @param image 指定要保存的图片，UIImage，NSData，NSString(图片路径)，NSUrl(图片路径)
  @param saveDoneBlock 保存完成回调
  */
-+ (void)saveToDiskWithImage:(UIImage *)image
-              saveDoneBlock:(void(^)(BOOL success, NSError *error))saveDoneBlock {
++ (void)saveToSystemAlbumWithImage:(id)image
+                     saveDoneBlock:(void(^)(BOOL success, NSError *error))saveDoneBlock {
+    [self saveToSystemAlbumWithObj:image
+                           isVideo:NO
+                     saveDoneBlock:saveDoneBlock];
+}
+
+/**
+ 保存指定视频到相册
+ 
+ @param video 指定要保存的视频路径，NSSting 或者 NSUrl 均可
+ @param saveDoneBlock 保存完成回调
+ */
++ (void)saveToSystemAlbumWithVideo:(id)video
+                     saveDoneBlock:(void(^)(BOOL success, NSError *error))saveDoneBlock {
+    [self saveToSystemAlbumWithObj:video
+                           isVideo:YES
+                     saveDoneBlock:saveDoneBlock];
+}
+
++ (void)saveToSystemAlbumWithObj:(id)obj
+                         isVideo:(BOOL)isVideo
+                   saveDoneBlock:(void(^)(BOOL success, NSError *error))saveDoneBlock {
     // 1. 获取相片库对象
     PHPhotoLibrary *lib = [PHPhotoLibrary sharedPhotoLibrary];
     // 2. 调用changeBlock
@@ -250,7 +298,40 @@
         }
         
         // 2.4 根据传入的相片, 创建相片变动请求
-        PHAssetChangeRequest *assetRequest = [PHAssetChangeRequest creationRequestForAssetFromImage:image];
+        PHAssetChangeRequest *assetRequest;
+        if (!isVideo) {
+            if ([obj isKindOfClass:[UIImage class]]) {
+                assetRequest = [PHAssetChangeRequest creationRequestForAssetFromImage:(UIImage *)obj];
+            } else if ([obj isKindOfClass:[NSData class]]) {
+                UIImage *image = [[UIImage alloc] initWithData:(NSData *)obj];
+                if (image == nil) {
+                    return;
+                }
+                assetRequest = [PHAssetChangeRequest creationRequestForAssetFromImage:image];
+            } else if([obj isKindOfClass:[NSString class]]) {
+                NSURL *url = [NSURL fileURLWithPath:(NSString *)obj];
+                if (url == nil) {
+                    return;
+                }
+                assetRequest = [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:url];
+            } else if([obj isKindOfClass:[NSURL class]]) {
+                assetRequest = [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:(NSURL *)obj];
+            } else {
+                return;
+            }
+        } else {
+            if ([obj isKindOfClass:[NSString class]]) {
+                NSURL *url = [NSURL fileURLWithPath:(NSString *)obj];
+                if (url == nil) {
+                    return;
+                }
+                assetRequest = [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:url];
+            } else if ([obj isKindOfClass:[NSURL class]]) {
+                assetRequest = [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:(NSURL *)obj];
+            } else {
+                return;
+            }
+        }
         
         // 2.4 创建一个占位对象
         PHObjectPlaceholder *placeholder = [assetRequest placeholderForCreatedAsset];
@@ -271,6 +352,40 @@
         }
     }
     return nil;
+}
+
+/**
+ 保存指定图片到三盒指定路径
+ 
+ @param image 待保存图片
+ @param path 图片要保存到的路径，绝对路径，或者是Document下的相对路径，如@"Test/Image/image.jpg"
+ @param saveDoneBlock 保存完成回调
+ */
++ (void)saveToSandboxWithImage:(UIImage *)image
+                      withPath:(NSString *)path
+                 saveDoneBlock:(void(^)(BOOL success, NSError *error))saveDoneBlock {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *dirPath = [path stringByDeletingLastPathComponent];
+    [self getDirectoryInDocumentWithName:dirPath doneBlock:^(BOOL success, NSError *error, NSString *dirPath) {
+        if (success) {
+            NSString *filePath = [dirPath stringByAppendingPathComponent:[path lastPathComponent]];
+            NSData *imageData = UIImagePNGRepresentation(image);
+            BOOL isSuccess = [fileManager createFileAtPath:filePath contents:imageData attributes:nil];
+            if (isSuccess) {
+                if (saveDoneBlock != nil) {
+                    saveDoneBlock(YES, nil);
+                }
+            } else {
+                if (saveDoneBlock != nil) {
+                    saveDoneBlock(NO, nil);
+                }
+            }
+        } else {
+            if (saveDoneBlock != nil) {
+                saveDoneBlock(NO, error);
+            }
+        }
+    }];
 }
 
 @end

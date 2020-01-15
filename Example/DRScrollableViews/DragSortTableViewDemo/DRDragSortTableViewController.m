@@ -64,7 +64,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 30;
+    return 60;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -98,16 +98,35 @@
     deleteDoneBlock();
 }
 
-- (void)dragSortTableView:(DRDragSortTableView *)tableView exchangeIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+/**
+ 每拖拽移动一个位置调用，两个index一定是相邻的
+ 
+ @param tableView tableView
+ @param fromIndexPath 上一次移动到的位置
+ @param toIndexPath 当前移动到的位置
+ @param betweenSections 跨组移动
+ @param succession 两个cell是连续，即交换的两个cell之间没有他cell
+ */
+- (void)dragSortTableView:(DRDragSortTableView *)tableView
+        exchangeIndexPath:(NSIndexPath *)fromIndexPath
+              toIndexPath:(NSIndexPath *)toIndexPath
+          betweenSections:(BOOL)betweenSections
+               succession:(BOOL)succession {
     NSMutableArray *fromArr = self.datas[fromIndexPath.section];
-    if (fromIndexPath.section == toIndexPath.section) {
-        [fromArr exchangeObjectAtIndex:fromIndexPath.row withObjectAtIndex:toIndexPath.row];
-    } else {
-        NSString *str = [fromArr objectAtIndex:fromIndexPath.row];
-        [fromArr removeObject:str];
+    if (betweenSections) {
+        DRDragSortDeleteModel *fromModel = [fromArr objectAtIndex:fromIndexPath.row];
+        [fromArr removeObject:fromModel];
         
         NSMutableArray *toArr = self.datas[toIndexPath.section];
-        [toArr insertObject:str atIndex:toIndexPath.row];
+        if (!succession) {
+            DRDragSortDeleteModel *toModel = [toArr objectAtIndex:toIndexPath.row];
+            [fromArr insertObject:toModel atIndex:fromIndexPath.row];
+            [toArr removeObject:toModel];
+        }
+        
+        [toArr insertObject:fromModel atIndex:toIndexPath.row];
+    } else {
+        [fromArr exchangeObjectAtIndex:fromIndexPath.row withObjectAtIndex:toIndexPath.row];
     }
 }
 

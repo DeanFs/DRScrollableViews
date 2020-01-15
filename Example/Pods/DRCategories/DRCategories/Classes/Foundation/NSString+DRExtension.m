@@ -22,6 +22,7 @@
 #import <DRMacroDefines/DRMacroDefines.h>
 #import "NSNumber+DRExtension.h"
 #import "NSDateComponents+DRExtension.h"
+#import <RegExCategories/RegExCategories.h>
 
 @implementation NSString (DRExtension)
 
@@ -104,6 +105,20 @@
         return [NSString stringWithFormat:@"%@ %@ %@", [originString substringToIndex:3], [originString substringWithRange:NSMakeRange(3, 4)], [originString substringFromIndex:7]];
     }
     return originString;
+}
+
+- (NSString *)numberFormatWithMaxDecimalCount:(int)maxDecimalCount {
+    NSString *numString = [RX(@"[-+]?\\d*\\.?\\d*") firstMatch:self];
+    NSDecimalNumber *num = [NSDecimalNumber decimalNumberWithString:numString];
+    return [num stringValueWithDigit:maxDecimalCount isForce:NO block:^(NSNumberFormatter *formt) {
+        [formt setUsesGroupingSeparator:YES];
+    }];
+}
+
+/// 阿里云图片链接限定图片短边的长度，等比缩放
+/// @param width 短边长度
+- (NSString *)ossImageUrlSetImageSmallSideWidth:(CGFloat)width {
+    return [NSString stringWithFormat:@"%@?x-oss-process=image/resize,s_%d", self, (int)floorf(width*[UIScreen mainScreen].scale)];
 }
 
 @end
@@ -582,7 +597,7 @@
     NSInteger idx = [self integerValue] - 1;
     
     if(idx < 12 && idx >= 0) {
-        return @[@"正月",@"二月",@"三月",@"四月",@"五月",@"六月",@"七月",@"八月",@"九月",@"十月",@"十一月",@"十二月"][idx];
+        return @[@"正月",@"二月",@"三月",@"四月",@"五月",@"六月",@"七月",@"八月",@"九月",@"十月",@"冬月",@"腊月"][idx];
     }
     
     return nil;

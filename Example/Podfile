@@ -6,6 +6,8 @@ target 'DRScrollableViews_Example' do
   pod 'DRScrollableViews', :path => '../'
   pod 'HexColors', '~> 4.0.0'
   pod 'DRCategories'
+  pod 'MJRefresh'
+  pod 'DRSandboxManager'
 
   target 'DRScrollableViews_Tests' do
     inherit! :search_paths
