@@ -15,8 +15,8 @@
 #import <DRCategories/UIView+DRExtension.h>
 
 typedef NS_ENUM(NSInteger, AutoScroll) {
-    AutoScrollUp,
-    AutoScrollDown
+    AutoScrollUp,   // 手指到达下边缘，向上滚
+    AutoScrollDown  // 到达上边缘，向下滚
 };
 
 @interface DRDragSortTableView ()
@@ -386,7 +386,7 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
         point.y = self.maxCenterY;
     }
     if (!self.canDeleteStartCell) { // 不可删除时，只能纵向拖拽
-        point.x = self.bounds.size.width/2;
+        point.x = self.width / 2;
     }
     self.dragImageView.center = point;
 }
@@ -482,9 +482,9 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
     }
     self.minCenterY = topY + halfHeight;
     BOOL reachTop = pointTop <= topY;
-    // 手指到达tableView上边缘且顶部有未显示的数据
     if (moreDateOutTop && reachTop) {
-        self.autoScroll = AutoScrollUp;
+        // 手指到达tableView上边缘且顶部有未显示的数据
+        self.autoScroll = AutoScrollDown;
         return YES;
     }
     
@@ -493,8 +493,7 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
     if (@available(iOS 11.0, *)) {
         visibleHeight -= (self.adjustedContentInset.top + self.adjustedContentInset.bottom);
     }
-    BOOL moreDataOutBottom = self.contentSize.height - self.contentOffset.y > visibleHeight;
-    // 手指到达tableView下边缘
+    BOOL moreDataOutBottom = self.contentSize.height - self.contentOffset.y > visibleHeight + insetTop;
     CGFloat tableRectInWindowBottom = self.tableRectInWindow.origin.y + self.tableRectInWindow.size.height - self.contentInset.bottom;
     if (@available(iOS 11.0, *)) {
         tableRectInWindowBottom -= self.adjustedContentInset.bottom;
@@ -505,7 +504,8 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
     self.maxCenterY = tableRectInWindowBottom - halfHeight;
     BOOL reachBottom = pointBottom >= tableRectInWindowBottom;
     if (moreDataOutBottom && reachBottom) {
-        self.autoScroll = AutoScrollDown;
+        // 手指到达tableView下边缘且顶部有未显示的数据
+        self.autoScroll = AutoScrollUp;
         return YES;
     }
     return NO;
@@ -519,40 +519,40 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
 
 - (void)scrollTableView {
     // 改变tableView的contentOffset，实现自动滚动
-    CGFloat height = self.autoScroll == AutoScrollUp? -self.scrollSpeed : self.scrollSpeed;
+    CGFloat height = self.autoScroll == AutoScrollUp? self.scrollSpeed : -self.scrollSpeed;
     [self setContentOffset:CGPointMake(0, self.contentOffset.y + height)];
     
-    // 滚动tableView的同时也要执行插入操作
-    CGFloat x = self.bounds.size.width/2;
-    CGFloat y;
-    CGFloat halfCellHeight = self.dragView.bounds.size.height/2;
-    if (self.autoScroll == AutoScrollUp) {
-        y = self.contentInset.top + self.contentOffset.y + halfCellHeight;
-    } else {
-        y = self.contentInset.top + self.contentOffset.y + self.bounds.size.height - halfCellHeight;
-    }
-    CGPoint currentPoint = CGPointMake(x, y);
+    // 获取滚动后，当前手指对应的indexPath
+    CGPoint currentPoint = [kDRWindow convertPoint:self.dragImageView.center toView:self];
     NSIndexPath *indexPath = [self indexPathForRowAtPoint:currentPoint];
     BOOL canSort = [self canSortWithIndex:indexPath fromIndexPath:self.fromIndexPath];
-    
-    if (!canSort) {
-        [self.displayLink invalidate];
-        return;
+    if (canSort) {
+        [self exchangeCellToIndexPath:indexPath];
     }
     
-    if (self.autoScroll == AutoScrollUp) { // 滚到最上面
-        if (self.contentOffset.y <= -self.contentInset.top) {
-            self.contentOffset = CGPointMake(0, -self.contentInset.top);
+    CGFloat insetTop = self.contentInset.top;
+    if (@available(iOS 11.0, *)) {
+        insetTop += self.adjustedContentInset.top;
+    }
+    if (self.autoScroll == AutoScrollUp) { // 往上滚
+        // 检查是否滚动到最下面
+        CGFloat visibleHeight = self.height - self.contentInset.top - self.contentInset.bottom;
+        if (@available(iOS 11.0, *)) {
+            visibleHeight -= (self.adjustedContentInset.top + self.adjustedContentInset.bottom);
+        }
+        if (self.contentOffset.y + visibleHeight >= self.contentSize.height) {
+            self.contentOffset = CGPointMake(0, self.contentSize.height - visibleHeight - insetTop);
             [self.displayLink invalidate];
         }
-    } else { // 滚到最下面
-        if (self.contentOffset.y >= self.contentSize.height + self.contentInset.bottom - self.frame.size.height) {
-            self.contentOffset = CGPointMake(0, self.contentSize.height + self.contentInset.bottom - self.frame.size.height);
+    } else { // 往下滚
+        // 检查是否滚动到最上面
+        if (self.contentOffset.y <= -insetTop) {
+            self.contentOffset = CGPointMake(0, -insetTop);
             [self.displayLink invalidate];
         }
     }
     
-    [self exchangeCellToIndexPath:indexPath];
+    
 }
 
 @end
