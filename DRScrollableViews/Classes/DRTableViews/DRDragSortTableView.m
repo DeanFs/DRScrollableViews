@@ -12,6 +12,7 @@
 #import <DRMacroDefines/DRMacroDefines.h>
 #import <DRCategories/NSDictionary+DRExtension.h>
 #import <DRCategories/UIImage+DRExtension.h>
+#import <DRCategories/UIView+DRExtension.h>
 
 typedef NS_ENUM(NSInteger, AutoScroll) {
     AutoScrollUp,
@@ -33,7 +34,10 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
 @property (nonatomic, assign) BOOL canUseDelete; // 是否可以使用拖动删除功能
 @property (nonatomic, assign) BOOL canDeleteStartCell; // 当前吸起的cell是否可删除
 @property (nonatomic, assign) CGRect tableRectInWindow; // tableView相对keyWindow的frame
-@property (nonatomic, weak) UIView<DRDragSortCellDelegate> *dragView; // 长按手势开始时的cell
+@property (nonatomic, weak) UITableViewCell<DRDragSortCellDelegate> *dragCell; // 长按手势开始时的cell
+@property (weak, nonatomic) UIView *dragView; // 长按后拖拽的视图(截图来源)
+@property (assign, nonatomic) CGFloat topY;
+@property (assign, nonatomic) CGFloat bottomY;
 
 @end
 
@@ -116,13 +120,11 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
     
     if (sender.state == UIGestureRecognizerStateBegan) { // 长按手势开始
         if (![self canReactLongPressAtIndexPath:indexPath point:point]) {
-            [self.canSortCache removeAllObjects];
             return;
         }
         self.startIndexPath = indexPath;
         // 既不能拖动排序，也不能拖动删除
         if (!canSort && !self.canDeleteStartCell) {
-            [self.canSortCache removeAllObjects];
             return;
         }
         self.dragBegan = YES;
@@ -131,16 +133,6 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
     } else if (sender.state == UIGestureRecognizerStateChanged){ // 手指移动
         // 没有触发开始拖拽
         if (!self.dragBegan) {
-            [self.canSortCache removeAllObjects];
-            return;
-        }
-        // 既不能拖动排序，也不能拖动删除
-        if (!canSort && !self.canDeleteStartCell) {
-            CGPoint imagePoint = [sender locationInView:kDRWindow];
-            if ([self isMoveToEdgeWithPonit:imagePoint]) {
-                [self updateCellImageCenterWithPoint:imagePoint];
-            }
-            [self.canSortCache removeAllObjects];
             return;
         }
         [self onLongPressMove:sender canSort:canSort indexPath:indexPath];
@@ -193,13 +185,13 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
         [self updateCellImageCenterWithPoint:imageCenter];
         self.dragImageView.transform = CGAffineTransformMakeScale(self.cellFrameScale, self.cellFrameScale);
         self.dragImageView.alpha = 1;
-        self.dragView.alpha = 0.0;
+        self.dragCell.alpha = 0.0;
     } completion:^(BOOL finished) {
         if (sender.state != UIGestureRecognizerStateEnded &&
             sender.state != UIGestureRecognizerStateCancelled &&
             sender.state != UIGestureRecognizerStateFailed &&
             sender.state != UIGestureRecognizerStatePossible) {
-            self.dragView.hidden = YES;
+            self.dragCell.hidden = YES;
         }
     }];
 }
@@ -277,9 +269,10 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
             kDRWeakSelf
             [self.dr_dragSortDelegate dragSortTableView:self deleteAtIndexPath:deleteIndex deleteDoneBlock:^{
                 // 恢复cell显示
-                weakSelf.dragView.alpha = 1;
-                weakSelf.dragView.hidden = NO;
-                weakSelf.dragView = nil;
+                weakSelf.dragCell.alpha = 1;
+                weakSelf.dragCell.hidden = NO;
+                weakSelf.dragCell = nil;
+                [weakSelf sendSubviewToBack:weakSelf.dragCell];
             }];
         }
     } else {
@@ -315,10 +308,11 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
 
 // 恢复cell显示，移除cellImageView
 - (void)recoverDragView {
-    self.dragView.hidden = NO;
-    self.dragView.alpha = 0;
+    self.dragCell.hidden = NO;
+    self.dragCell.alpha = 0;
+    [self sendSubviewToBack:self.dragCell];
     [UIView animateWithDuration:0.25 animations:^{
-        self.dragView.alpha = 1;
+        self.dragCell.alpha = 1;
         self.dragImageView.alpha = 0;
         self.dragImageView.transform = CGAffineTransformIdentity;
         [self updateCellImageCenterWithPoint:[self.dragView.superview convertPoint:self.dragView.center
@@ -326,18 +320,21 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
     } completion:^(BOOL finished) {
         [self.dragImageView removeFromSuperview];
         self.dragImageView = nil;
-        self.dragView = nil;
+        self.dragCell = nil;
     }];
 }
 
 - (void)updateCellImageCenterWithPoint:(CGPoint)point {
+    self.dragImageView.center = point;
+    if ([self isMoveToEdgeWithPonit:point]) {
+        if (self.autoScroll == AutoScrollUp) {
+            point.y = self.topY + self.dragImageView.height / 2;
+        } else {
+            point.y = self.bottomY - self.dragImageView.height / 2;
+        }
+    }
     if (!self.canDeleteStartCell) { // 不可删除时，只能纵向拖拽
         point.x = self.bounds.size.width/2;
-    }
-    if (point.y < self.tableRectInWindow.origin.y + self.dragView.bounds.size.height/2) {
-        point.y = self.tableRectInWindow.origin.y + self.dragView.bounds.size.height/2;
-    } else if (point.y > kDRWindow.bounds.size.height - self.dragView.bounds.size.height/2) {
-        point.y = kDRWindow.bounds.size.height - self.dragView.bounds.size.height/2;
     }
     self.dragImageView.center = point;
 }
@@ -393,15 +390,16 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
     }
     
     BOOL canReact = YES;
-    self.dragView = (UIView<DRDragSortCellDelegate> *)[self cellForRowAtIndexPath:indexPath];
+    self.dragCell = (UITableViewCell<DRDragSortCellDelegate> *)[self cellForRowAtIndexPath:indexPath];
+    self.dragView = self.dragCell;
     CGPoint cellPoint = [self convertPoint:point toView:self.dragView];
-    if ([self.dragView respondsToSelector:@selector(canReactLongPressSubRect)]) {
-        CGRect cellReactRect = [self.dragView canReactLongPressSubRect];
+    if ([self.dragCell respondsToSelector:@selector(canReactLongPressSubRect)]) {
+        CGRect cellReactRect = [self.dragCell canReactLongPressSubRect];
         canReact = CGRectContainsPoint(cellReactRect, cellPoint);
     }
     if (canReact) {
-        if ([self.dragView respondsToSelector:@selector(subDragViewFromCellInDragSortTableView:)]) {
-            self.dragView = (UIView<DRDragSortCellDelegate> *)[self.dragView subDragViewFromCellInDragSortTableView:self];
+        if ([self.dragCell respondsToSelector:@selector(subDragViewFromCellInDragSortTableView:)]) {
+            self.dragView = (UIView<DRDragSortCellDelegate> *)[self.dragCell subDragViewFromCellInDragSortTableView:self];
             canReact = CGRectContainsPoint(self.dragView.frame, cellPoint);
         }
     }
@@ -412,9 +410,23 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
 #pragma mark - 拖拽到边缘自动滚动
 - (BOOL)isMoveToEdgeWithPonit:(CGPoint)point {
     // tableView顶部还有数据未显示
-    BOOL moreDateOutTop = self.contentOffset.y > -self.contentInset.top;
+    CGFloat insetTop = self.contentInset.top;
+    if (@available(iOS 11.0, *)) {
+        insetTop += self.adjustedContentInset.top;
+    }
+    BOOL moreDateOutTop = self.contentOffset.y > -insetTop;
     // 手指一动到了tableView的上边缘
-    BOOL reachTop = self.dragImageView.frame.origin.y <= self.tableRectInWindow.origin.y;
+    CGFloat topY = self.tableRectInWindow.origin.y + self.contentInset.top;
+    if (@available(iOS 11.0, *)) {
+        topY += self.adjustedContentInset.top;
+    }
+    CGPoint pointInTableView = [kDRWindow convertPoint:point toView:self];
+    NSIndexPath *currentIndexPath = [self indexPathForRowAtPoint:pointInTableView];
+    if ([self.delegate respondsToSelector:@selector(tableView:heightForHeaderInSection:)]) {
+        topY += [self.delegate tableView:self heightForHeaderInSection:currentIndexPath.section];
+    }
+    self.topY = topY;
+    BOOL reachTop = self.dragImageView.y <= topY;
     // 手指到达tableView上边缘且顶部有未显示的数据
     if (moreDateOutTop && reachTop) {
         self.autoScroll = AutoScrollUp;
@@ -422,9 +434,22 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
     }
     
     // tableView底部还有数据未显示
-    BOOL moreDataOutBottom = self.contentSize.height - self.contentOffset.y - self.contentInset.top - CGRectGetHeight(self.frame) > 0;
+    CGFloat visibleHeight = self.height - self.contentInset.top - self.contentInset.bottom;
+    if (@available(iOS 11.0, *)) {
+        visibleHeight -= (self.adjustedContentInset.top + self.adjustedContentInset.bottom);
+    }
+    BOOL moreDataOutBottom = self.contentSize.height - self.contentOffset.y > visibleHeight;
     // 手指到达tableView下边缘
-    BOOL reachBottom = self.dragImageView.frame.origin.y + self.dragImageView.frame.size.height >= self.tableRectInWindow.origin.y + self.tableRectInWindow.size.height;
+    CGFloat dragImageViewBottom = self.dragImageView.y + self.dragImageView.height;
+    CGFloat tableRectInWindowBottom = self.tableRectInWindow.origin.y + self.tableRectInWindow.size.height - self.contentInset.bottom;
+    if (@available(iOS 11.0, *)) {
+        tableRectInWindowBottom -= self.adjustedContentInset.bottom;
+    }
+    if ([self.delegate respondsToSelector:@selector(tableView:heightForFooterInSection:)]) {
+        tableRectInWindowBottom -= [self.delegate tableView:self heightForFooterInSection:currentIndexPath.section];
+    }
+    self.bottomY = tableRectInWindowBottom;
+    BOOL reachBottom = dragImageViewBottom >= tableRectInWindowBottom;
     if (moreDataOutBottom && reachBottom) {
         self.autoScroll = AutoScrollDown;
         return YES;
