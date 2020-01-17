@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		24F6D2EC23D185970063DC5F /* DRTimeFlowPullRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 24F6D2EA23D185970063DC5F /* DRTimeFlowPullRefreshView.m */; };
 		41E5F3D567BDC471DA1F4BE7 /* Pods_DRScrollableViews_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 160D0CA0F52C0085E397E0A7 /* Pods_DRScrollableViews_Example.framework */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
@@ -51,6 +52,8 @@
 
 /* Begin PBXFileReference section */
 		160D0CA0F52C0085E397E0A7 /* Pods_DRScrollableViews_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DRScrollableViews_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		24F6D2EA23D185970063DC5F /* DRTimeFlowPullRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRTimeFlowPullRefreshView.m; sourceTree = "<group>"; };
+		24F6D2EB23D185970063DC5F /* DRTimeFlowPullRefreshView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRTimeFlowPullRefreshView.h; sourceTree = "<group>"; };
 		26229ABC64A5D15BD2E44B29 /* DRScrollableViews.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = DRScrollableViews.podspec; path = ../DRScrollableViews.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		56587A4DDD973D824033BC60 /* Pods_DRScrollableViews_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DRScrollableViews_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58A195388D20070C39A /* DRScrollableViews_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DRScrollableViews_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -301,6 +304,8 @@
 				FEB9AC5122DF343600B91032 /* DRTimeFlowViewController.h */,
 				FEB9AC5222DF343600B91032 /* DRTimeFlowViewController.m */,
 				FEB9AC5322DF343600B91032 /* DRTimeFlowViewController.xib */,
+				24F6D2EB23D185970063DC5F /* DRTimeFlowPullRefreshView.h */,
+				24F6D2EA23D185970063DC5F /* DRTimeFlowPullRefreshView.m */,
 			);
 			path = TimeFlow;
 			sourceTree = "<group>";
@@ -445,7 +450,6 @@
 				"${BUILT_PRODUCTS_DIR}/DRSandboxManager/DRSandboxManager.framework",
 				"${BUILT_PRODUCTS_DIR}/DRScrollableViews/DRScrollableViews.framework",
 				"${BUILT_PRODUCTS_DIR}/HexColors/HexColors.framework",
-				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
 				"${BUILT_PRODUCTS_DIR}/RegExCategories/RegExCategories.framework",
 				"${BUILT_PRODUCTS_DIR}/pop/pop.framework",
@@ -456,7 +460,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DRSandboxManager.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DRScrollableViews.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HexColors.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RegExCategories.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/pop.framework",
@@ -499,6 +502,7 @@
 				FE682F2422E1A31D00815E2F /* DRDragSortDeleteCell.m in Sources */,
 				6003F59E195388D20070C39A /* DRAppDelegate.m in Sources */,
 				FE89B15A231FEF9E009DC194 /* DRFoldableItemModel.m in Sources */,
+				24F6D2EC23D185970063DC5F /* DRTimeFlowPullRefreshView.m in Sources */,
 				FEB9AC3622DEBFEE00B91032 /* DRDragSortTableViewController.m in Sources */,
 				FE89B153231FED3F009DC194 /* DRFoldableOptionCell.m in Sources */,
 				6003F5A7195388D20070C39A /* DRViewController.m in Sources */,

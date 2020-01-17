@@ -62,9 +62,12 @@
         [self.collectionView setContentOffset:CGPointMake(0, offset)];
         self.needScroll = NO;
     }
+
+    CGFloat widtdh = CGRectGetWidth(self.collectionView.frame);
+    [self setupRefreshViewsWithWidth:widtdh];
     
     // 可滚动区域大小设置的大一点
-    return CGSizeMake(CGRectGetWidth(self.collectionView.frame), self.cellContentHeight);
+    return CGSizeMake(widtdh, self.cellContentHeight);
 }
 
 - (NSArray<__kindof UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect {
@@ -164,6 +167,10 @@
 - (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity {
     if (proposedContentOffset.y < self.maxCellHeight - self.height) { // 第一条在collectionView外
         proposedContentOffset.y = self.maxCellHeight - self.height;
+        if (self.headerRefreshView.currentStatus == DRTimeFlowPullRefreshStatusPrepared ||
+            self.headerRefreshView.currentStatus == DRTimeFlowPullRefreshStatusLoading) {
+            proposedContentOffset.y = -self.height;
+        }
     } else {
         CGFloat bottomOutSideHeight = self.cellContentHeight - proposedContentOffset.y - self.height;
         if (bottomOutSideHeight > 0) {
@@ -180,6 +187,10 @@
             }
         } else if (bottomOutSideHeight < 0) {
             proposedContentOffset.y += bottomOutSideHeight;
+            if (self.footerRefreshView.currentStatus == DRTimeFlowPullRefreshStatusPrepared ||
+                self.footerRefreshView.currentStatus == DRTimeFlowPullRefreshStatusLoading) {
+                proposedContentOffset.y += [self.headerRefreshView refreshViewHeight];
+            }
         }
     }
     return proposedContentOffset;
@@ -187,6 +198,25 @@
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {
     return !CGRectEqualToRect(newBounds, self.collectionView.bounds);
+}
+
+#pragma mark - private
+- (void)setupRefreshViewsWithWidth:(CGFloat)width {
+    if (self.headerRefreshView != nil) {
+        if (self.headerRefreshView.superview == nil) {
+            [self.collectionView addSubview:self.headerRefreshView];
+        }
+        CGFloat refreshViewHeight = [self.headerRefreshView refreshViewHeight];
+        self.headerRefreshView.frame = CGRectMake(0, -self.height, width, refreshViewHeight);
+    }
+    
+    if (self.footerRefreshView != nil) {
+        if (self.footerRefreshView.superview == nil) {
+            [self.collectionView addSubview:self.footerRefreshView];
+        }
+        CGFloat refreshViewHeight = [self.footerRefreshView refreshViewHeight];
+        self.footerRefreshView.frame = CGRectMake(0, self.cellContentHeight, width, refreshViewHeight);
+    }
 }
 
 @end

@@ -12,6 +12,7 @@
 #import <DRMacroDefines/DRMacroDefines.h>
 #import <DRScrollableViews/DRTimeFlowView.h>
 #import <HexColors/HexColors.h>
+#import "DRTimeFlowPullRefreshView.h"
 
 @interface DRTimeFlowViewController ()<DRTimeFlowViewDelegate, DRTimeFlowViewDataSource>
 
@@ -37,11 +38,13 @@
     [self.timeFlowView registerNib:[UINib nibWithNibName:self.reuseIdentifier bundle:nil] forCellWithReuseIdentifier:self.reuseIdentifier];
     self.timeFlowView.delegate = self;
     self.timeFlowView.dataSource = self;
+    self.timeFlowView.headerRefreshView = [DRTimeFlowPullRefreshView headerView];
+    self.timeFlowView.footerRefreshView = [DRTimeFlowPullRefreshView footerView];
     
     // 延时模拟网络请求
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.current = arc4random() % 15;
-        [self makeDateWithCount:arc4random() % 200 + 15];
+        [self makeDateWithCount:arc4random() % 10 + 15 insert:NO];
         [self.timeFlowView reloadDataScrollToBottomIndex:self.current];
     });
 }
@@ -69,11 +72,28 @@
 // 加载更多
 - (void)timeFlowView:(DRTimeFlowView *)timeFlowView didScrollToBottom:(UIScrollView *)scrollView {
     // 延时模拟网络请求
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (self.datas.count < 300) {
-            [self makeDateWithCount:50];
-            [timeFlowView realoadAppendData];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [timeFlowView endFooterRefreshing];
+        if (self.datas.count < 100) {
+            [self makeDateWithCount:20 insert:NO];
+        } else {
+            [timeFlowView endFooterRefreshingWithNoMoreData];
         }
+        [timeFlowView headerRefreshRest];
+        [timeFlowView realoadAppendData];
+    });
+}
+
+- (void)timeFlowView:(DRTimeFlowView *)timeFlowView didScrollToTop:(UIScrollView *)scrollView {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [timeFlowView endFooterRefreshing];
+        if (self.datas.count < 100) {
+            [self makeDateWithCount:20 insert:YES];
+        } else {
+            [timeFlowView endHeaderRefreshingWithNoMoreData];
+        }
+        [timeFlowView footerRefreshRest];
+        [timeFlowView realoadAppendData];
     });
 }
 
@@ -93,7 +113,7 @@
 }
 
 #pragma mark - private
-- (void)makeDateWithCount:(NSInteger)count {
+- (void)makeDateWithCount:(NSInteger)count insert:(BOOL)insert {
     if (!self.datas) {
         self.datas = [NSMutableArray array];
     }
@@ -120,7 +140,11 @@
         model.title = titles[self.datas.count % titles.count];
         model.desc = descs[self.datas.count % descs.count];
         model.day = self.current - self.datas.count;
-        [self.datas addObject:model];
+        if (insert) {
+            [self.datas insertObject:model atIndex:0];
+        } else {
+           [self.datas addObject:model];
+        }
     }
 }
 

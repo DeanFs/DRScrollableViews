@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'DRScrollableViews'
-  s.version          = '0.3.12'
+  s.version          = '0.4.0'
   s.summary          = 'UITableView, UICollectionView等的一些特殊效果'
 
 # This description is used to generate tags and improve search results.
@@ -43,8 +43,15 @@ TODO: Add long description of the pod here.
   
 
   s.subspec 'DRCollectionViews' do |ss|
-    ss.source_files = 'DRScrollableViews/Classes/DRCollectionViews/*.{h,m}'
-    ss.dependency 'DRScrollableViews/Common'
+      ss.subspec 'FoldableView' do |sss|
+          sss.source_files = 'DRScrollableViews/Classes/DRCollectionViews/FoldableView/*.{h,m}'
+          sss.dependency 'DRScrollableViews/Common'
+      end
+      
+      ss.subspec 'TimeFlowView' do |sss|
+          sss.source_files = 'DRScrollableViews/Classes/DRCollectionViews/TimeFlowView/*.{h,m}'
+          sss.dependency 'DRScrollableViews/Common'
+      end
   end
   
   # s.resource_bundles = {

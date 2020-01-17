@@ -14,6 +14,7 @@
 #import <DRCategories/UIImage+DRExtension.h>
 #import <DRCategories/NSDictionary+DRExtension.h>
 #import "UICollectionViewCell+TimeFlowShadowLayer.h"
+#import <DRCategories/UIView+DRExtension.h>
 
 @interface DRTimeFlowView () <UICollectionViewDelegate, UICollectionViewDataSource>
 
@@ -193,6 +194,39 @@
     [self reloadData];
 }
 
+#pragma mark - 上下拉刷新
+- (void)setHeaderRefreshView:(UIView<DRTimeFlowViewRefreshViewProtocol> *)headerRefreshView {
+    self.layout.headerRefreshView = headerRefreshView;
+}
+
+- (void)endHeaderRefreshing {
+    [self.layout.headerRefreshView setStatus:DRTimeFlowPullRefreshStatusNormal];
+}
+
+- (void)endHeaderRefreshingWithNoMoreData {
+    [self.layout.headerRefreshView setStatus:DRTimeFlowPullRefreshStatusNoMoreData];
+}
+
+- (void)headerRefreshRest {
+    [self.layout.headerRefreshView setStatus:DRTimeFlowPullRefreshStatusRest];
+}
+
+- (void)setFooterRefreshView:(UIView<DRTimeFlowViewRefreshViewProtocol> *)footerRefreshView {
+    self.layout.footerRefreshView = footerRefreshView;
+}
+
+- (void)endFooterRefreshing {
+    [self.layout.footerRefreshView setStatus:DRTimeFlowPullRefreshStatusNormal];
+}
+
+- (void)endFooterRefreshingWithNoMoreData {
+    [self.layout.footerRefreshView setStatus:DRTimeFlowPullRefreshStatusNoMoreData];
+}
+
+- (void)footerRefreshRest {
+    [self.layout.footerRefreshView setStatus:DRTimeFlowPullRefreshStatusRest];
+}
+
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return 1;
@@ -280,6 +314,24 @@
     if ([self.delegate respondsToSelector:@selector(timeFlowView:didScroll:)]) {
         [self.delegate timeFlowView:self didScroll:scrollView];
     }
+    
+    if ([self.delegate respondsToSelector:@selector(timeFlowView:didScrollToBottom:)]) {
+        CGFloat contentHeight = scrollView.contentSize.height;
+        CGFloat bottomRest = contentHeight - scrollView.contentOffset.y - scrollView.height;
+        if (bottomRest <= -[self.layout.footerRefreshView refreshViewHeight]) {
+            [self.layout.footerRefreshView setStatus:DRTimeFlowPullRefreshStatusPrepared];
+        } else {
+            [self.layout.footerRefreshView setStatus:DRTimeFlowPullRefreshStatusNormal];
+        }
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(timeFlowView:didScrollToTop:)]) {
+        if (self.collectionView.contentOffset.y <= -self.collectionView.height) {
+            [self.layout.headerRefreshView setStatus:DRTimeFlowPullRefreshStatusPrepared];
+        } else {
+            [self.layout.headerRefreshView setStatus:DRTimeFlowPullRefreshStatusNormal];
+        }
+    }
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
@@ -320,10 +372,15 @@
         [self.delegate timeFlowView:self didEndDecelerating:scrollView];
     }
     if ([self.delegate respondsToSelector:@selector(timeFlowView:didScrollToBottom:)]) {
-        CGFloat contentHeight = scrollView.contentSize.height;
-        CGFloat bottomRest = contentHeight - scrollView.contentOffset.y - CGRectGetHeight(scrollView.frame);
-        if (bottomRest <= 0) {
+        if (self.layout.footerRefreshView.currentStatus == DRTimeFlowPullRefreshStatusPrepared) {
+            [self.layout.footerRefreshView setStatus:DRTimeFlowPullRefreshStatusLoading];
             [self.delegate timeFlowView:self didScrollToBottom:scrollView];
+        }
+    }
+    if ([self.delegate respondsToSelector:@selector(timeFlowView:didScrollToTop:)]) {
+        if (self.layout.headerRefreshView.currentStatus == DRTimeFlowPullRefreshStatusPrepared) {
+            [self.layout.headerRefreshView setStatus:DRTimeFlowPullRefreshStatusLoading];
+            [self.delegate timeFlowView:self didScrollToTop:scrollView];
         }
     }
     self.haveDrag = NO;

@@ -15,6 +15,7 @@
 #import "DRFoldableOptionItemView.h"
 #import "DRTimeFlowLayout.h"
 #import "DRTimeFlowView.h"
+#import "DRTimeFlowViewProtocol.h"
 #import "UICollectionViewCell+TimeFlowShadowLayer.h"
 #import "DRDragSortTableView.h"
 

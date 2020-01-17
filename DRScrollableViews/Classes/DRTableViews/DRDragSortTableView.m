@@ -50,9 +50,7 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
 }
 
 - (void)dealloc {
-#ifdef DEBUG
     kDR_LOG(@"%@ dealloc", NSStringFromClass([self class]));
-#endif
 }
 
 - (void)setDr_dragSortDelegate:(id<DRDragSortTableViewDelegate, UITableViewDelegate, UITableViewDataSource>)dragSortDelegate {
@@ -69,7 +67,7 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
     if (self.canUseSort) {
         // 设置默认滚动速度为4
         if (!_scrollSpeed) {
-            _scrollSpeed = 4;
+            _scrollSpeed = 6;
         }
     }
     
@@ -233,15 +231,15 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
         }];
     }
     
+    // 判断cell是否被拖拽到了tableView的边缘，如果是，则自动滚动tableView
+    if (isMoveToEdge) {
+        [self startTimerToScrollTableView];
+        return;
+    } else {
+        [self stopTimer];
+    }
+    
     if (canSort && self.fromIndexPath) { // 可交换排序
-        // 判断cell是否被拖拽到了tableView的边缘，如果是，则自动滚动tableView
-        if (isMoveToEdge) {
-            [self startTimerToScrollTableView];
-            return;
-        } else {
-            [self.displayLink invalidate];
-        }
-        
         [self exchangeCellToIndexPath:indexPath];
     }
 }
@@ -256,7 +254,7 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
     
     NSIndexPath *toIndex;
     if (self.fromIndexPath) { // 可拖动排序
-        [self.displayLink invalidate];
+        [self stopTimer];
         
         toIndex = self.toIndexPath;
         if (!toIndex) {
@@ -343,6 +341,13 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
                                              succession:succession];
         }
         
+        self.dragCell.hidden = YES;
+        UITableViewCell<DRDragSortCellDelegate> *cell = (UITableViewCell<DRDragSortCellDelegate> *)[self cellForRowAtIndexPath:self.fromIndexPath];
+        if (cell != self.dragCell) {
+            self.dragCell.hidden = NO;
+            self.dragCell = cell;
+            self.dragCell.hidden = YES;
+        }
         [self beginUpdates];
         [self moveRowAtIndexPath:moveFromIndexPath
                      toIndexPath:moveToIndexPath];
@@ -512,9 +517,15 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
 }
 
 - (void)startTimerToScrollTableView {
+    if (self.displayLink == nil) {
+        self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(scrollTableView)];
+        [self.displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    }
+}
+
+- (void)stopTimer {
     [self.displayLink invalidate];
-    self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(scrollTableView)];
-    [self.displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    self.displayLink = nil;
 }
 
 - (void)scrollTableView {
@@ -542,13 +553,13 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
         }
         if (self.contentOffset.y + visibleHeight >= self.contentSize.height) {
             self.contentOffset = CGPointMake(0, self.contentSize.height - visibleHeight - insetTop);
-            [self.displayLink invalidate];
+            [self stopTimer];
         }
     } else { // 往下滚
         // 检查是否滚动到最上面
         if (self.contentOffset.y <= -insetTop) {
             self.contentOffset = CGPointMake(0, -insetTop);
-            [self.displayLink invalidate];
+            [self stopTimer];
         }
     }
     

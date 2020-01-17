@@ -103,7 +103,7 @@
 
 @property (nonatomic, weak) id<DRDragSortTableViewDelegate, UITableViewDelegate, UITableViewDataSource> dr_dragSortDelegate;
 
-/// 当cell拖拽到tableView边缘时,tableView的滚动速度，1/60秒内移动像素(pt)位数，默认为4
+/// 当cell拖拽到tableView边缘时,tableView的滚动速度，1/60秒内移动像素(pt)位数，默认为6
 @property (nonatomic, assign) IBInspectable CGFloat scrollSpeed;
 
 /// 长按手势开始时，吸起的视图截图的缩放比例，默认1.05
