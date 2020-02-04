@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'DRScrollableViews'
-  s.version          = '0.4.0'
+  s.version          = '0.4.1'
   s.summary          = 'UITableView, UICollectionView等的一些特殊效果'
 
 # This description is used to generate tags and improve search results.

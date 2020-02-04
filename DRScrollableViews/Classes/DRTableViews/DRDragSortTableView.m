@@ -291,8 +291,8 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
         // 执行拖动排序完成回调
         if ([self.dr_dragSortDelegate respondsToSelector:@selector(dragSortTableView:finishFromIndexPath:toIndexPath:)]) {
             [self.dr_dragSortDelegate dragSortTableView:self
-                                 finishFromIndexPath:self.startIndexPath
-                                         toIndexPath:toIndex];
+                                    finishFromIndexPath:self.startIndexPath
+                                            toIndexPath:toIndex];
         }
     }
     
@@ -471,15 +471,19 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
     CGFloat pointBottom = pointToWindow.y + halfHeight;
     
     // tableView顶部还有数据未显示
-    CGFloat insetTop = self.contentInset.top;
+    CGFloat insetTop = self.tableHeaderView.height;
     if (@available(iOS 11.0, *)) {
         insetTop += self.adjustedContentInset.top;
+    } else {
+        insetTop += self.contentInset.top;
     }
     BOOL moreDateOutTop = self.contentOffset.y > -insetTop;
     // 手指一动到了tableView的上边缘
-    CGFloat topY = self.tableRectInWindow.origin.y + self.contentInset.top;
+    CGFloat topY = self.tableRectInWindow.origin.y + self.tableHeaderView.height;
     if (@available(iOS 11.0, *)) {
         topY += self.adjustedContentInset.top;
+    } else {
+        topY += self.contentInset.top;
     }
     NSIndexPath *currentIndexPath = [self indexPathForRowAtPoint:pointInTableView];
     if ([self.delegate respondsToSelector:@selector(tableView:heightForHeaderInSection:)]) {
@@ -494,14 +498,18 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
     }
     
     // tableView底部还有数据未显示
-    CGFloat visibleHeight = self.height - self.contentInset.top - self.contentInset.bottom;
+    CGFloat visibleHeight = self.height - self.tableFooterView.height;
     if (@available(iOS 11.0, *)) {
         visibleHeight -= (self.adjustedContentInset.top + self.adjustedContentInset.bottom);
+    } else {
+        visibleHeight -= (self.contentInset.top + self.contentInset.bottom);
     }
     BOOL moreDataOutBottom = self.contentSize.height - self.contentOffset.y > visibleHeight + insetTop;
-    CGFloat tableRectInWindowBottom = self.tableRectInWindow.origin.y + self.tableRectInWindow.size.height - self.contentInset.bottom;
+    CGFloat tableRectInWindowBottom = self.tableRectInWindow.origin.y + self.tableRectInWindow.size.height - self.tableFooterView.height;
     if (@available(iOS 11.0, *)) {
         tableRectInWindowBottom -= self.adjustedContentInset.bottom;
+    } else {
+        tableRectInWindowBottom -= self.contentInset.bottom;
     }
     if ([self.delegate respondsToSelector:@selector(tableView:heightForFooterInSection:)]) {
         tableRectInWindowBottom -= [self.delegate tableView:self heightForFooterInSection:currentIndexPath.section];
@@ -541,15 +549,19 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
         [self exchangeCellToIndexPath:indexPath];
     }
     
-    CGFloat insetTop = self.contentInset.top;
+    CGFloat insetTop = self.tableHeaderView.height;
     if (@available(iOS 11.0, *)) {
         insetTop += self.adjustedContentInset.top;
+    } else {
+        insetTop += self.contentInset.top;
     }
     if (self.autoScroll == AutoScrollUp) { // 往上滚
         // 检查是否滚动到最下面
-        CGFloat visibleHeight = self.height - self.contentInset.top - self.contentInset.bottom;
+        CGFloat visibleHeight = self.height - self.tableFooterView.height;
         if (@available(iOS 11.0, *)) {
             visibleHeight -= (self.adjustedContentInset.top + self.adjustedContentInset.bottom);
+        } else {
+            visibleHeight -=  (self.contentInset.top + self.contentInset.bottom);
         }
         if (self.contentOffset.y + visibleHeight >= self.contentSize.height) {
             self.contentOffset = CGPointMake(0, self.contentSize.height - visibleHeight - insetTop);
