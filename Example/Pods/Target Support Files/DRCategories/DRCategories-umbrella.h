@@ -11,6 +11,7 @@
 #endif
 
 #import "DRCategories.h"
+#import "DRDeallocObserver.h"
 #import "DRFoundationCategories.h"
 #import "NSArray+DRExtension.h"
 #import "NSAttributedString+DRExtension.h"

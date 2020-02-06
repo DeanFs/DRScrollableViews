@@ -18,6 +18,7 @@
 #import "DRTimeFlowViewProtocol.h"
 #import "UICollectionViewCell+TimeFlowShadowLayer.h"
 #import "DRDragSortTableView.h"
+#import "DRTextScrollView.h"
 
 FOUNDATION_EXPORT double DRScrollableViewsVersionNumber;
 FOUNDATION_EXPORT const unsigned char DRScrollableViewsVersionString[];

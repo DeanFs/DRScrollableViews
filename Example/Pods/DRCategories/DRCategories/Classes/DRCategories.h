@@ -8,6 +8,8 @@
 #ifndef DRCategories_h
 #define DRCategories_h
 
+#import "DRDeallocObserver.h"
+
 // Foundation
 #import "DRFoundationCategories.h"
 
