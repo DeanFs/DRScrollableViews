@@ -149,6 +149,9 @@
         self.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     }
     self.clipsToBounds = YES;
+    self.showsVerticalScrollIndicator = NO;
+    self.showsHorizontalScrollIndicator = NO;
+    self.scrollEnabled = NO;
     self.delegate = self;
     
     UILabel *label1 = [[UILabel alloc] init];
