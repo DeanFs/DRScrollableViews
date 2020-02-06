@@ -161,7 +161,6 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "${BUILT_PRODUCTS_DIR}/BlocksKit/BlocksKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/DRCategories/DRCategories.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/DRSandboxManager/DRSandboxManager.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/DRScrollableViews/DRScrollableViews.framework"
@@ -171,7 +170,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/pop/pop.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "${BUILT_PRODUCTS_DIR}/BlocksKit/BlocksKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/DRCategories/DRCategories.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/DRSandboxManager/DRSandboxManager.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/DRScrollableViews/DRScrollableViews.framework"

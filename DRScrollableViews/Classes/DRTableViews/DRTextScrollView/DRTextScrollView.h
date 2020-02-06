@@ -10,12 +10,12 @@
 @interface DRTextScrollView : UIScrollView
 
 @property (strong, nonatomic) NSArray<NSString *> *textList;
-@property (strong, nonatomic) UIFont *textFont;
-@property (strong, nonatomic) UIColor *textColor;
-@property (assign, nonatomic) NSTextAlignment textAlignmant;
-@property (assign, nonatomic) CGFloat animateDurtaion;
-@property (assign, nonatomic) NSInteger numberOfLines;
-@property (assign, nonatomic) NSLineBreakMode lineBreakMode;
+@property (strong, nonatomic) IBInspectable UIFont *textFont;
+@property (strong, nonatomic) IBInspectable UIColor *textColor;
+@property (assign, nonatomic) IBInspectable NSTextAlignment textAlignmant;
+@property (assign, nonatomic) IBInspectable CGFloat animateDurtaion;
+@property (assign, nonatomic) IBInspectable NSInteger numberOfLines;
+@property (assign, nonatomic) IBInspectable NSLineBreakMode lineBreakMode;
 
 - (void)startAnimation;
 - (void)stopAnimation;
