@@ -27,13 +27,15 @@
     if (self.textList.count < 2) {
         return;
     }
-    self.timer = [NSTimer timerWithTimeInterval:self.animateDurtaion
-                                         target:self
-                                       selector:@selector(onTimerFir)
-                                       userInfo:nil
-                                        repeats:YES];
-    [[NSRunLoop mainRunLoop] addTimer:self.timer
-                              forMode:NSRunLoopCommonModes];
+    if (self.timer == nil) {
+        self.timer = [NSTimer timerWithTimeInterval:self.animateDurtaion
+                                             target:self
+                                           selector:@selector(onTimerFir)
+                                           userInfo:nil
+                                            repeats:YES];
+        [[NSRunLoop mainRunLoop] addTimer:self.timer
+                                  forMode:NSRunLoopCommonModes];
+    }
     self.animating = YES;
 }
 
