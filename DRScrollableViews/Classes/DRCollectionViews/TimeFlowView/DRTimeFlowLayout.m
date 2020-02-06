@@ -47,7 +47,10 @@
 - (CGSize)collectionViewContentSize {
     // 获取当前cell总数，并计算内容大小
     _cellCount = [self.collectionView numberOfItemsInSection:0];
-    self.cellContentHeight = self.cellCount * self.maxCellHeight;
+    _cellContentHeight = self.maxCellHeight;
+    if (_cellCount > 0) {
+        _cellContentHeight = self.cellCount * self.maxCellHeight;
+    }
     
     // 设置顶部inset，保证所有cell都能滚动到最大位置
     self.collectionView.contentInset = UIEdgeInsetsMake(self.height, 0, self.maxCellHeight, 0);
