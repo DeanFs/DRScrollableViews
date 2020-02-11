@@ -1,6 +1,6 @@
 {
   "name": "DRScrollableViews",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "summary": "UITableView, UICollectionView等的一些特殊效果",
   "description": "TODO: Add long description of the pod here.",
   "homepage": "https://github.com/DeanFs/DRScrollableViews",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/DeanFs/DRScrollableViews.git",
-    "tag": "0.4.5"
+    "tag": "0.4.6"
   },
   "platforms": {
     "ios": "9.0"
