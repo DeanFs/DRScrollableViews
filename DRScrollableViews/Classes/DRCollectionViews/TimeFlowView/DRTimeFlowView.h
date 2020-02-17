@@ -17,7 +17,8 @@
 @property (nonatomic, assign) IBInspectable CGFloat cellCornerRadius; // cell圆角半径，默认4
 @property (nonatomic, strong) IBInspectable UIColor *cellShadowColor; // cell阴影的颜色，默认0xD6E7F4
 @property (nonatomic, assign) IBInspectable CGFloat cellShadowOffset; // 可见阴影长度, 默认20
-@property (nonatomic, assign, readonly) CGPoint contentOffset;
+@property (nonatomic, assign) CGPoint contentOffset;
+@property (assign, nonatomic) UIEdgeInsets contentInset;
 @property (strong, nonatomic) UIColor *refreshLabelColor;
 
 @property (nonatomic, weak) id<DRTimeFlowViewDataSource> dataSource;
@@ -35,6 +36,8 @@
 - (NSInteger)currentTopCellIndex;
 // 获取当前显示的最底部一个cell的序号
 - (NSInteger)currentBottomCellIndex;
+// 动画设置偏移量
+- (void)setContentOffset:(CGPoint)contentOffset animated:(BOOL)animated;
 // 滚动，将可见cell的第一个置为第index个
 - (void)scrollToTopIndex:(NSInteger)index animated:(BOOL)animated;
 // 设置最底部cell的index，即将底index个cell滚动到底部

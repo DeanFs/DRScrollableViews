@@ -18,51 +18,51 @@ PODS:
     - RegExCategories
   - DRMacroDefines (0.1.2)
   - DRSandboxManager (0.1.6)
-  - DRScrollableViews (0.4.6):
+  - DRScrollableViews (0.4.7):
     - DRCategories
     - DRMacroDefines
-    - DRScrollableViews/Common (= 0.4.6)
-    - DRScrollableViews/DRCollectionViews (= 0.4.6)
-    - DRScrollableViews/DRTableViews (= 0.4.6)
+    - DRScrollableViews/Common (= 0.4.7)
+    - DRScrollableViews/DRCollectionViews (= 0.4.7)
+    - DRScrollableViews/DRTableViews (= 0.4.7)
     - HexColors (= 4.0.0)
     - Masonry
-  - DRScrollableViews/Common (0.4.6):
+  - DRScrollableViews/Common (0.4.7):
     - DRCategories
     - DRMacroDefines
     - HexColors (= 4.0.0)
     - Masonry
-  - DRScrollableViews/DRCollectionViews (0.4.6):
+  - DRScrollableViews/DRCollectionViews (0.4.7):
     - DRCategories
     - DRMacroDefines
-    - DRScrollableViews/DRCollectionViews/FoldableView (= 0.4.6)
-    - DRScrollableViews/DRCollectionViews/TimeFlowView (= 0.4.6)
+    - DRScrollableViews/DRCollectionViews/FoldableView (= 0.4.7)
+    - DRScrollableViews/DRCollectionViews/TimeFlowView (= 0.4.7)
     - HexColors (= 4.0.0)
     - Masonry
-  - DRScrollableViews/DRCollectionViews/FoldableView (0.4.6):
-    - DRCategories
-    - DRMacroDefines
-    - DRScrollableViews/Common
-    - HexColors (= 4.0.0)
-    - Masonry
-  - DRScrollableViews/DRCollectionViews/TimeFlowView (0.4.6):
+  - DRScrollableViews/DRCollectionViews/FoldableView (0.4.7):
     - DRCategories
     - DRMacroDefines
     - DRScrollableViews/Common
     - HexColors (= 4.0.0)
     - Masonry
-  - DRScrollableViews/DRTableViews (0.4.6):
+  - DRScrollableViews/DRCollectionViews/TimeFlowView (0.4.7):
     - DRCategories
     - DRMacroDefines
-    - DRScrollableViews/DRTableViews/DRDragSortTableView (= 0.4.6)
-    - DRScrollableViews/DRTableViews/DRTextScrollView (= 0.4.6)
+    - DRScrollableViews/Common
     - HexColors (= 4.0.0)
     - Masonry
-  - DRScrollableViews/DRTableViews/DRDragSortTableView (0.4.6):
+  - DRScrollableViews/DRTableViews (0.4.7):
+    - DRCategories
+    - DRMacroDefines
+    - DRScrollableViews/DRTableViews/DRDragSortTableView (= 0.4.7)
+    - DRScrollableViews/DRTableViews/DRTextScrollView (= 0.4.7)
+    - HexColors (= 4.0.0)
+    - Masonry
+  - DRScrollableViews/DRTableViews/DRDragSortTableView (0.4.7):
     - DRCategories
     - DRMacroDefines
     - HexColors (= 4.0.0)
     - Masonry
-  - DRScrollableViews/DRTableViews/DRTextScrollView (0.4.6):
+  - DRScrollableViews/DRTableViews/DRTextScrollView (0.4.7):
     - DRCategories
     - DRMacroDefines
     - DRScrollableViews/Common
@@ -96,7 +96,7 @@ SPEC CHECKSUMS:
   DRCategories: 5ce7e79748e3cbfd8813f34431c36f44eed0fd09
   DRMacroDefines: 58aa271bc1c4170fa09f4f33dcad18fc4f21a57e
   DRSandboxManager: dc4c6a07a6ab2b0f01aac05ab2d1c128587e91a7
-  DRScrollableViews: 4a66810e8937521166b857c024b55a8187dfa83e
+  DRScrollableViews: 667912bd7a96cbd3e0e2b43bba19a57f4dd5165e
   HexColors: 5f95843ef89aff6a72e1fd3a8ebabf205cc43379
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   pop: d582054913807fd11fd50bfe6a539d91c7e1a55a
