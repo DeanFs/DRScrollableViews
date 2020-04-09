@@ -56,7 +56,7 @@ typedef NS_ENUM(NSInteger, AutoScroll) {
     kDR_LOG(@"%@ dealloc", NSStringFromClass([self class]));
 }
 
-- (void)setDr_dragSortDelegate:(id<DRDragSortTableViewDelegate, UITableViewDelegate, UITableViewDataSource>)dragSortDelegate {
+- (void)setDr_dragSortDelegate:(id<DRDragSortTableViewDelegate>)dragSortDelegate {
     _dr_dragSortDelegate = dragSortDelegate;
     
     self.delegate = dragSortDelegate;

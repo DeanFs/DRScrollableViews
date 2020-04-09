@@ -10,13 +10,13 @@
 
 @class DRDragSortTableView;
 
-@protocol DRDragSortTableViewDelegate <NSObject>
+@protocol DRDragSortTableViewDelegate <NSObject, UITableViewDelegate, UITableViewDataSource>
 
 @optional
 
 /**
  可以拖动排序，不实现该方法时，所有cell均不可拖动排序
-
+ 
  @param tableView tableView
  @param indexPath 待判断cell的位置
  @return YES:可以拖动排序  NO:不可以拖动排序
@@ -42,7 +42,7 @@
 
 /**
  松手，停止拖拽时调用
-
+ 
  @param tableView tableView
  @param fromIndexPath 长按进入拖拽模式时的位置
  @param toIndexPath 停止拖拽时的位置
@@ -67,7 +67,7 @@
  @param tableView tableView
  @param indexPath 删除位置
  @param deleteDoneBlock 删除接口调用完成时调用，不论接口调用成功或者失败，都要调用该回调
-                        否则可能导致一个cell一直处于被隐藏状态
+ 否则可能导致一个cell一直处于被隐藏状态
  */
 - (void)dragSortTableView:(DRDragSortTableView *)tableView
         deleteAtIndexPath:(NSIndexPath *)indexPath
@@ -88,7 +88,7 @@
 @optional
 /**
  返回cell中需要拖拽的子视图
-
+ 
  @return 可拖拽的子视图
  */
 - (UIView *)subDragViewFromCellInDragSortTableView:(DRDragSortTableView *)tableView;
@@ -101,7 +101,7 @@
 
 @interface DRDragSortTableView : UITableView
 
-@property (nonatomic, weak) id<DRDragSortTableViewDelegate, UITableViewDelegate, UITableViewDataSource> dr_dragSortDelegate;
+@property (nonatomic, weak) id<DRDragSortTableViewDelegate> dr_dragSortDelegate;
 
 /// 当cell拖拽到tableView边缘时,tableView的滚动速度，1/60秒内移动像素(pt)位数，默认为6
 @property (nonatomic, assign) IBInspectable CGFloat scrollSpeed;
@@ -113,4 +113,3 @@
 @property (nonatomic, assign) IBInspectable CGFloat willDeleteCellFrameScale;
 
 @end
-
