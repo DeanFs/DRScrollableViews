@@ -8,6 +8,6 @@
 
 @import UIKit;
 
-@interface DRViewController : UITableViewController
+@interface DRScrollableTestViewController : UITableViewController
 
 @end

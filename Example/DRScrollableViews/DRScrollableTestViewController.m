@@ -6,15 +6,15 @@
 //  Copyright (c) 2019 Dean_F. All rights reserved.
 //
 
-#import "DRViewController.h"
+#import "DRScrollableTestViewController.h"
 #import <DRMacroDefines/DRMacroDefines.h>
 #import "DRTimeFlowViewController.h"
 
-@interface DRViewController ()
+@interface DRScrollableTestViewController ()
 
 @end
 
-@implementation DRViewController
+@implementation DRScrollableTestViewController
 
 - (void)viewDidLoad
 {
